@@ -2,19 +2,86 @@
     ViewBag.Title = "Home Page";
 }
 
+
+<style>
+
+    #actionOptions {
+        border-collapse: separate;
+        border-spacing: 20px;
+    }
+    .greenButton {
+        background-color: green;
+        color: white;
+        width: 500px;
+        padding-top: 20px;
+        padding-left: 70px;
+        padding-right: 70px;
+        padding-bottom: 20px;
+        border-radius: 12px;
+    }
+    .blueButton {
+        background-color: blue;
+        color: white;
+        width: 500px;
+        padding-top: 20px;
+        padding-left: 70px;
+        padding-right: 70px;
+        padding-bottom: 20px;
+        border-radius: 12px;
+    }
+</style>
+
 <!-- Navigation Bar with Partial View -->
 @Html.Partial("_NavBar")
 
 <div>
 
 
-    <h1>Build a Résumé for Your Dream Job!</h1>
+    <h1>Build the Résumé for Your Dream Job!</h1>
+
+    <br />
+
+    <table id="actionOptions" cellspacing="50">
+
+        <tbody >
+
+            <tr>
+
+                <td>
+                    <!-- Register as a User -->
+                    <form method="get" action="~/Applicants/RegisterUserPageView">
+                        <input class="greenButton" type="submit" value="Register" />
+                    </form>
+
+                </td>        
+
+            </tr>
+
+            <tr></tr>
+
+            <tr>
+
+                <td>
+                    <!-- View List of Users -->
+                    <form method="get" action="~/Applicants/ListOfApplicantsPageView">
+                        <input class="blueButton" type="submit" value="List of Applicants" />
+                    </form>
+                </td>
+
+            </tr>
+
+            
 
 
-    <!-- Register as a User -->
 
-    <!-- View List of Users -->
+        </tbody>
+        
 
+
+
+    </table>
+
+    
 
 
 </div>

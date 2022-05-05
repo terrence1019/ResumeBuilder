@@ -58,6 +58,7 @@ namespace RésuméBuilder.Controllers
 
         //REGISTERING A USER FOR RESUME SERVICE
         //RegisterUserPageView()
+        [Route("Applicants/RegisterUserPageView")]
         public ViewResult RegisterUserPageView()
         {
             return View();
