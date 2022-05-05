@@ -138,6 +138,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Applicant.cs" />
     <Compile Include="Models\MyDbContext.cs" />
+    <Compile Include="Models\Personal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
