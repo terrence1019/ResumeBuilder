@@ -9,9 +9,16 @@ namespace RésuméBuilder
 {
     public class RouteConfig
     {
+
+        
+
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            //ATTRIBUTE ROUTING:
+            //Enable Feature
+            routes.MapMvcAttributeRoutes();
 
             routes.MapRoute(
                 name: "Default",

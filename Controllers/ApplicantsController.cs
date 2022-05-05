@@ -94,7 +94,9 @@ namespace RésuméBuilder.Controllers
             return View("SuccessfullyRegistered");
         }
 
-        // ATTRIBUTE ROUTING
+        //ATTRIBUTE ROUTING
+        //Enable attribute routing in RouteConfig.cs
+        //https://stackoverflow.com/questions/18052813/the-parameters-dictionary-contains-a-null-entry-for-parameter-id-of-non-nullab
         [Route("Applicants/ApplicantDetails/{applicantID}")]
         public ActionResult ApplicantDetails (int applicantID)
         {
@@ -105,7 +107,7 @@ namespace RésuméBuilder.Controllers
 
             if (applicantRecord == null) return HttpNotFound();
 
-            return View();
+            return View(applicantRecord);
         }
 
         //RESUME CREATION
