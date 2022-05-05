@@ -1,0 +1,19 @@
+﻿@model IEnumerable<RésuméBuilder.Models.Applicant>
+
+
+@{
+    ViewBag.Title = "ListOfApplicantsPageView";
+}
+
+<!-- Navigation Bar with Partial View -->
+@Html.Partial("_NavBar")
+
+<h2>ListOfApplicantsPageView</h2>
+
+@foreach (var applicant in Model)
+{
+<li>
+    @applicant.ApplicantID - @applicant.ApplicantUsername -
+    <a href="/Applicants/ApplicantDetails/@applicant.ApplicantID">[DETAILS]</a>
+</li>
+}

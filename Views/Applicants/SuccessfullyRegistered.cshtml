@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "SuccessfullyRegistered";
+}
+
+<h2>Successfully Registered</h2>
+
+<p>Success! You have been successfully registered</p>
+
+<p>You can now create a Résumé</p>
+
+<p>
+    To begin, select your username from the Applicant List
+
+    <!-- ActionLink Syntax: Link_Name, View_Name, View_Folder -->
+    <!-- Goes to: Views/Applicants/ListOfApplicantsPageView -->
+    @Html.ActionLink("[here]", "ListOfApplicantsPageView", "Applicants")
+</p>
