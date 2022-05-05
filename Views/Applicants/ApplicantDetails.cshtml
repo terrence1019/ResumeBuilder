@@ -4,13 +4,17 @@
     ViewBag.Title = "ApplicantDetails";
 }
 
+
+<!-- Internal CSS Styling -->
+@Html.Partial("_InternalStyle")
+
 <!-- Navigation Bar with Partial View -->
 @Html.Partial("_NavBar")
 
-<h2>Applicant Details for @Model.ApplicantID - @Model.ApplicantUsername</h2>
+<h2>Applicant Details for @Model.ApplicantUsername</h2>
 
 
-<table>
+<table class="applicantDetails" cellspacing="70">
     <thead>
         <tr><th>REGISTERED ID</th><th>REGISTERED USERNAME</th></tr>
     </thead>
@@ -18,6 +22,8 @@
         <tr><td>@Model.ApplicantID</td><td>@Model.ApplicantUsername</td></tr>
     </tbody>
 </table>
+
+<br />
 
 <p>VIEW FULL RESUME</p>
 
@@ -41,7 +47,7 @@
 
         personalTable.Add(personalRecord);
         dbContext.SaveChanges();
-        
+
         int applicantID = personalRecord.ApplicantID;
 
         return RedirectToAction("ListOfApplicantsPageView", "Applicants");
@@ -67,8 +73,9 @@
     - AUTO-FILL FORM BOX FOR APPLICANTID WITH {applicantID} [CRITICAL]
     - The remaining fields will be manually filled using form input
 
+    @Model.ApplicantID just like link from List of Applicants to Applicant Details
 
-    @*Html.TextBoxFor(p => p.ApplicantID, new { @class = "form-control" })
+    @Html.TextBoxFor(p => p.ApplicantID, new { @class = "form-control" })
 
     This way, Applicant.ApplicantID == Personal.ApplicantID
 
