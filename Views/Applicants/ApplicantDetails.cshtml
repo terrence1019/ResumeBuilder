@@ -7,17 +7,83 @@
 <!-- Navigation Bar with Partial View -->
 @Html.Partial("_NavBar")
 
-<h2>Applicant Details for @Model.ApplicantID</h2>
+<h2>Applicant Details for @Model.ApplicantID - @Model.ApplicantUsername</h2>
 
-<p>@Model.ApplicantID</p>
-<p>@Model.ApplicantUsername</p>
+
+<table>
+    <thead>
+        <tr><th>REGISTERED ID</th><th>REGISTERED USERNAME</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>@Model.ApplicantID</td><td>@Model.ApplicantUsername</td></tr>
+    </tbody>
+</table>
+
+<p>VIEW FULL RESUME</p>
+
+
+<p>
+    Add Personal Information
+
+
+</p>
 
 
 <!--
 
-    Scan Personals
+    Add Personals using ApplicantID
 
-    //Will require ViewModel
+    In relevant Controller:
+    public ActionResult AddPersonalActionForm(Personal personalRecord)
+    {
+
+        var personalTable = dbContext.personalDB;
+
+        personalTable.Add(personalRecord);
+        dbContext.SaveChanges();
+        
+        int applicantID = personalRecord.ApplicantID;
+
+        return RedirectToAction("ListOfApplicantsPageView", "Applicants");
+
+        OR
+
+        return RedirectToAction("ApplicantDetails(applicantID)", "Applicants")
+
+    }
+
+
+
+    Click to Add Personal -
+
+
+    AddPersonalPageView ================
+
+    PAGE VIEW:
+    /Views/Personal/AddPersonalPageView/{applicantID}
+
+    FORM ACTION:
+    - AUTOINCREMENT OCCURS FOR PersonalEntryID (Primary Key)
+    - AUTO-FILL FORM BOX FOR APPLICANTID WITH {applicantID} [CRITICAL]
+    - The remaining fields will be manually filled using form input
+
+
+    @*Html.TextBoxFor(p => p.ApplicantID, new { @class = "form-control" })
+
+    This way, Applicant.ApplicantID == Personal.ApplicantID
+
+    Once ApplicantID are tied, easier to traverse records to pull a specific one
+
+
+
+
+
+
+-->
+<!--
+
+    Adding and using multiple Models in a View
+    http://www.dotnet-stuff.com/tutorials/aspnet-mvc/way-to-use-multiple-models-in-a-view-in-asp-net-mvc
 
 
 

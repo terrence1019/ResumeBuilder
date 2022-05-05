@@ -102,7 +102,8 @@ namespace RésuméBuilder.Controllers
         public ActionResult ApplicantDetails (int applicantID)
         {
 
-            var val = applicantID;
+            //Test Correctness of Data Entry:
+            //var val = applicantID;
 
             var applicantRecord = dbContext.applicantDB.SingleOrDefault(a => a.ApplicantID == applicantID);
 
