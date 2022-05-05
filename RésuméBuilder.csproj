@@ -135,6 +135,10 @@
     <Compile Include="Migrations\202205041246073_Initial.designer.cs">
       <DependentUpon>202205041246073_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205051429397_AddPersonalDB.cs" />
+    <Compile Include="Migrations\202205051429397_AddPersonalDB.designer.cs">
+      <DependentUpon>202205051429397_AddPersonalDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Applicant.cs" />
     <Compile Include="Models\MyDbContext.cs" />
@@ -183,6 +187,7 @@
     <Content Include="Views\Applicants\RegisterUserPageView.cshtml" />
     <Content Include="Views\Applicants\SuccessfullyRegistered.cshtml" />
     <Content Include="Views\Applicants\ApplicantDetails.cshtml" />
+    <Content Include="Views\Shared\_InternalStyle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -203,6 +208,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202205041246073_Initial.resx">
       <DependentUpon>202205041246073_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205051429397_AddPersonalDB.resx">
+      <DependentUpon>202205051429397_AddPersonalDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

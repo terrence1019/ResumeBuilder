@@ -42,5 +42,8 @@ namespace RésuméBuilder.Models
         //For Applicant Model:
         public DbSet <Applicant> applicantDB { get; set; }
 
+        //For Personal Model:
+        public DbSet <Personal> personalDB { get; set; }
+
     }
 }

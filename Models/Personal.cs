@@ -11,9 +11,12 @@ namespace RésuméBuilder.Models
     public class Personal
     {
 
+
+        //KEYS
         [Key] //Primary Key for Personal
         public int PersonalEntryID { get; set; }
 
+        //Relates to ApplicantID from Applicant Model
         [Required] //This annotation makes database table field NOT NULL
         public virtual int ApplicationId { get; set; }
 
