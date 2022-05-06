@@ -13,3 +13,111 @@
 
 <p>@Model.ApplicantRecordVM.ApplicantID</p>
 <p>@Model.ApplicantRecordVM.ApplicantUsername</p>
+
+
+
+<div>
+
+    <hr />
+
+    <h1>@Model.PersonalRecordVM.FirstName @Model.PersonalRecordVM.MiddleName @Model.PersonalRecordVM.LastName</h1>
+
+</div>
+
+
+<div>
+
+    <table id="personal_table">
+        <tr>
+            <!-- HORIZONTAL ROW 1 -->
+            <th class="personal">
+                <!-- CELL 1 OF ROW -->
+                Address
+            </th>
+            <td>
+                <!-- CELL 2 OF ROW -->
+                @Model.PersonalRecordVM.StreetLocation,
+            </td>
+            <td>
+            </td>
+
+            <th class="personal">
+                <!-- CELL 3 OF ROW -->
+                Email (Work)
+            </th>
+            <td>
+                <!-- CELL 4 OF ROW -->
+                @Model.PersonalRecordVM.EmailWork
+            </td>
+
+            <th class="personal">
+                Mobile
+            </th>
+            <td>
+                @Model.PersonalRecordVM.PhoneMobile
+            </td>
+
+
+        </tr>
+
+        <tr>
+            <!-- HORIZONTAL ROW 2 -->
+            <th>
+
+            </th>
+            <td>
+                @Model.PersonalRecordVM.AreaLocation,
+            </td>
+
+            <td>
+            </td>
+
+            <th class="personal">
+                Email (Personal)
+            </th>
+            <td>
+                @Model.PersonalRecordVM.EmailHome
+            </td>
+
+            <th class="personal">
+                Home
+            </th>
+            <td>
+                @Model.PersonalRecordVM.PhoneHome
+            </td>
+
+
+
+        </tr>
+
+        <tr>
+            <!-- HORIZONTAL ROW 3 -->
+            <th>
+
+            </th>
+            <td>
+                @Model.PersonalRecordVM.RegionLocation,
+            </td>
+
+            <td>
+            </td>
+
+
+        </tr>
+
+        <tr>
+            <!-- HORIZONTAL ROW 4 -->
+            <td>
+            </td>
+            <td>
+                Trinidad & Tobago
+            </td>
+
+            <td>
+            </td>
+
+        </tr>
+
+    </table>
+
+</div>
