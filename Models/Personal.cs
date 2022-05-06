@@ -18,7 +18,7 @@ namespace RésuméBuilder.Models
 
         //Relates to ApplicantID from Applicant Model
         [Required] //This annotation makes database table field NOT NULL
-        public virtual int ApplicationId { get; set; }
+        public virtual int ApplicantID { get; set; }
 
 
         //NAME
@@ -80,3 +80,6 @@ namespace RésuméBuilder.Models
 
     }
 }
+
+
+//http://www.mukeshkumar.net/articles/entityframework/add-a-primary-and-foreign-key-relationship-with-code-first-approach-in-entity-framework

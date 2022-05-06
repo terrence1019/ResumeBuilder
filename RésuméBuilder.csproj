@@ -128,6 +128,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ApplicantsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PersonalsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -139,11 +140,20 @@
     <Compile Include="Migrations\202205051429397_AddPersonalDB.designer.cs">
       <DependentUpon>202205051429397_AddPersonalDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205060139483_Rename_Column.cs" />
+    <Compile Include="Migrations\202205060139483_Rename_Column.designer.cs">
+      <DependentUpon>202205060139483_Rename_Column.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205060146495_Committ.cs" />
+    <Compile Include="Migrations\202205060146495_Committ.designer.cs">
+      <DependentUpon>202205060146495_Committ.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Applicant.cs" />
     <Compile Include="Models\MyDbContext.cs" />
     <Compile Include="Models\Personal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AddPersonalsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -188,6 +198,7 @@
     <Content Include="Views\Applicants\SuccessfullyRegistered.cshtml" />
     <Content Include="Views\Applicants\ApplicantDetails.cshtml" />
     <Content Include="Views\Shared\_InternalStyle.cshtml" />
+    <Content Include="Views\Personals\AddPersonalsPageView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -211,6 +222,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202205051429397_AddPersonalDB.resx">
       <DependentUpon>202205051429397_AddPersonalDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205060139483_Rename_Column.resx">
+      <DependentUpon>202205060139483_Rename_Column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205060146495_Committ.resx">
+      <DependentUpon>202205060146495_Committ.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

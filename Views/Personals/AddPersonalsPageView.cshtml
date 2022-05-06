@@ -1,0 +1,57 @@
+﻿<!--
+
+    Adding and using multiple Models in a View
+    http://www.dotnet-stuff.com/tutorials/aspnet-mvc/way-to-use-multiple-models-in-a-view-in-asp-net-mvc
+
+    Passing a value from Controller to View
+    https://www.c-sharpcorner.com/article/asp-net-mvc-passing-data-from-controller-to-view/
+
+-->
+
+@model RésuméBuilder.Models.Personal
+
+
+@{
+    ViewBag.Title = "AddPersonalsPageView";
+    var id = ViewBag.TargetID;
+}
+
+
+
+<h2>AddPersonalsPageView</h2>
+
+<h3>Add Personal Details for Registration ID @id</h3>
+
+<p>Use the Form Below: </p>
+
+
+
+
+
+<!--
+
+    Assign value to a Model in Razor View:
+    https://stackoverflow.com/questions/37531271/asp-net-mvc-directly-assign-value-to-model-inside-razor-view
+
+
+-->
+
+
+
+@using (Html.BeginForm("AddPersonalsFormAction", "Personals", FormMethod.Post))
+{
+
+    @Model.ApplicantID = id;
+
+<p>@Model.ApplicantID</p>
+
+<div class="form-group">
+    @Html.LabelFor(p => p.FirstName)
+    @Html.TextBoxFor(p => p.FirstName, new { @class = "form-control" })
+</div>
+
+<br />
+
+<input type="submit" class="btn btn-primary" value="Add Personal">
+
+}

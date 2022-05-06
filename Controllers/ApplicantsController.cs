@@ -96,8 +96,7 @@ namespace RésuméBuilder.Controllers
         }
 
         //ATTRIBUTE ROUTING
-        //Enable attribute routing in RouteConfig.cs
-        //https://stackoverflow.com/questions/18052813/the-parameters-dictionary-contains-a-null-entry-for-parameter-id-of-non-nullab
+        //Enable attribute routing in RouteConfig.cs for this to work
         [Route("Applicants/ApplicantDetails/{applicantID}")]
         public ActionResult ApplicantDetails (int applicantID)
         {
