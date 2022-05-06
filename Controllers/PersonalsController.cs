@@ -63,7 +63,9 @@ namespace RésuméBuilder.Controllers
             //ApplicantID for record is set here as the desired value:
             personalRecord.ApplicantID = applicantID;
 
+
             
+
             //Data Entry Checks Before DB Saves ===
             var appid = personalRecord.ApplicantID;
             var fname = personalRecord.FirstName;
@@ -74,13 +76,22 @@ namespace RésuméBuilder.Controllers
             var personalTable = dbContext.personalDB;
 
 
+            //AUTO-INCREMENT EntryID
+            int PreExistingRecords = personalTable.Count();
+            int AutoIncrementID = ++PreExistingRecords;
+
+            personalRecord.PersonalEntryID = AutoIncrementID;
 
 
-            //return View("PersonalDetailsSuccess");
-            //return RedirectToAction("PersonalDetailsSuccess", "Personals");
+            //Add Personal Record to Personal Table
+            personalTable.Add(personalRecord);
+
+            //Save changes to database
+            dbContext.SaveChanges();
+
+
             return RedirectToAction("PersonalDetailsSuccess", new { id = applicantID });
-            //return RedirectToAction("ApplicantDetails(applicantID)", "Applicants");
-
+            
         }
 
 

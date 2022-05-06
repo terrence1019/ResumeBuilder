@@ -4,10 +4,12 @@
 
 
 @{
-    ViewBag.Title = "ResumeVM";
+    ViewBag.Title = "Résumé";
 }
 
-<h2>ResumeVM</h2>
+@Html.Partial("_ResumeStyle")
+
+<h2>Résumé</h2>
 
 <p>@Model.ApplicantRecordVM.ApplicantID</p>
 <p>@Model.ApplicantRecordVM.ApplicantUsername</p>
