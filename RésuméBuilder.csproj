@@ -157,7 +157,7 @@
     <Compile Include="Models\MyDbContext.cs" />
     <Compile Include="Models\Personal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\AddPersonalsViewModel.cs" />
+    <Compile Include="ViewModels\ResumeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -203,6 +203,8 @@
     <Content Include="Views\Applicants\ApplicantDetails.cshtml" />
     <Content Include="Views\Shared\_InternalStyle.cshtml" />
     <Content Include="Views\Personals\AddPersonalsPageView.cshtml" />
+    <Content Include="Views\Personals\PersonalDetailsSuccess.cshtml" />
+    <Content Include="Views\Applicants\ResumeVM.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

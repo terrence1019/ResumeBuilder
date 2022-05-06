@@ -6,8 +6,10 @@ using System.Web.Mvc;
 
 //Required to use Models
 using RésuméBuilder.Models;
+using RésuméBuilder.ViewModels;
 
 
+using System.Data.Entity;
 
 
 namespace RésuméBuilder.Controllers
@@ -116,6 +118,41 @@ namespace RésuméBuilder.Controllers
         //CreateApplicationFormAction(applicantID)
         //ViewApplicantDetails(applicantID)
         //ViewAppicationDetails(applicantID)
+
+        //USING VIEWMODEL
+        //ViewModel -> Controller (using ViewModel) -> View
+        [Route("Applicants/ResumeVMPageView/{applicantID}")]
+        public ViewResult ResumeVM (int applicantID)
+        {
+            
+            //Find the PK in the Applicant Table matching required ApplicantID
+            var applicantRecord = dbContext.applicantDB.SingleOrDefault(a => a.ApplicantID == applicantID);
+            //if (applicantRecord == null) return HttpNotFound();
+
+            //Find the FK in the Personal Table matching required ApplicantID
+            //var personalRecord = dbContext.personalDB.SingleOrDefault(a => a.ApplicantID == applicantID);
+            //if (personalRecord == null) return HttpNotFound();
+
+
+            //Create ViewModel instance to store values from the DB Tables
+            var applicantResumeViewModel = new ResumeViewModel();
+
+
+            //Store Table Records in ViewModel instance created as required:
+            applicantResumeViewModel.ApplicantRecordVM = applicantRecord;
+
+            //Check data entry:
+            int id = applicantResumeViewModel.ApplicantRecordVM.ApplicantID;
+            string name = applicantResumeViewModel.ApplicantRecordVM.ApplicantUsername;
+
+
+            //applicantResumeViewModel.PersonalRecordVM = personalRecord;
+
+
+            return View(applicantResumeViewModel);
+
+        }
+
 
 
 

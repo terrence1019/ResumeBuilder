@@ -73,14 +73,23 @@ namespace RésuméBuilder.Controllers
             //Target Table to Save Record
             var personalTable = dbContext.personalDB;
 
-            
-            
 
 
-            return View();
+
+            //return View("PersonalDetailsSuccess");
+            //return RedirectToAction("PersonalDetailsSuccess", "Personals");
+            return RedirectToAction("PersonalDetailsSuccess", new { id = applicantID });
+            //return RedirectToAction("ApplicantDetails(applicantID)", "Applicants");
 
         }
 
 
+        public ActionResult PersonalDetailsSuccess(int id)
+        {
+            ViewBag.ApplicantID = id;
+            return View();
+        }
+
+        
     }
 }

@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "ApplicantDetails";
+    int id = Model.ApplicantID;
 }
 
 
@@ -25,7 +26,17 @@
 
 <br />
 
-<p>VIEW FULL RESUME</p>
+
+<p>
+    VIEW FULL RESUME (VIEW MODEL)
+
+    @Html.ActionLink("[HERE!]", "ResumeVM", new { applicantID = id })
+
+</p>
+
+
+
+
 
 
 <p>
@@ -36,6 +47,14 @@
         -->
     <a href="/Personals/AddPersonalsPageView/@Model.ApplicantID">HERE</a>
 </p>
+
+
+
+
+
+
+
+
 
 
 <!--
