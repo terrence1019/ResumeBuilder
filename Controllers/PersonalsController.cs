@@ -39,6 +39,9 @@ namespace RésuméBuilder.Controllers
         public ActionResult AddPersonalsPageView(int applicantID)
         {  
 
+            //This allows us to pass the same value of the ApplicantID
+            //from the Applicant Model in the ApplicantDetailsPage [View A]
+            //to the Personal Model in AddPersonalsPageView [View B]
             ViewBag.TargetID = applicantID;
             
             return View();
@@ -49,12 +52,28 @@ namespace RésuméBuilder.Controllers
         //ACTION FOUND IN VIEW FOR FORM.
         //USED FOR FORM OPERATIONS IN CONJUNCTION WITH DATABASE (MODEL BINDING)
         [HttpPost]
-        public ActionResult AddPersonalsFormAction(Personal personalRecord)
+        public ActionResult AddPersonalsFormAction(Personal personalRecord, int applicantID)
         {
 
+            //Data Entry Checks for ApplicantID ===
+            //Value passed from form input field with name="applicantID"
+            //Action's parameter name must equal Form's input field name tag 
+            //var setID = applicantID;
+
+            //ApplicantID for record is set here as the desired value:
+            personalRecord.ApplicantID = applicantID;
+
+            
+            //Data Entry Checks Before DB Saves ===
+            var appid = personalRecord.ApplicantID;
+            var fname = personalRecord.FirstName;
+            var lname = personalRecord.LastName;
+
+
+            //Target Table to Save Record
             var personalTable = dbContext.personalDB;
 
-            var name = personalRecord.FirstName;
+            
             
 
 

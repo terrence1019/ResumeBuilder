@@ -13,6 +13,8 @@
 
 @{
     ViewBag.Title = "AddPersonalsPageView";
+
+    //This value correlates to the ApplicantID between the Applicant and Personal Models
     var id = ViewBag.TargetID;
 }
 
@@ -41,17 +43,44 @@
 @using (Html.BeginForm("AddPersonalsFormAction", "Personals", FormMethod.Post))
 {
 
-    @Model.ApplicantID = id;
+    <!-- APPLICANT ID: AUTOMATICALLY SET TO SPECIFIC VALUE -->
+    <!-- This input field will be passed with the rest of the form data
+         it ensures consistency of ApplicantID between Applicant and Personal.
+         Hidden in a <div> to prevent accidental changes or tampering
+    -->
+    <div hidden>
+        <input name="applicantID" type="number" value="@id" />
+    </div>
 
-<p>@Model.ApplicantID</p>
 
-<div class="form-group">
-    @Html.LabelFor(p => p.FirstName)
-    @Html.TextBoxFor(p => p.FirstName, new { @class = "form-control" })
-</div>
+    <!-- First Name -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.FirstName)
+        @Html.TextBoxFor(p => p.FirstName, new { @class = "form-control" })
+    </div>
+    <br />
 
-<br />
+    <!-- Last Name -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.LastName)
+        @Html.TextBoxFor(p => p.LastName, new { @class = "form-control" })
+    </div>
+    <br />
 
-<input type="submit" class="btn btn-primary" value="Add Personal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <input type="submit" class="btn btn-primary" value="Add Personal">
 
 }
