@@ -148,6 +148,10 @@
     <Compile Include="Migrations\202205060146495_Committ.designer.cs">
       <DependentUpon>202205060146495_Committ.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205061235511_ModifyDisplayAnnotationsForPersonalModel.cs" />
+    <Compile Include="Migrations\202205061235511_ModifyDisplayAnnotationsForPersonalModel.designer.cs">
+      <DependentUpon>202205061235511_ModifyDisplayAnnotationsForPersonalModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Applicant.cs" />
     <Compile Include="Models\MyDbContext.cs" />
@@ -228,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202205060146495_Committ.resx">
       <DependentUpon>202205060146495_Committ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205061235511_ModifyDisplayAnnotationsForPersonalModel.resx">
+      <DependentUpon>202205061235511_ModifyDisplayAnnotationsForPersonalModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

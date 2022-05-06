@@ -28,7 +28,7 @@ namespace RésuméBuilder.Models
         public string FirstName { get; set; }
 
         [StringLength(20)]
-        [Display(Name = "Middle Name")]
+        [Display(Name = "Middle Name (Optional)")]
         public string MiddleName { get; set; }
         
         [Required]
@@ -61,20 +61,20 @@ namespace RésuméBuilder.Models
         public string PhoneMobile { get; set; }
 
         [StringLength(14)]
-        [Display(Name = "Home Number")]
+        [Display(Name = "Home Number (Optional)")]
         public string PhoneHome { get; set; }
 
         [StringLength(14)]
-        [Display(Name = "Work Number")]
+        [Display(Name = "Work Number (If Applicable)")]
         public string PhoneWork { get; set; }
 
         [Required]
         [StringLength(30)]
-        [Display(Name = "Home Email")]
+        [Display(Name = "Home Email (Optional)")]
         public string EmailHome { get; set; }
 
         [StringLength(30)]
-        [Display(Name = "Work Email")]
+        [Display(Name = "Work Email (If Applicable)")]
         public string EmailWork { get; set; }
 
 
