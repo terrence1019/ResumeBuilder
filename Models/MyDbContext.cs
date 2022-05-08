@@ -45,5 +45,8 @@ namespace RésuméBuilder.Models
         //For Personal Model:
         public DbSet <Personal> personalDB { get; set; }
 
+        //For Skill Model:
+        public DbSet <Skill> skillDB { get; set; }
+
     }
 }
