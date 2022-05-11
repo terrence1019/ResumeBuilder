@@ -1,0 +1,111 @@
+﻿
+@model RésuméBuilder.ViewModels.SkillsViewModel
+
+@{
+    ViewBag.Title = "AddSkillsPageView";
+
+    //This value correlates to the ApplicantID between the Applicant and Personal Models
+    var id = ViewBag.TargetID;
+}
+
+<h2>AddSkillsPageView</h2>
+
+<h3>Add Skill Details for Registration ID @id</h3>
+
+<p>Use the Form Below: </p>
+
+<!--
+
+    The aim is to add a list of Skill Points in one submission, i.e.,
+    ADD A BATCH OF THE SAME ITEMS TO THE DATABASE VIA FORM SUBMISSION AND EF
+
+    Options:
+    1) Pre-configured list of items to add (e.g., 7 items per submission)
+    2) Dynamic add button, to add more Skill Points as needed (e.g., 1 item initially but add button available)
+
+
+
+
+    A list will be needed: IEnumerable<RésuméBuilder.Models.Skill> needs to be used?
+
+    Result:
+    - A form with a list of Skill Points, with the same Skill Category,
+    and with dynamic add button
+    - Submit will add all entries to the Skills Table
+
+
+    Controller Action will need to accept a batch of Skill Entries
+
+    public ActionResult AddSkillsFormAction(IEnumerable<Skills> skills)
+
+
+-->
+
+
+
+
+
+
+
+@using (Html.BeginForm("AddSkillsFormAction", "Skills", FormMethod.Post))
+{
+
+    <!-- APPLICANT ID: AUTOMATICALLY SET TO SPECIFIC VALUE -->
+    <!-- This input field will be passed with the rest of the form data
+         it ensures consistency of ApplicantID between Applicant and Personal.
+         Hidden in a <div> to prevent accidental changes or tampering
+    -->
+    <div hidden>
+        <input name="applicantID" type="number" value="@id" />
+    </div>
+
+
+    //MODEL BINDING COLLECTIONS OF COMPLEX DATATYPES:
+    //https://www.learnrazorpages.com/razor-pages/model-binding#binding-simple-collections
+    //http://haacked.com/archive/2008/10/23/model-binding-to-a-list.aspx/
+    //http://www.hanselman.com/blog/aspnet-wire-format-for-model-binding-to-arrays-lists-collections-dictionaries
+    //https://docs.microsoft.com/en-us/archive/msdn-magazine/2012/february/asp-net-mvc-the-features-and-foibles-of-asp-net-mvc-model-binding
+
+    //SKILL RECORD 1 TO BE ADDED IN BATCH
+    <div class="form-group">
+        @Html.LabelFor(s => s.SkillBatch[0].SkillCategory)
+        @Html.TextBoxFor(s => s.SkillBatch[0].SkillCategory, new { @class = "form-control" })
+
+        @Html.LabelFor(s => s.SkillBatch[0].SkillPoint)
+        @Html.TextBoxFor(s => s.SkillBatch[0].SkillPoint, new { @class = "form-control" })
+
+    </div>
+    <br />
+
+    //SKILL RECORD 2 TO BE ADDED IN BATCH
+    <div class="form-group">
+        @Html.LabelFor(s => s.SkillBatch[1].SkillCategory)
+        @Html.TextBoxFor(s => s.SkillBatch[1].SkillCategory, new { @class = "form-control" })
+
+        @Html.LabelFor(s => s.SkillBatch[1].SkillPoint)
+        @Html.TextBoxFor(s => s.SkillBatch[1].SkillPoint, new { @class = "form-control" })
+
+    </div>
+    <br />
+
+
+
+
+
+    <!-- FORM DATA SUBMISSION -->
+
+    <input type="submit" class="btn btn-primary" value="Add Batch of Skill Records">
+
+}
+
+<!--
+
+    https://docs.microsoft.com/en-us/aspnet/core/mvc/views/working-with-forms?view=aspnetcore-6.0
+
+
+
+
+
+
+
+-->

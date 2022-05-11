@@ -6,6 +6,8 @@ using System.Web;
 //Required for Data Annotations
 using System.ComponentModel.DataAnnotations;
 
+using RésuméBuilder.ViewModels;
+
 namespace RésuméBuilder.Models
 {
     public class Applicant

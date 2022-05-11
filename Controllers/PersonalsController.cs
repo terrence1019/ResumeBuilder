@@ -35,6 +35,8 @@ namespace RésuméBuilder.Controllers
         }
 
 
+
+        //The Page on which the Personals Form will be housed
         [Route("Personals/AddPersonalsPageView/{applicantID}")]
         public ActionResult AddPersonalsPageView(int applicantID)
         {  
@@ -101,6 +103,12 @@ namespace RésuméBuilder.Controllers
             return View();
         }
 
-        
+        public ActionResult PersonalError(int id)
+        {
+            ViewBag.ApplicantID = id;
+            return View();
+        }
+
+
     }
 }

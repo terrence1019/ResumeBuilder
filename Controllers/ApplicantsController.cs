@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-//Required to use Models
+//Required to use Models and ViewModels
 using RésuméBuilder.Models;
 using RésuméBuilder.ViewModels;
 
@@ -131,7 +131,7 @@ namespace RésuméBuilder.Controllers
 
             //Find the FK in the Personal Table matching required ApplicantID
             var personalRecord = dbContext.personalDB.SingleOrDefault(a => a.ApplicantID == applicantID);
-            if (personalRecord == null) return HttpNotFound();
+            if (personalRecord == null) return RedirectToAction("PersonalDetailsError","Personals");
 
 
             //Create ViewModel instance to store values from the DB Tables
