@@ -1,4 +1,5 @@
 ﻿
+
 @model RésuméBuilder.ViewModels.SkillsViewModel
 
 @{
@@ -6,7 +7,16 @@
 
     //This value correlates to the ApplicantID between the Applicant and Personal Models
     var id = ViewBag.TargetID;
+    var j = 1;
 }
+
+
+
+
+
+
+
+
 
 <h2>AddSkillsPageView</h2>
 
@@ -64,6 +74,7 @@
     //https://www.learnrazorpages.com/razor-pages/model-binding#binding-simple-collections
     //http://haacked.com/archive/2008/10/23/model-binding-to-a-list.aspx/
     //http://www.hanselman.com/blog/aspnet-wire-format-for-model-binding-to-arrays-lists-collections-dictionaries
+    //https://stackoverflow.com/questions/40681707/mvc-model-binding-with-dynamic-collection
     //https://docs.microsoft.com/en-us/archive/msdn-magazine/2012/february/asp-net-mvc-the-features-and-foibles-of-asp-net-mvc-model-binding
 
     //SKILL RECORD 1 TO BE ADDED IN BATCH
@@ -77,20 +88,49 @@
     </div>
     <br />
 
-    //SKILL RECORD 2 TO BE ADDED IN BATCH
-    <div class="form-group">
-        @Html.LabelFor(s => s.SkillBatch[1].SkillCategory)
-        @Html.TextBoxFor(s => s.SkillBatch[1].SkillCategory, new { @class = "form-control" })
+    //ADD MORE COLUMNS
+    
+    /*
 
-        @Html.LabelFor(s => s.SkillBatch[1].SkillPoint)
-        @Html.TextBoxFor(s => s.SkillBatch[1].SkillPoint, new { @class = "form-control" })
+        What I want is to be able to add more input fields dynamically, based on user needs.
+        When they Click the [ADD SKILL] button, a new field is generated with required input
+        I also need a counter to keep track of SkillBatch[i].
+        It needs to increment after each input field is dynamically added
 
-    </div>
+    */
+    
+
+    @Html.Partial("_AddSkillRow")
+
     <br />
 
 
+    <div>
+
+        <script>
+
+    var str1 =  '<div class="form-group">';
+    var str2 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillCategory)';
+    var str3 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillCategory, new { @class = "form-control" })';
+    var str4 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillPoint)';
+    var str5 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillPoint, new { @class = "form-control" })';
+    var str6 =  '</div>';
+    var str7 =  '<br />';
 
 
+    $(".appendbtn").click(function () {
+        $(".appendme").append(str1 + str2 + str3 + str4 + str5 + str6 + str7);
+        j++;
+    });
+
+        </script>
+
+
+        <div class="appendme"></div>
+
+    </div>
+
+    <br />
 
     <!-- FORM DATA SUBMISSION -->
 
