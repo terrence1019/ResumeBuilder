@@ -103,6 +103,9 @@ namespace RésuméBuilder.Controllers
             return View("SkillDetailsSuccess");
         }
 
+
+        //Add Functions to set SkillEntryID and ApplicantID
+
         public ActionResult SkillDetailsSuccess(int id)
         {
             ViewBag.ApplicantID = id;
