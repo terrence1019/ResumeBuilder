@@ -1,10 +1,14 @@
 ﻿<!-- This View uses the ViewModel-->
 
 @model RésuméBuilder.ViewModels.ResumeViewModel
-
+@using RésuméBuilder.Models
 
 @{
     ViewBag.Title = "Résumé";
+
+
+    
+
 }
 
 @Html.Partial("_ResumeStyle")
@@ -19,6 +23,7 @@
 </div>
 
 
+<!-- PERSONAL -->
 
 <div>
 
@@ -26,102 +31,193 @@
 
     <h1>@Model.PersonalRecordVM.FirstName @Model.PersonalRecordVM.MiddleName @Model.PersonalRecordVM.LastName</h1>
 
+
+
+
+    <div>
+
+        <table id="personal_table">
+            <tr>
+                <!-- HORIZONTAL ROW 1 -->
+                <th class="personal">
+                    <!-- CELL 1 OF ROW -->
+                    Address
+                </th>
+                <td>
+                    <!-- CELL 2 OF ROW -->
+                    @Model.PersonalRecordVM.StreetLocation,
+                </td>
+                <td>
+                </td>
+
+                <th class="personal">
+                    <!-- CELL 3 OF ROW -->
+                    Email (Work)
+                </th>
+                <td>
+                    <!-- CELL 4 OF ROW -->
+                    @Model.PersonalRecordVM.EmailWork
+                </td>
+
+                <th class="personal">
+                    Mobile
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.PhoneMobile
+                </td>
+
+
+            </tr>
+
+            <tr>
+                <!-- HORIZONTAL ROW 2 -->
+                <th>
+
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.AreaLocation,
+                </td>
+
+                <td>
+                </td>
+
+                <th class="personal">
+                    Email (Personal)
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.EmailHome
+                </td>
+
+                <th class="personal">
+                    Home
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.PhoneHome
+                </td>
+
+
+
+            </tr>
+
+            <tr>
+                <!-- HORIZONTAL ROW 3 -->
+                <th>
+
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.RegionLocation,
+                </td>
+
+                <td>
+                </td>
+
+
+            </tr>
+
+            <tr>
+                <!-- HORIZONTAL ROW 4 -->
+                <td>
+                </td>
+                <td>
+                    Trinidad & Tobago
+                </td>
+
+                <td>
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
 </div>
 
 
+
+<!-- SKILLS -->
+
 <div>
 
-    <table id="personal_table">
-        <tr>
-            <!-- HORIZONTAL ROW 1 -->
-            <th class="personal">
-                <!-- CELL 1 OF ROW -->
-                Address
-            </th>
-            <td>
-                <!-- CELL 2 OF ROW -->
-                @Model.PersonalRecordVM.StreetLocation,
-            </td>
-            <td>
-            </td>
+    <hr />
 
-            <th class="personal">
-                <!-- CELL 3 OF ROW -->
-                Email (Work)
-            </th>
-            <td>
-                <!-- CELL 4 OF ROW -->
-                @Model.PersonalRecordVM.EmailWork
-            </td>
-
-            <th class="personal">
-                Mobile
-            </th>
-            <td>
-                @Model.PersonalRecordVM.PhoneMobile
-            </td>
+    <h2>Skills</h2>
 
 
-        </tr>
+    <!-- PULLING RECORDS FROM DB -->
+    @{ 
 
-        <tr>
-            <!-- HORIZONTAL ROW 2 -->
-            <th>
+        //Target ApplicantID
+        int appid = Model.ApplicantRecordVM.ApplicantID;
 
-            </th>
-            <td>
-                @Model.PersonalRecordVM.AreaLocation,
-            </td>
 
-            <td>
-            </td>
+        //Set up instance of Database Context
+        MyDbContext dbContext = new MyDbContext();
 
-            <th class="personal">
-                Email (Personal)
-            </th>
-            <td>
-                @Model.PersonalRecordVM.EmailHome
-            </td>
-
-            <th class="personal">
-                Home
-            </th>
-            <td>
-                @Model.PersonalRecordVM.PhoneHome
-            </td>
+        //Pull up the Skill Table
+        var skillsTable = dbContext.skillDB;
 
 
 
-        </tr>
+        <table cellspacing="25">
 
-        <tr>
-            <!-- HORIZONTAL ROW 3 -->
-            <th>
+                <tbody>
 
-            </th>
-            <td>
-                @Model.PersonalRecordVM.RegionLocation,
-            </td>
+                    @foreach (var skill in skillsTable)
+                    {
+                        if (skill.ApplicantID == appid)
+                        {
 
-            <td>
-            </td>
+                            //There needs to be a way to do this:
+                            /*
+
+                             Group Skill Categories
+                            foreach Skill Category, print it and the associated skills
 
 
-        </tr>
 
-        <tr>
-            <!-- HORIZONTAL ROW 4 -->
-            <td>
-            </td>
-            <td>
-                Trinidad & Tobago
-            </td>
 
-            <td>
-            </td>
 
-        </tr>
 
-    </table>
+                                 */
+
+
+                            <tr><td><h3>@skill.SkillCategory</h3></td></tr>
+
+
+                            //<p>RECORD FOUND FOR Application ID @appid!</p>
+                            <tr>
+                                <td>
+                                    <ul class="skill">
+                                        <li>@skill.SkillPoint</li>
+                                    </ul>
+                                </td>
+                            </tr>
+
+
+                        }
+
+                    }
+
+                </tbody>
+
+        </table>
+
+
+    }
+
+
+<!--
+
+
+    
+
+
+    -->
+
+
+
+
+
 
 </div>
