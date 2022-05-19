@@ -109,24 +109,82 @@
 
         <script>
 
+            var rowNum = 2;
+            //Use this value and append a unique id to each row created
+
+
+            var rowID = ".appendme" + rowNum;
+
+
+            //Add row value to class name for div via String Interpolation
+            //var formRowOpen = '<div class="rowID">';
+            var formRowOpen = `<div class="${rowID}">`;
+            
+           
+            //var test = `<div class="${rowID}">`;
+
+            window.alert(formRowOpen);
+            
+
+
+            var divOpen = '<div class="removeme">';
+
     var str1 =  '<div class="form-group">';
     var str2 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillCategory)';
     var str3 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillCategory, new { @class = "form-control" })';
     var str4 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillPoint)';
     var str5 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillPoint, new { @class = "form-control" })';
     var str6 =  '</div>';
-    var str7 =  '<br />';
+            var str7 = '<br />';
+
+            var divClose = '</div>';
+
+            var formRowClose = '</div>';
 
 
-    $(".appendbtn").click(function () {
-        $(".appendme").append(str1 + str2 + str3 + str4 + str5 + str6 + str7);
-        j++;
+            //Concatenate strings into full HTML form
+            var skillRow = formRowOpen + divOpen + str1 + str2 + str3 + str4 +
+                str5 + str6 + str7 + divClose + formRowClose;
+
+
+    //ADD SKILL ROW
+            $(".appendbtn").click(function () {
+
+                var classID = ".appendme";
+                
+
+        $(classID).append(skillRow);
+                window.alert("Skill Row added. J is now at " + rowNum);
+                window.alert("Row ID: "+rowID);
+                j++;
+
+        //window.alert("Skill Row added. J is now at");
+
     });
+
+            //window.alert("Skill Row added. J is now at");
+
+
+    //REMOVE SKILL ROW
+            $(".removebtn").click(function () {
+
+                classID = ".removeme";
+
+                window.alert("Row ID to be removed: " + rowID);
+
+                $(rowID).remove();
+                rowNum--;
+                window.alert("Skill Row removed. J is now at " + rowNum);
+            });
+
+            
 
         </script>
 
 
+        <!-- THIS IS WHERE A NEWLY CREATED ROW WILL APPEAR-->
         <div class="appendme"></div>
+
 
     </div>
 

@@ -54,8 +54,10 @@ namespace RésuméBuilder.Controllers
 
         //This form adds a batch of Skill records to the Skill Table
         [HttpPost]
-        public ActionResult AddSkillsFormAction(SkillsViewModel SkillCollection)
+        public ActionResult AddSkillsFormAction(SkillsViewModel SkillCollection, int applicantID)
         {
+
+
 
             //Count the number of records in the Collection,
             //which is the batch of Skill records
@@ -82,25 +84,32 @@ namespace RésuméBuilder.Controllers
             //Traverse collection and add each Skill record to skillsTable
             for (int i = 0; i < limit; i++)
             {
-                var x = SkillCollection.SkillBatch[i].SkillCategory;
-                var y = SkillCollection.SkillBatch[i].SkillPoint;
+                //var x = SkillCollection.SkillBatch[i].SkillCategory;
+                //var y = SkillCollection.SkillBatch[i].SkillPoint;
 
-                Console.WriteLine($"{x} - {y}");
+                //Console.WriteLine($"{x} - {y}");
+
+
+                ////AUTO-MAP FROM SkillsViewModel [ViewModel] to Skill [Model]
+
+                //Add ApplicantID to each Skill record
+                SkillCollection.SkillBatch[i].ApplicantID = applicantID;
 
                 //Add each Skill Record to the Skill Table:
-                //skillsTable.Add(SkillCollection.SkillBatch[i]);
+                skillsTable.Add(SkillCollection.SkillBatch[i]);
 
                 //Save changes to Résumé Database:
-                //dbContext.SaveChanges();
+                dbContext.SaveChanges();
             }
 
-            //MAP FROM SkillsViewModel [ViewModel] to Skill [Model]
+            
 
 
 
             Console.WriteLine();
+                       
 
-            return View("SkillDetailsSuccess");
+            return RedirectToAction("SkillDetailsSuccess", new { id = applicantID });
         }
 
 
@@ -108,8 +117,10 @@ namespace RésuméBuilder.Controllers
 
         public ActionResult SkillDetailsSuccess(int id)
         {
+            
             ViewBag.ApplicantID = id;
             return View();
+
         }
 
 

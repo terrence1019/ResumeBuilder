@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 
 using RésuméBuilder.Models;
+using RésuméBuilder.ViewModels;
 
 namespace RésuméBuilder.ViewModels
 {
@@ -14,5 +15,10 @@ namespace RésuméBuilder.ViewModels
 
         //An instance of Personal Model, i.e., a Personal Record:
         public Personal PersonalRecordVM { get; set; }
+
+
+        //Used to pull data from Database using a Database Context instance:
+        public MyDbContext MyDbContext { get; set; }
+
     }
 }

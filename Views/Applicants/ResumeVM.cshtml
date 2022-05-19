@@ -1,10 +1,14 @@
 ﻿<!-- This View uses the ViewModel-->
 
 @model RésuméBuilder.ViewModels.ResumeViewModel
-
+@using RésuméBuilder.Models
 
 @{
     ViewBag.Title = "Résumé";
+
+
+    
+
 }
 
 @Html.Partial("_ResumeStyle")
@@ -19,6 +23,7 @@
 </div>
 
 
+<!-- PERSONAL -->
 
 <div>
 
@@ -26,102 +31,263 @@
 
     <h1>@Model.PersonalRecordVM.FirstName @Model.PersonalRecordVM.MiddleName @Model.PersonalRecordVM.LastName</h1>
 
+
+
+
+    <div>
+
+        <table id="personal_table">
+            <tr>
+                <!-- HORIZONTAL ROW 1 -->
+                <th class="personal">
+                    <!-- CELL 1 OF ROW -->
+                    Address
+                </th>
+                <td>
+                    <!-- CELL 2 OF ROW -->
+                    @Model.PersonalRecordVM.StreetLocation,
+                </td>
+                <td>
+                </td>
+
+                <th class="personal">
+                    <!-- CELL 3 OF ROW -->
+                    Email (Work)
+                </th>
+                <td>
+                    <!-- CELL 4 OF ROW -->
+                    @Model.PersonalRecordVM.EmailWork
+                </td>
+
+                <th class="personal">
+                    Mobile
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.PhoneMobile
+                </td>
+
+
+            </tr>
+
+            <tr>
+                <!-- HORIZONTAL ROW 2 -->
+                <th>
+
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.AreaLocation,
+                </td>
+
+                <td>
+                </td>
+
+                <th class="personal">
+                    Email (Personal)
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.EmailHome
+                </td>
+
+                <th class="personal">
+                    Home
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.PhoneHome
+                </td>
+
+
+
+            </tr>
+
+            <tr>
+                <!-- HORIZONTAL ROW 3 -->
+                <th>
+
+                </th>
+                <td>
+                    @Model.PersonalRecordVM.RegionLocation,
+                </td>
+
+                <td>
+                </td>
+
+
+            </tr>
+
+            <tr>
+                <!-- HORIZONTAL ROW 4 -->
+                <td>
+                </td>
+                <td>
+                    Trinidad & Tobago
+                </td>
+
+                <td>
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
 </div>
 
 
+
+<!-- SKILLS -->
+
 <div>
 
-    <table id="personal_table">
-        <tr>
-            <!-- HORIZONTAL ROW 1 -->
-            <th class="personal">
-                <!-- CELL 1 OF ROW -->
-                Address
-            </th>
-            <td>
-                <!-- CELL 2 OF ROW -->
-                @Model.PersonalRecordVM.StreetLocation,
-            </td>
-            <td>
-            </td>
+    <hr />
 
-            <th class="personal">
-                <!-- CELL 3 OF ROW -->
-                Email (Work)
-            </th>
-            <td>
-                <!-- CELL 4 OF ROW -->
-                @Model.PersonalRecordVM.EmailWork
-            </td>
-
-            <th class="personal">
-                Mobile
-            </th>
-            <td>
-                @Model.PersonalRecordVM.PhoneMobile
-            </td>
+    <h2>Skills</h2>
 
 
-        </tr>
+    <!-- PULLING RECORDS FROM DB -->
+    @{
 
-        <tr>
-            <!-- HORIZONTAL ROW 2 -->
-            <th>
+        //Target ApplicantID
+        int appid = Model.ApplicantRecordVM.ApplicantID;
 
-            </th>
-            <td>
-                @Model.PersonalRecordVM.AreaLocation,
-            </td>
 
-            <td>
-            </td>
+        //Set up instance of Database Context
+        MyDbContext dbContext = new MyDbContext();
 
-            <th class="personal">
-                Email (Personal)
-            </th>
-            <td>
-                @Model.PersonalRecordVM.EmailHome
-            </td>
+        //Pull up the Skill Table
+        var skillsTable = dbContext.skillDB;
 
-            <th class="personal">
-                Home
-            </th>
-            <td>
-                @Model.PersonalRecordVM.PhoneHome
-            </td>
+
+        //Dictionary for storing SkillCategory - SkillPoint matches
+        IDictionary<string, string> CategoryToPoint = new Dictionary<string, string>();
 
 
 
-        </tr>
 
-        <tr>
-            <!-- HORIZONTAL ROW 3 -->
-            <th>
-
-            </th>
-            <td>
-                @Model.PersonalRecordVM.RegionLocation,
-            </td>
-
-            <td>
-            </td>
+        //https://stackoverflow.com/questions/47752/remove-duplicates-from-a-listt-in-c-sharp
+        //Create a list of Categories to store the Skill Categories an Applicant used
+        List<string> SkillCategoryListWithDuplicates = new List<string>();
 
 
-        </tr>
+        //Stores a list of the Applicant Skills
+        List<Skill> ApplicantSkills = new List<Skill>();
 
-        <tr>
-            <!-- HORIZONTAL ROW 4 -->
-            <td>
-            </td>
-            <td>
-                Trinidad & Tobago
-            </td>
 
-            <td>
-            </td>
 
-        </tr>
 
-    </table>
+
+        foreach (var skill in skillsTable)
+        {
+            if (skill.ApplicantID == appid)
+            {
+
+                //There needs to be a way to do this:
+                /*
+
+                1) Store the Skill Categories --> Using List
+                2) Group Skill Categories --> Using List
+                3) For each Skill Category, print as Header and the associated skills
+
+
+                For each Skill Category stored in the array, if skill.SkillCategory == skillGroup
+
+
+
+                //<p>RECORD FOUND FOR Application ID @appid!</p>
+                <tr>
+                    <td>
+                        <ul class="skill">
+                            <li>@skill.SkillPoint</li>
+                        </ul>
+                    </td>
+                </tr>
+                */
+
+
+                //Store Skill Categories in a list
+                SkillCategoryListWithDuplicates.Add(skill.SkillCategory);
+
+                //Store Applicant's Skills in a list
+                ApplicantSkills.Add(skill);
+
+            }
+
+
+        }//foreach (var skill in skillsTable)
+
+
+
+        //Traversal of Skill Database complete.
+        //We have the different Skill Categories used by Applicant that will be used as Headers.
+        //Remove duplicate Categories
+        //Create a list of Categories with NO DUPLICATES
+        List<string> SkillCategoryList = SkillCategoryListWithDuplicates.Distinct().ToList();
+
+
+
+
+        
+                    
+                        foreach (var category in SkillCategoryList)
+                        {
+                            <h3>@category</h3>
+
+
+                            <table>
+
+
+                                @foreach (var skill in ApplicantSkills)
+                                {
+                                if (skill.SkillCategory == category)
+                                {
+                                <tr><td>
+                                        <ul class="skill">
+                                            <li>@skill.SkillPoint</li>
+                                        </ul>
+                                    </td></tr>}
+                                }
+
+
+                            </table>
+
+
+                        }
+                    
+
+
+        //ORIGINAL APPROACH
+        /*
+        foreach (var category in SkillCategoryList)
+        {
+            //<p>@category</p>
+
+            <h4>@category</h4>
+
+            foreach (var skill in skillsTable)
+            {
+
+                if (skill.ApplicantID == appid)
+                {
+                    if (skill.SkillCategory == category)
+                    {
+                        <p>@skill.SkillPoint</p>
+                    }
+                }
+
+            }
+
+        }//foreach (var category in SkillCategoryList)
+
+        */
+
+
+
+
+
+    }
+
+
+
+
 
 </div>
