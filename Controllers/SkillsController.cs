@@ -54,15 +54,15 @@ namespace RésuméBuilder.Controllers
 
         //This form adds a batch of Skill records to the Skill Table
         [HttpPost]
-        public ActionResult AddSkillsFormAction(SkillsViewModel SkillCollection, int applicantID)
+        public ActionResult AddSkillsFormAction(SkillsViewModel SkillCollection, int applicantID, int counter)
         {
 
 
 
             //Count the number of records in the Collection,
             //which is the batch of Skill records
-            var limit = SkillCollection.SkillBatch.Count;
-
+            //var limit = SkillCollection.SkillBatch.Count;
+            var limit = counter;
             
             //Test entries, Sample 1:
             //var a = SkillCollection.SkillBatch[0].SkillCategory;
@@ -70,8 +70,8 @@ namespace RésuméBuilder.Controllers
             //Console.WriteLine($"{a} - {b}");
 
             //Test entries, Sample 2:
-            //var c = SkillCollection.SkillBatch[1].SkillCategory;
-            //var d = SkillCollection.SkillBatch[1].SkillPoint;
+            var c = SkillCollection.SkillBatch[1].SkillCategory;
+            var d = SkillCollection.SkillBatch[1].SkillPoint;
             //Console.WriteLine($"{c} - {d}");
 
 
@@ -95,11 +95,13 @@ namespace RésuméBuilder.Controllers
                 //Add ApplicantID to each Skill record
                 SkillCollection.SkillBatch[i].ApplicantID = applicantID;
 
+                Console.WriteLine();
+
                 //Add each Skill Record to the Skill Table:
-                skillsTable.Add(SkillCollection.SkillBatch[i]);
+                //skillsTable.Add(SkillCollection.SkillBatch[i]);
 
                 //Save changes to Résumé Database:
-                dbContext.SaveChanges();
+                //dbContext.SaveChanges();
             }
 
             

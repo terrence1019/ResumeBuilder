@@ -7,7 +7,13 @@
 
     //This value correlates to the ApplicantID between the Applicant and Personal Models
     var id = ViewBag.TargetID;
+
+    //Global counter for all rows. [0] Already occupied, so dynamic rows start at [1]
     var j = 1;
+
+    //Target counter for extra rows (dynamic rows)
+    var xtra = 0;
+
 }
 
 
@@ -70,6 +76,7 @@
     </div>
 
 
+
     //MODEL BINDING COLLECTIONS OF COMPLEX DATATYPES:
     //https://www.learnrazorpages.com/razor-pages/model-binding#binding-simple-collections
     //http://haacked.com/archive/2008/10/23/model-binding-to-a-list.aspx/
@@ -77,7 +84,7 @@
     //https://stackoverflow.com/questions/40681707/mvc-model-binding-with-dynamic-collection
     //https://docs.microsoft.com/en-us/archive/msdn-magazine/2012/february/asp-net-mvc-the-features-and-foibles-of-asp-net-mvc-model-binding
 
-    //SKILL RECORD 1 TO BE ADDED IN BATCH
+    //SKILL RECORD 1 TO BE ADDED IN BATCH, STARTS AT INDEX 0: [0]
     <div class="form-group">
         @Html.LabelFor(s => s.SkillBatch[0].SkillCategory)
         @Html.TextBoxFor(s => s.SkillBatch[0].SkillCategory, new { @class = "form-control" })
@@ -89,7 +96,7 @@
     <br />
 
     //ADD MORE COLUMNS
-    
+
     /*
 
         What I want is to be able to add more input fields dynamically, based on user needs.
@@ -98,104 +105,189 @@
         It needs to increment after each input field is dynamically added
 
     */
-    
+
 
     @Html.Partial("_AddSkillRow")
+
+
 
     <br />
 
 
     <div>
 
+
+        <!-- ADD DYNAMIC ROWS VIA THE SCRIPT BELOW: -->
+
+
+
         <script>
 
-            var rowNum = 2;
-            //Use this value and append a unique id to each row created
 
+            //Use this value and append a unique id to each row created
+            var rowNum = @xtra;
+            //window.alert(`j is now at: ${rowNum}`);
 
             var rowID = ".appendme" + rowNum;
+            //Show row value to class name for div via String Interpolation
+            //window.alert(`Row ID = ${rowID}`);
 
 
-            //Add row value to class name for div via String Interpolation
-            //var formRowOpen = '<div class="rowID">';
-            var formRowOpen = `<div class="${rowID}">`;
-            
-           
-            //var test = `<div class="${rowID}">`;
-
-            window.alert(formRowOpen);
-            
 
 
-            var divOpen = '<div class="removeme">';
 
-    var str1 =  '<div class="form-group">';
-    var str2 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillCategory)';
-    var str3 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillCategory, new { @class = "form-control" })';
-    var str4 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillPoint)';
-    var str5 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillPoint, new { @class = "form-control" })';
-    var str6 =  '</div>';
-            var str7 = '<br />';
+            //FORM DATA FOR EACH ROW STARTS HERE ==
 
-            var divClose = '</div>';
+            var str1 =  '<div class="form-group">';
+            var str2 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillCategory)';
+            var str3 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillCategory, new { @class = "form-control" })';
+            var str4 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillPoint)';
+            var str5 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillPoint, new { @class = "form-control" })';
+            var str6 =  '</div>';
 
-            var formRowClose = '</div>';
+
+
+
+            //FORM DATA FOR EACH ROW ENDS HERE ===
+
+
+
+
+
+
+
+
+
+            //var strTestOpen = `<button class="removeme" id="${rowID}" type="button" onclick="RemoveRow(this)">
+                //REMOVE SKILL!</button>`;
+
+
+
+
+            var strFormOpen =
+                `<div class="removeme" id="${rowID}">
+                <button type="button"  onclick="RemoveRow(this)" >REMOVE SKILL BELOW:</button>`;
+
+            var strTestParagraph = `<p>TEST</p>`;
+
+            var strFormClose = '<br /></div>';
 
 
             //Concatenate strings into full HTML form
-            var skillRow = formRowOpen + divOpen + str1 + str2 + str3 + str4 +
-                str5 + str6 + str7 + divClose + formRowClose;
+            //var strCompilation = strFormOpen + strTestParagraph + strFormClose;
+            var skillRow =
+                strFormOpen +
+                str1 + str2 + str3 + str4 +
+                str5 + str6
+                + strFormClose;
 
+            </script>
 
-    //ADD SKILL ROW
+        <script>
+            //ADD A SINGLE SKILL ROW
             $(".appendbtn").click(function () {
 
                 var classID = ".appendme";
-                
-
-        $(classID).append(skillRow);
-                window.alert("Skill Row added. J is now at " + rowNum);
-                window.alert("Row ID: "+rowID);
-                j++;
-
-        //window.alert("Skill Row added. J is now at");
-
-    });
-
-            //window.alert("Skill Row added. J is now at");
+                $(classID).append(skillRow);
 
 
-    //REMOVE SKILL ROW
+                rowNum++;
+                window.alert(rowNum);
+
+                rowID = ".appendme" + rowNum;
+                window.alert(rowID);
+
+
+
+
+                //window.alert("Skill Row added. J is now at");
+
+            });
+
+        </script>
+
+        @j = @j + 1;
+
+        <script>
+
+            //REMOVE A SINGLE SKILL ROW
+            function RemoveRow(elem) {
+
+
+                elem.parentElement.remove();
+                window.alert("Row ID to be deleted: " + rowID);
+
+
+                //DECREMENT ROW
+                rowNum--;
+                rowID = ".appendme" + rowNum;
+
+
+
+            }
+
+        </script>
+
+
+        <script>
+
+            //REMOVE ALL EXTRA SKILL ROWS ADDED
             $(".removebtn").click(function () {
 
                 classID = ".removeme";
 
-                window.alert("Row ID to be removed: " + rowID);
+                window.alert("Final Row ID to be removed: " + rowID);
 
-                $(rowID).remove();
-                rowNum--;
-                window.alert("Skill Row removed. J is now at " + rowNum);
+                $(classID).remove();
+
+                //Reset counter for extra rows to zero,
+                //So when adding new rows, it will increment to 1 -> [1]
+                rowNum = 0;
+                window.alert("ALL Skill Rows removed. Row No. counter is now at " + rowNum);
+
+
+
+
             });
 
-            
+
 
         </script>
+
+
+
+
+
+
+
 
 
         <!-- THIS IS WHERE A NEWLY CREATED ROW WILL APPEAR-->
         <div class="appendme"></div>
 
 
+        <p></p>
+
+
     </div>
 
+
+    
+
     <br />
+
+
+    <div hidden>
+        <input name="counter" type="number" value="@j" />
+    </div>
+
+
 
     <!-- FORM DATA SUBMISSION -->
 
     <input type="submit" class="btn btn-primary" value="Add Batch of Skill Records">
 
-}
-
+}<!-- End of Code Block-->
 <!--
 
     https://docs.microsoft.com/en-us/aspnet/core/mvc/views/working-with-forms?view=aspnetcore-6.0

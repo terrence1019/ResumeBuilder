@@ -6,13 +6,16 @@
         crossorigin="anonymous">
 
 
-     
+
 </script>
 
 <script>
 
-    
-    
+    function RemoveThisX(rowID) {
+        //rowID.parentNode.removeChild(rowID);
+        window.alert("Row ID to Delete: " + rowID);
+    }
+
 </script>
 
 
@@ -21,8 +24,8 @@
     <tbody>
 
         <tr>
-            <td><button class="appendbtn" type="button">Click to add Skill</button></td>
-            <td><button class="removebtn" type="button">Click to remove Skill</button></td>
+            <td><button class="appendbtn" type="button">Click to Add a Single Skill Point</button></td>
+            <td><button class="removebtn" type="button">Click to Clear all Extra Rows added</button></td>
         </tr>
 
     </tbody>
