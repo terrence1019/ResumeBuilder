@@ -1,6 +1,36 @@
-﻿
+﻿<!--
+
+
+  Understanding State and Statelessness:
+  https://www.c-sharpcorner.com/UploadFile/de41d6/view-state-vs-session-state-vs-application-state/
+
+  In order to use State Preservation, Blazor can be used
+  https://docs.microsoft.com/en-us/aspnet/core/blazor/components/prerendering-and-integration?view=aspnetcore-3.1&pivots=server
+
+
+
+
+
+
+
+
+-->
+<!-- JQUERY SCRIPT -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="/scripts/jquery-3.1.1.min.js"></script>
+
+
+
+
+
+
 
 @model RésuméBuilder.ViewModels.SkillsViewModel
+
+
+@using System.Web.UI
+
+
 
 @{
     ViewBag.Title = "AddSkillsPageView";
@@ -8,15 +38,16 @@
     //This value correlates to the ApplicantID between the Applicant and Personal Models
     var id = ViewBag.TargetID;
 
-    //Global counter for all rows. [0] Already occupied, so dynamic rows start at [1]
-    var j = 1;
 
     //Target counter for extra rows (dynamic rows)
     var xtra = 0;
 
+
+    int k = 3;
+
+
+
 }
-
-
 
 
 
@@ -59,10 +90,6 @@
 
 
 
-
-
-
-
 @using (Html.BeginForm("AddSkillsFormAction", "Skills", FormMethod.Post))
 {
 
@@ -74,6 +101,10 @@
     <div hidden>
         <input name="applicantID" type="number" value="@id" />
     </div>
+
+
+
+
 
 
 
@@ -111,17 +142,70 @@
 
 
 
+
+    <br />
+    <br />
     <br />
 
 
-    <div>
 
 
-        <!-- ADD DYNAMIC ROWS VIA THE SCRIPT BELOW: -->
+    //SOLUTION: Razor Syntax to call function once event triggered (onclick)
+    //razor syntax call function onclick
+    //session variables
+    //increment session variable
+    //https://stackoverflow.com/questions/61846815/how-to-add-a-event-to-a-button-using-razor
+    //https://www.c-sharpcorner.com/article/event-handling-in-blazor/
+    //GOOD:
+    //https://stackoverflow.com/questions/61846815/how-to-add-a-event-to-a-button-using-razor
+
+
+    <br />
+
+    //I need an MVC Razor Session Variable that increments onclick and preserves state:
+    //https://stackoverflow.com/questions/14138872/how-to-use-sessions-in-an-asp-net-mvc-4-application
 
 
 
-        <script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ADD DYNAMIC ROWS VIA THE SCRIPT BELOW: -->
+
+
+
+    <script type="text/javascript">
 
 
             //Use this value and append a unique id to each row created
@@ -132,18 +216,11 @@
             //Show row value to class name for div via String Interpolation
             //window.alert(`Row ID = ${rowID}`);
 
-
-
-
-
             //FORM DATA FOR EACH ROW STARTS HERE ==
 
-            var str1 =  '<div class="form-group">';
-            var str2 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillCategory)';
-            var str3 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillCategory, new { @class = "form-control" })';
-            var str4 =  '@Html.LabelFor(s => s.SkillBatch[j].SkillPoint)';
-            var str5 =  '@Html.TextBoxFor(s => s.SkillBatch[j].SkillPoint, new { @class = "form-control" })';
-            var str6 =  '</div>';
+
+
+
 
 
 
@@ -164,128 +241,366 @@
 
 
 
+
+
+    </script>
+
+
+
+    //HIDDEN INPUT FIELD USED TO SET SESSION COUNTER
+
+    <div>
+        <input id="SessionCounter" type="number" runat="server" />
+    </div>
+
+
+
+
+
+
+    <button class="appendbtn" type="button">[ROW+]</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript">
+            //ADD A SINGLE SKILL ROW
+        $(".appendbtn").click(function () {
+
+
+            //How can we assign server-side C# razor variable with a client-side JS value?
+            //https://stackoverflow.com/questions/22495205/access-javascript-variable-inside-razor
+
+
+
+
+            //MAINTAINING A GLOBAL COUNTER & SESSION STATE
+            //https://imar.spaanjaars.com/227/howto-create-a-hit-counter-using-a-text-file-in-aspnet-1x
+            //https://stackoverflow.com/questions/59126869/can-the-state-of-the-counter-in-the-example-blazor-project-be-preserved-between
+            //https://social.msdn.microsoft.com/Forums/en-US/4a7f1180-4e31-4023-b073-8b777d48f764/global-variable-counter?forum=aspstatemanagement
+            //https://www.dotnetperls.com/static
+            //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0//
+            //https://hoven.in/aspnet-core/using-session.html
+            //https://www.c-sharpcorner.com/UploadFile/225740/what-is-view-state-and-how-it-works-in-Asp-Net53/
+
+
+
+
+            //http://www.dotnetodyssey.com/2015/01/05/getset-value-session-variable-using-javascriptjquery/
+
+
+
+            //Operations to perform when skillRow is appended
+            var str1 = '<div class="form-group">';
+            var str2 = '@Html.LabelFor(s => s.SkillBatch[Convert.ToInt32(Session["counter"])].SkillCategory)';
+            var str3 = '@Html.TextBoxFor(s => s.SkillBatch[Convert.ToInt32(Session["counter"])].SkillCategory, new { @class = "form-control" })';
+            var str4 = '@Html.LabelFor(s => s.SkillBatch[Convert.ToInt32(Session["counter"])].SkillPoint)';
+            var str5 = '@Html.TextBoxFor(s => s.SkillBatch[Convert.ToInt32(Session["counter"])].SkillPoint, new { @class = "form-control" })';
+            var str6 = '</div>';
+
+
+
+
+
             var strFormOpen =
                 `<div class="removeme" id="${rowID}">
                 <button type="button"  onclick="RemoveRow(this)" >REMOVE SKILL BELOW:</button>`;
 
-            var strTestParagraph = `<p>TEST</p>`;
-
             var strFormClose = '<br /></div>';
+
+
+
+
+
+            //https://stackoverflow.com/questions/41564413/string-interpolation-for-dynamic-html-attributes
+            //var a = rowNum;
+            //var b = "form-control";
+            //var strX2 = "@@Html.TextBoxFor(s => s.SkillBatch" + rowNum + ".SkillPoint, new { @@class = "+b+" })";
+
+
+
+
+            //https://gomakethings.com/converting-a-string-into-markup-with-vanilla-js/
+            //var parser = new DOMParser();
+            //var strX3 = ;
+            //var skillRowZ = parser.parseFromString(strX2, 'text/html');
+
+
+
 
 
             //Concatenate strings into full HTML form
             //var strCompilation = strFormOpen + strTestParagraph + strFormClose;
             var skillRow =
                 strFormOpen +
-                str1 + str2 + str3 + str4 +
-                str5 + str6
+                str1 + str2 + str3 + str4 + str5 + str6
                 + strFormClose;
 
-            </script>
-
-        <script>
-            //ADD A SINGLE SKILL ROW
-            $(".appendbtn").click(function () {
-
-                var classID = ".appendme";
-                $(classID).append(skillRow);
-
-
-                rowNum++;
-                window.alert(rowNum);
-
-                rowID = ".appendme" + rowNum;
-                window.alert(rowID);
-
-
-
-
-                //window.alert("Skill Row added. J is now at");
-
-            });
-
-        </script>
-
-        
-
-        <script>
-
-            //REMOVE A SINGLE SKILL ROW
-            function RemoveRow(elem) {
-
-
-                elem.parentElement.remove();
-                window.alert("Row ID to be deleted: " + rowID);
-
-
-                //DECREMENT ROW
-                rowNum--;
-                rowID = ".appendme" + rowNum;
-
-
-
-            }
-
-        </script>
-
-
-        <script>
-
-            //REMOVE ALL EXTRA SKILL ROWS ADDED
-            $(".removebtn").click(function () {
-
-                classID = ".removeme";
-
-                window.alert("Final Row ID to be removed: " + rowID);
-
-                $(classID).remove();
-
-                //Reset counter for extra rows to zero,
-                //So when adding new rows, it will increment to 1 -> [1]
-                rowNum = 0;
-                window.alert("ALL Skill Rows removed. Row No. counter is now at " + rowNum);
-
-
-
-
-            });
-
-
-
-        </script>
 
 
 
 
 
 
+            var classID = ".appendme";
+            $(classID).append(skillRow);
+
+
+            rowNum++;
+            //window.alert(rowNum);
+
+            rowID = ".appendme" + rowNum;
+                //window.alert(rowID);
 
 
 
-        <!-- THIS IS WHERE A NEWLY CREATED ROW WILL APPEAR-->
-        <div class="appendme"></div>
 
 
-        <p></p>
+                //BOTH APPROACHES DO THE SAME THING:
+                //SET THE FIELD VALUE BASED ON A JS VALUE
+                $("#SessionCounter").val(rowNum);
+                //document.getElementById("SessionCounter").value = rowNum;
 
+
+
+
+                //https://www.c-sharpcorner.com/UploadFile/0c1bb2/inserting-data-using-ajax/
+                //https://docs.microsoft.com/en-us/answers/questions/701086/ajax-post-request-with-razor-pages-and-full-calend.html
+                //https://www.c-sharpcorner.com/article/how-to-post-data-in-asp-net-core-using-ajax/
+            //https://www.compilemode.com/2021/04/post-data-to-controller-using-jquery-ajax-in-asp-net-mvc.html
+
+
+                //var sendValue = $("#SessionCounter").val();
+                //var sendValue = { 'SessionCounter': $("#SessionCounter").val() };
+                //var sendValue = { SessionCounter: parseInt( $("#SessionCounter").val() ) };
+
+            /*
+            $.ajax({
+                type: "POST",
+                url: "/SkillsController/SetSessionCounter",
+                data: sendValue
+
+            });*/
+
+
+
+
+                }); //end function()
+
+    </script>
+
+
+
+    //HIDDEN FIELD, BUTTON, AND SCRIPT TO TEST AJAX TO CONTROLLER
+
+    <input name="SessionCounter" id="SessionCounterTest" type="number" runat="server" value=@k />
+
+
+    //HELPERS:
+    //http://www.codedigest.com/posts/35/adding-javascript-in-aspnet-mvc-views
+    //https://www.youtube.com/watch?v=7ai2-TMQRek&t=306s&ab_channel=WebGentle
+    //https://www.c-sharpcorner.com/article/asp-net-mvc-how-to-use-ajax-with-parameters/
+    //https://stackoverflow.com/questions/48688756/ajax-post-int-to-mvc
+
+    <button type="button" id="btnAlert">[SEND MY COUNTER!]</button>
+
+    <script type="text/javascript">
+
+        //FUNCTION 1: Activity Trigger on Button Click using jQuery
+        $("#btnAlert").click(
+
+
+            function BtnClick() {
+
+            window.alert("TEST BtnClick()");
+
+                var count = $("#SessionCounterTest").val();
+
+                //Convert to Integer:
+                var countInt = parseInt(count);
+
+                //Object will be:
+                var obj = { SessionCounter : countInt };
+
+            TestMsg(countInt);
+            SendCounter();
+
+            }//BtnClick()
+
+
+        );//JQuery Event: Click Button with specified ID
+
+        function TestMsg(countInt) {
+
+            window.alert("Test for BtnClick() using TestMsg() " + countInt);
+
+        }//TestMsg()
+
+        function SendCounter(){
+
+
+            var count = $("#SessionCounterTest").val();
+
+            //Convert to Integer:
+            var countInt = parseInt(count);
+
+
+
+            window.alert("Sending Counter to Controller: ");
+
+
+
+
+            //AJAX START
+            $.ajax({
+
+                type: 'POST',
+                url: '@Url.Action("GetCounterValue")',
+                data: { SessionCounter : countInt },
+
+
+                success: function Success() {
+                    window.alert("Data successfully sent to Controller!");
+                },
+
+                error: function ErrorAlert() {
+                    window.alert("ERROR");
+                }
+
+
+            })//end ajax
+
+
+
+
+            //AJAX STOP
+
+
+        }//SendCounter()
+
+
+        //GetCounter
+        //https://stackoverflow.com/questions/24851926/refresh-session-variable-after-a-update-in-mvc4
+        //https://stackoverflow.com/questions/59932436/how-can-i-update-session-values-without-refreshing-my-page-in-asp-net-mvc
+
+
+    </script>
+
+
+    <div>
+                
+        <h3>SESSION</h3>
+        <h4>@Session["counter"]</h4>
+        <h4>@Globals.j</h4>
+        <br />
 
     </div>
 
 
-    
+
+
+
+
+
+
+
+    <script type="text/javascript">
+
+        //REMOVE A SINGLE SKILL ROW
+        function RemoveRow(elem) {
+
+
+            elem.parentElement.remove();
+            window.alert("Row ID to be deleted: " + rowID);
+
+
+            //DECREMENT ROW
+            rowNum--;
+            rowID = ".appendme" + rowNum;
+
+
+
+        }
+
+    </script>
+
+
+    <script type="text/javascript">
+
+        //REMOVE ALL EXTRA SKILL ROWS ADDED
+        $(".removebtn").click(function () {
+
+            classID = ".removeme";
+
+            window.alert("Final Row ID to be removed: " + rowID);
+
+            $(classID).remove();
+
+            //Reset counter for extra rows to zero,
+            //So when adding new rows, it will increment to 1 -> [1]
+            rowNum = 0;
+            window.alert("ALL Skill Rows removed. Row No. counter is now at " + rowNum);
+
+
+
+
+        });
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+    <!-- THIS IS WHERE A NEWLY CREATED ROW WILL APPEAR-->
+    <div class="appendme"></div>
+
+
+
+
+    <p></p>
+
+
+
+
+
+
 
     <br />
 
 
+
+
+
     <div hidden>
-        <input name="counter" type="number" value="@j" />
+        <input name="counter" type="number" value="@Globals.j" />
     </div>
+
 
 
 
     <!-- FORM DATA SUBMISSION -->
 
     <input type="submit" class="btn btn-primary" value="Add Batch of Skill Records">
+
+
+
 
 }<!-- End of Code Block-->
 <!--
