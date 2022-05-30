@@ -8,9 +8,11 @@ namespace RésuméBuilder
 {
     public class Globals : HttpApplication
     {
-        public static int j;
+        public static int j = 0;
 
-        
+        public static int i;
+
+        public int k;
 
     }
 

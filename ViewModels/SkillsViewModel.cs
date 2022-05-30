@@ -19,6 +19,7 @@ namespace RésuméBuilder.ViewModels
         //Multiple Skill records (batch row entries)
         public List<Skill> SkillBatch { get; set; }
 
+        public int SkillBatchCounter = 0;
 
     }
 }

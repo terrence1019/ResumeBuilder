@@ -1,0 +1,86 @@
+﻿
+
+
+@{
+
+
+    @Globals.j;
+
+    int count = 0;
+
+    int n = Convert.ToInt32(Session["counter"]);
+
+    count = n;
+
+}
+
+
+
+<h1>COUNTER FOR SKILL ROWS [PARTIAL VIEW]</h1>
+<p>Globals.j = @Globals.j</p>
+<p>Globals.i = @Globals.i</p>
+<p>TempData["counter"] = @TempData["counter"]</p>
+<p>Session["counter"] = @Session["counter"]</p>
+<p>ViewBag.Counter = @ViewBag.Counter</p>
+<p>ViewBag.CurrentCounter = @ViewBag.CurrentCount</p>
+<p>ViewData["count"] = @ViewData["count"]</p>
+
+<script type="text/javascript">
+
+    var counter = @Session["counter"];
+
+    var currentCount = ViewBag.CurrentCount;
+
+
+
+    //window.alert("Counter is currently at: " + counter);
+
+</script>
+
+
+
+
+
+
+
+
+
+<!--
+
+
+    PASSING DATA TO PARTIAL VIEW
+    https://www.codeproject.com/Tips/898017/Different-Ways-to-Pass-Data-to-Partial-View
+
+
+    PASSING DATA BETWEEN PARTIAL VIEWS
+    https://stackoverflow.com/questions/23089352/sharing-data-between-different-partial-views-on-same-index-in-asp-net-with-razor
+    https://stackoverflow.com/questions/6549541/how-to-pass-parameters-to-a-partial-view-in-asp-net-mvc
+    https://syntaxfix.com/question/11377/how-can-i-pass-parameters-to-a-partial-view-in-mvc-4
+
+-->
+<!--
+
+    SENDING DATA FROM PARTIAL VIEW
+    https://stackoverflow.com/questions/20119452/asp-mvc-get-data-from-partial-view-on-create
+
+
+
+
+
+
+    STRATEGY:
+    Move Add/Delete Buttons to _SkillRowCounter PartialView (?)
+
+    Have Controller methods and jQuery/Ajax functions to pass data between PartialView and View
+
+-->
+
+
+
+
+
+<!--
+
+
+
+-->

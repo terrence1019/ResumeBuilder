@@ -43,34 +43,44 @@ namespace RésuméBuilder.Controllers
         [Route("Skills/AddSkillsPageView/{applicantID}")]
         public ActionResult AddSkillsPageView(int applicantID)
         {
-
-            //Session["counter"] = 0;
-            //Session["counter"] = GetCounterValue(val);
-            Session["counter"] = Globals.j;
-
+                        
             //This allows us to pass the same value of the ApplicantID
             //from the Applicant Model in the ApplicantDetailsPage [View A]
             //to the Personal Model in AddPersonalsPageView [View B]
             ViewBag.TargetID = applicantID;
-            ViewBag.Counter = val;
+
+            Session["id"] = applicantID;
+                    
+
+            
 
             return View();
+
         }
+
+
+
 
 
         int val { set; get; }
 
+        Globals currentCount = new Globals();
+        
+
+
+
+
+
         //This form adds a batch of Skill records to the Skill Table
         [HttpPost]
-        public ActionResult AddSkillsFormAction(SkillsViewModel SkillCollection, int applicantID, int counter)
+        public ActionResult AddSkillsFormAction(SkillsViewModel SkillCollection, int applicantID)
         {
 
             
 
             //Count the number of records in the Collection,
             //which is the batch of Skill records
-            //var limit = SkillCollection.SkillBatch.Count;
-            var limit = counter;
+            var limit = SkillCollection.SkillBatch.Count;
             
             //Test entries, Sample 1:
             //var a = SkillCollection.SkillBatch[0].SkillCategory;
@@ -100,6 +110,7 @@ namespace RésuméBuilder.Controllers
 
                 ////AUTO-MAP FROM SkillsViewModel [ViewModel] to Skill [Model]
 
+                //Add Functions to set SkillEntryID and ApplicantID:
                 //Add ApplicantID to each Skill record
                 SkillCollection.SkillBatch[i].ApplicantID = applicantID;
 
@@ -112,18 +123,22 @@ namespace RésuméBuilder.Controllers
                 //dbContext.SaveChanges();
             }
 
-            
 
+            //return RedirectToAction("AddSkillsPageView", new { id = applicantID });
+            return RedirectToAction("SkillAddedSuccessfully");
 
-
-            Console.WriteLine();
-                       
-
-            return RedirectToAction("SkillDetailsSuccess", new { id = applicantID });
         }
 
 
-        //Add Functions to set SkillEntryID and ApplicantID
+        public ActionResult SkillAddedSuccessfully()
+        {
+
+            ViewBag.ApplicantID = Session["id"];
+            return View();
+
+        }
+
+
 
         public ActionResult SkillDetailsSuccess(int id)
         {
@@ -133,18 +148,34 @@ namespace RésuméBuilder.Controllers
 
         }
 
-
-        [HttpPost]
-        public ActionResult GetCounterValue(int SessionCounter)
+        public PartialViewResult SkillRowCreate()
         {
-            val = SessionCounter;
-            Globals.j = SessionCounter;
-            Session["counter"] = SessionCounter;
+            
+            return PartialView("_SkillRowCreate");
 
-            return View(val);
         }
 
-        
+
+        public PartialViewResult SkillRowCreator()
+        {
+
+            return PartialView("_SkillRowCreator");
+
+        }
+
+
+
+        [HttpPost]
+        public ActionResult CollectSkills (IEnumerable<SkillsViewModel> skillbatch, int applicantID)
+        {
+
+            Console.WriteLine();
+
+            return RedirectToAction("SkillDetailsSuccess", new { id = applicantID });
+
+        }
+
+
 
     }
 }

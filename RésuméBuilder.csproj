@@ -220,6 +220,13 @@
     <Content Include="Views\Personals\PersonalDetailsError.cshtml" />
     <Content Include="Views\Shared\_AddSkillRow.cshtml" />
     <Content Include="Views\Skills\SkillDetailsSuccess.cshtml" />
+    <Content Include="Views\Skills\_SkillRowCount.cshtml" />
+    <Content Include="Views\Skills\_SkillRowCreate.cshtml" />
+    <Content Include="Views\Skills\_TestPartial.cshtml" />
+    <Content Include="Views\Skills\AddSkillsPageView - Copy.cshtml" />
+    <Content Include="Views\Skills\_SkillRowCreate - Copy.cshtml" />
+    <Content Include="Views\Skills\_SkillRowCreator.cshtml" />
+    <Content Include="Views\Skills\SkillAddedSuccessfully.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
