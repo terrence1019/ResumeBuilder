@@ -35,16 +35,18 @@
 
     <h3>Add Skill Details for Registration ID @id</h3>
 
+    <!-- BASIC ROW ADDITION -->
+    <!-- Html.Partial("_SkillRowCreate")-->
     <!--
-       
+
         FUTURE WORK ===
 
 
 
         Add List to Controller via JS/JQUERY
         Non Sequential Indices
-        
-        
+
+
         OPTION A: WILL BE USED FOR SKILLS [WORKING]
 
         PART 01: [ADD SKILL] BUTTON
@@ -64,7 +66,7 @@
 
 
 
-    
+
         OPTION B:
 
         PART 01: Use JS/JQUERY to send a JS/JQUERY Form with a List of items to a Controller Action
@@ -73,12 +75,138 @@
         Solution: https://stackoverflow.com/questions/8193030/how-get-the-values-of-multi-entries-when-added-in-fly-by-jquery-in-view-of-asp
 
     -->
-    @Html.Partial("_SkillRowCreate")
-
-    
-    
+    @Html.Partial("_SkillRowCreator")
 
 
+    <h1>ADD ROWS</h1>
+
+    <table>
+
+        <tbody>
+
+            <tr>
+                <td><button id="addrow" type="button">[ADD A SKILL ROW]</button></td>
+                <td><button id="submitall" type="button">[SUBMIT ALL ROWS]</button></td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <br />
+
+    <script type="text/javascript">
+
+        var count = 0;
+
+
+
+        //The aim is that when a new div is dynamically added,
+        //the code to call _SkillRowCreate PartialView is triggered based on class/id property
+
+        //AddDivContainer using rowid
+        //LoadPartialInDivContainer using rowid
+
+        $("#addrow").click(function () {
+
+            //window.alert("COUNT: " + count);
+
+            var rowid = "row_" + count;
+            //window.alert("ROW ID: " + rowid);
+
+            var loadid = "#" + rowid;
+            //window.alert("LOAD ID: " + loadid);
+
+            var classid = "submit";
+
+            //https://www.codegrepper.com/code-examples/java/create+a+button+using+javascript
+            var skillrow = $(`<div id="${rowid}" class="${classid}"></div></br>`);
+
+
+
+
+
+            $("#container").append(skillrow);
+
+
+            function loadPartialCreate() {
+
+                $(loadid).load('/Skills/SkillRowCreator2');
+            }
+
+            //SOLUTION: https://www.w3schools.com/jsref/met_win_settimeout.asp
+            setTimeout(function () {
+                loadPartialCreate()
+            }, 1); //1000 = 1 second
+
+            count++;
+
+            //window.alert("Counter is now at " + count);
+
+        });
+
+    </script>
+
+
+    <script>
+
+    $('#submitall').click(function () {
+
+        window.alert("Submitting All Rows...");
+
+        $('.submit').ready(function () {
+
+
+
+            SubmitSkillRow();
+
+
+
+        })
+
+        window.alert("All Submissions Successfully Uploaded!");
+
+    });
+
+
+    function SubmitSkillRow(){
+
+            window.alert('Submitting Skill Row...');
+
+
+            var category = $("#skillcategory").val();
+            var point = $("#skillpoint").val();
+            var appid = @id;
+
+            //AJAX START
+            $.ajax({
+
+                type: 'POST',
+                url: '@Url.Action("AddSkillsFormActionQuery")',
+                data: {
+                    skillCategory: category,
+                    skillPoint: point,
+                    applicantID: appid
+                }
+
+            })//end ajax
+
+
+
+
+            //AJAX STOP
+
+
+        }//SubmitSkillRow()
+
+    </script>
+
+
+
+    <form>
+        <!-- THIS IS WHERE A NEWLY CREATED ROWS WILL APPEAR-->
+        <div id="container"></div>
+    </form>
 
 
 

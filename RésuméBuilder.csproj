@@ -224,9 +224,10 @@
     <Content Include="Views\Skills\_SkillRowCreate.cshtml" />
     <Content Include="Views\Skills\_TestPartial.cshtml" />
     <Content Include="Views\Skills\AddSkillsPageView - Copy.cshtml" />
-    <Content Include="Views\Skills\_SkillRowCreate - Copy.cshtml" />
     <Content Include="Views\Skills\_SkillRowCreator.cshtml" />
     <Content Include="Views\Skills\SkillAddedSuccessfully.cshtml" />
+    <Content Include="Views\Skills\_SkillRowCreatorAjax.cshtml" />
+    <Content Include="Views\Skills\_SkillRowCreator2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

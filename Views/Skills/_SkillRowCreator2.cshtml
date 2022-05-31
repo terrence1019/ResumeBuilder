@@ -10,7 +10,10 @@
 <form>
 
     <div>
-                
+
+        <button type="button" onclick="RemoveRow(this)">[DELETE]</button>
+        <button type="button" onclick="SubmitRow(this)">[SUBMIT]</button>
+
         <!-- APPLICANT ID: AUTOMATICALLY SET TO SPECIFIC VALUE -->
         <!-- This input field will be passed with the rest of the form data
          it ensures consistency of ApplicantID between Applicant and Personal.
@@ -30,15 +33,16 @@
 
 
 
-        
+        <input type="button" id='mybutton' value="[POST]" />
 
+        <!-- FORM DATA SUBMISSION -->
+        <!-- <input id="submit" type="submit" class="btn btn-primary" value="SUBMIT"> -->
 
     </div>
 
 </form>
 
 
-<input type="button" id='mybutton' value="[SUBMIT ALL]" />
 
 
 <script type="text/javascript">

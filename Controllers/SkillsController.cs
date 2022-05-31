@@ -163,6 +163,44 @@ namespace RésuméBuilder.Controllers
 
         }
 
+        public PartialViewResult SkillRowCreator2()
+        {
+
+            return PartialView("_SkillRowCreator2");
+
+        }
+
+
+
+        [HttpPost]
+        public ActionResult AddSkillsFormActionQuery
+            (string skillCategory, string skillPoint, int applicantID)
+        {
+
+
+            //INSERT RECORD INTO DATABASE
+            Skill skillItem = new Skill();
+
+            skillItem.SkillCategory = skillCategory;
+            skillItem.SkillPoint = skillPoint;
+
+
+            //Pull up Skills Table from Résumé Database
+            var skillsTable = dbContext.skillDB;
+
+
+            //skillsTable.Add(skillItem);
+
+
+            Console.WriteLine();
+
+            return View();
+
+        }
+
+
+
+
 
 
         [HttpPost]
