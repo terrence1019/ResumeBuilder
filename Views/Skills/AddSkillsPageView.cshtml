@@ -75,10 +75,11 @@
         Solution: https://stackoverflow.com/questions/8193030/how-get-the-values-of-multi-entries-when-added-in-fly-by-jquery-in-view-of-asp
 
     -->
-    @Html.Partial("_SkillRowCreator")
+    <!-- BEST ALTERNATIVE -->
+    <!-- Html.Partial("_SkillRowCreator") -->
 
 
-    <h1>ADD ROWS</h1>
+    <h3>ENTER DATA</h3>
 
     <table>
 
@@ -86,7 +87,8 @@
 
             <tr>
                 <td><button id="addrow" type="button">[ADD A SKILL ROW]</button></td>
-                <td><button id="submitall" type="button">[SUBMIT ALL ROWS]</button></td>
+                <td><button id="submitallrows" type="button" onclick="SubmitAllRows()">[SUBMIT ALL ROWS]</button></td>
+                <td><button id="deleteallrows" type="button" onclick="RemoveAllRows()">[DELETE ALL ROWS]</button></td>
             </tr>
 
         </tbody>
@@ -109,8 +111,11 @@
 
         $("#addrow").click(function () {
 
-            //window.alert("COUNT: " + count);
 
+            CreateRow(count);
+
+            //window.alert("COUNT: " + count);
+            /*
             var rowid = "row_" + count;
             //window.alert("ROW ID: " + rowid);
 
@@ -123,11 +128,42 @@
             var skillrow = $(`<div id="${rowid}" class="${classid}"></div></br>`);
 
 
+            var clickid = "submit" + rowid;
+            //window.alert(clickid);
 
+
+            //SUBMIT ROW BUTTON
+            //https://sebhastian.com/javascript-create-button/
+            var sub_btn = document.createElement("button");
+            sub_btn.innerHTML = "SUBMIT ROW";
+            sub_btn.type = "button";
+            sub_btn.name = "formBtn";
+            sub_btn.class = "submitall";
+            sub_btn.id = clickid;
+            sub_btn.onclick = function () {
+                                
+                CheckName(clickid);
+
+            };
+
+            //DELETE ROW BUTTON
+            //https://sebhastian.com/javascript-create-button/
+            var del_btn = document.createElement("button");
+            del_btn.innerHTML = "DELETE ROW";
+            del_btn.type = "button";
+            del_btn.name = "formBtn";
+            del_btn.class = "deleteall";
+            del_btn.id = clickid;
+            del_btn.onclick = function () {
+
+                RemoveRow(this);
+
+            };
 
 
             $("#container").append(skillrow);
-
+            $("#container").append(sub_btn);
+            $("#container").append(del_btn);
 
             function loadPartialCreate() {
 
@@ -139,34 +175,144 @@
                 loadPartialCreate()
             }, 1); //1000 = 1 second
 
+            */
+
             count++;
 
             //window.alert("Counter is now at " + count);
-
+            
         });
+
+    </script>
+
+    <script>
+
+        function CheckName(x) {
+
+            //To Delete an item using remove(), it requires the parent to be deleted.
+            //Therefore, to work effectively, the child item should be stored in a parent,
+            //such as a <div>
+            AlertName(x);
+
+        }
+
+        function AlertName(x) {
+
+            window.alert("TEST: "+x);
+
+        }
+
+
+        //REMOVE A SINGLE SKILL ROW
+        function RemoveDiv() {
+
+            //https://bobbyhadz.com/blog/javascript-remove-parent-element
+            const child = document.getElementById('totalremoval');
+            
+            child.parentElement.remove();
+
+        }//RemoveRow()
+
+
+        //REMOVE ALL SKILL ROWS
+        function RemoveAllRows(elem) {
+
+            //Call RemoveRow() for div with id "totalremoval"
+            RemoveDiv();
+            
+
+            //Re-add a container so that new rows can be added afterwards
+            var container = $(`<div id="container"></div></br>`);
+            $("#main").append(container);
+
+
+            //Re-add delete-all div also
+            var deletealldiv = $(`<div id="totalremoval"></div>`);
+            $("#container").append(deletealldiv);
+
+
+        }//RemoveAllRows()
+
+
 
     </script>
 
 
     <script>
 
-    $('#submitall').click(function () {
+        function CreateRow(count) {
 
-        window.alert("Submitting All Rows...");
+            window.alert("CREATING ROW: " + count);
 
-        $('.submit').ready(function () {
+            var rowid = "row_" + count;
+            window.alert("ROW ID: " + rowid);
+
+            var loadid = "#" + rowid;
+            window.alert("LOAD ID: " + loadid);
+
+            var classid = "submit";
+
+            var divOpen = $(`<div>`);
+            var divClose = $(`</div></br>`);
+
+            //https://www.codegrepper.com/code-examples/java/create+a+button+using+javascript
+            var skillrowOpen = $(`<div id="${rowid}" class="${classid}">`);
+            var skillrowClose = $(`</div></br>`);
+
+            var clickid = "submit" + rowid;
+            window.alert(clickid);
+
+
+            var inputFieldCategory = $(`<input name="SkillCategory" type="text" id="skillcategory" />`);
 
 
 
-            SubmitSkillRow();
+            
+            //SUBMIT ROW BUTTON
+            //https://sebhastian.com/javascript-create-button/
+            var sub_btn = document.createElement("button");
+            sub_btn.innerHTML = "SUBMIT ROW";
+            sub_btn.type = "button";
+            sub_btn.name = "formBtn";
+            sub_btn.class = "submitall";
+            sub_btn.id = clickid;
+            sub_btn.onclick = function () {
+
+                CheckName(clickid);
+
+            };
+
+            //DELETE ROW BUTTON
+            //https://sebhastian.com/javascript-create-button/
+            var del_btn = document.createElement("button");
+            del_btn.innerHTML = "DELETE ROW";
+            del_btn.type = "button";
+            del_btn.name = "formBtn";
+            del_btn.class = "deleteall";
+            del_btn.id = clickid;
+            del_btn.onclick = function () {
+
+                RemoveRow(this);
+
+            };
+
+
+            var SkillRow =
+                divOpen.append(inputFieldCategory).append(divClose);
+
+
+            //$("#container").append(inputFieldCategory);
+            $("#container").append(SkillRow);
 
 
 
-        })
+        }//CreateRow()
 
-        window.alert("All Submissions Successfully Uploaded!");
 
-    });
+    </script>
+
+
+    <script>
 
 
     function SubmitSkillRow(){
@@ -198,15 +344,20 @@
 
 
         }//SubmitSkillRow()
+                
 
     </script>
 
 
 
-    <form>
-        <!-- THIS IS WHERE A NEWLY CREATED ROWS WILL APPEAR-->
-        <div id="container"></div>
-    </form>
+    <div id="main">
+            <!-- THIS IS WHERE A NEWLY CREATED ROWS WILL APPEAR-->
+            <div id="container">
+                <div id="totalremoval"></div>
+                @*<button id="deleteallrows" type="button" onclick="RemoveAllRows(this)">[DELETE ALL ROWS]</button>*@
+            </div>
+    </div>
+    
 
 
 
