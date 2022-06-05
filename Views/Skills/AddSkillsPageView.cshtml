@@ -88,6 +88,7 @@
             <tr>
                 <td><button id="addrow" type="button">[ADD A SKILL ROW]</button></td>
                 <td><button id="submitallrows" type="button" onclick="SubmitAllRows()">[SUBMIT ALL ROWS]</button></td>
+                <td><input id="submitallrows" type="button" onclick="SubmitAllRows()" />[SUBMIT ALL ROWS]</td>
                 <td><button id="deleteallrows" type="button" onclick="RemoveAllRows()">[DELETE ALL ROWS]</button></td>
             </tr>
 
@@ -100,6 +101,7 @@
     <script type="text/javascript">
 
         var count = 0;
+        var rowtracker = 0;
 
 
 
@@ -178,6 +180,7 @@
             */
 
             count++;
+            rowtracker++;
 
             //window.alert("Counter is now at " + count);
             
@@ -203,7 +206,22 @@
         }
 
 
+
         //REMOVE A SINGLE SKILL ROW
+        function RemoveRow(elem) {
+
+            //To Delete an item using remove(), it requires the parent to be deleted.
+            //Therefore, to work effectively, the child item should be stored in a parent,
+            //such as a <div>
+            elem.parentElement.remove();
+
+            //Adjust counter (decrement)
+            count--;
+
+        }//RemoveRow()
+
+
+        //REMOVE ALL ELEMENTS STORED IN A PARENT DIV (BY REMOVING PARENT DIV ITSELF)
         function RemoveDiv() {
 
             //https://bobbyhadz.com/blog/javascript-remove-parent-element
@@ -211,17 +229,17 @@
             
             child.parentElement.remove();
 
-        }//RemoveRow()
+        }//RemoveDiv()
 
 
-        //REMOVE ALL SKILL ROWS
+        //CALL FUNCTION TO REMOVE ALL SKILL ROWS
         function RemoveAllRows(elem) {
 
             //Call RemoveRow() for div with id "totalremoval"
             RemoveDiv();
             
 
-            //Re-add a container so that new rows can be added afterwards
+            //Re-add a parent container so that new rows can be added afterwards
             var container = $(`<div id="container"></div></br>`);
             $("#main").append(container);
 
@@ -230,6 +248,9 @@
             var deletealldiv = $(`<div id="totalremoval"></div>`);
             $("#container").append(deletealldiv);
 
+            //Reset row counter
+            count = 0;
+            rowtracker = 0;
 
         }//RemoveAllRows()
 
@@ -242,13 +263,13 @@
 
         function CreateRow(count) {
 
-            window.alert("CREATING ROW: " + count);
+            //window.alert("CREATING ROW: " + count);
 
             var rowid = "row_" + count;
-            window.alert("ROW ID: " + rowid);
+            //window.alert("ROW ID: " + rowid);
 
-            var loadid = "#" + rowid;
-            window.alert("LOAD ID: " + loadid);
+            //var loadid = "#" + rowid;
+            //window.alert("LOAD ID: " + loadid);
 
             var classid = "submit";
 
@@ -256,15 +277,19 @@
             var divClose = $(`</div></br>`);
 
             //https://www.codegrepper.com/code-examples/java/create+a+button+using+javascript
-            var skillrowOpen = $(`<div id="${rowid}" class="${classid}">`);
+            var skillrowOpen = $(`<div id="${rowid}" class="${classid} name="skill" >`);
             var skillrowClose = $(`</div></br>`);
 
             var clickid = "submit" + rowid;
-            window.alert(clickid);
+            //window.alert(clickid);
 
+            var rowCategoryID = rowid + "_skillcategory";
+            var rowPointID = rowid + "_skillpoint";
 
-            var inputFieldCategory = $(`<input name="SkillCategory" type="text" id="skillcategory" />`);
+            var inputFieldCategory = $(`<input name="SkillCategory" type="text" class="skillcategory" id="${rowCategoryID}" placeholder="Skill Category" />`);
+            var inputFieldPoint = $(`<input name="SkillPoint" type="text" class="skillpoint" id="${rowPointID}" placeholder="Skill Point" />`);
 
+            
 
 
             
@@ -278,7 +303,10 @@
             sub_btn.id = clickid;
             sub_btn.onclick = function () {
 
-                CheckName(clickid);
+                CheckName(rowid);
+                SubmitRow(rowid);
+                window.alert("Submission Complete!");
+                RemoveRow(this);
 
             };
 
@@ -297,12 +325,28 @@
             };
 
 
+            var testString =
+                divOpen
+                    .append(skillrowOpen)
+                    .append(inputFieldCategory)
+                    .append(inputFieldPoint)
+                    .append(sub_btn)
+                    .append(del_btn)
+                    .append(skillrowClose)
+                    .append(divClose);
+
             var SkillRow =
                 divOpen.append(inputFieldCategory).append(divClose);
 
+            var test2 = divOpen.append(
+                skillrowOpen.append(
+                    inputFieldCategory.append(
+                        skillrowClose.append(divClose))));
 
             //$("#container").append(inputFieldCategory);
-            $("#container").append(SkillRow);
+            //$("#container").append(SkillRow);
+            //$("#container").append(testString);
+            $("#container").append(test2);
 
 
 
@@ -315,50 +359,90 @@
     <script>
 
 
-    function SubmitSkillRow(){
+     function SubmitRow(rowid){
 
-            window.alert('Submitting Skill Row...');
+         window.alert(`Submitting Skill Row ${rowid}...`);
 
+         var rowCategoryID = rowid + "_skillcategory";
+         var rowPointID = rowid + "_skillpoint";
 
-            var category = $("#skillcategory").val();
-            var point = $("#skillpoint").val();
-            var appid = @id;
+         window.alert(`Looking for ${rowCategoryID} and ${rowPointID}`);
 
-            //AJAX START
-            $.ajax({
-
-                type: 'POST',
-                url: '@Url.Action("AddSkillsFormActionQuery")',
-                data: {
-                    skillCategory: category,
-                    skillPoint: point,
-                    applicantID: appid
-                }
-
-            })//end ajax
+            //The aim is to submit a record using rowid as the target parent
+            var parent = document.getElementById(rowid);
+            var parentVal = parent.innerHTML;
+            window.alert(parentVal);
 
 
+         //https://stackoverflow.com/questions/15268854/getelementbyid-for-children-of-an-element
+
+         const category = document.getElementById(rowCategoryID).value;
+         const skill = document.getElementById(rowPointID).value;
+
+         window.alert(`${category} - ${skill}`);
 
 
-            //AJAX STOP
+         window.alert("Standby...");
+
+         //NOW ADD AJAX FUNCTION TO POST TO CONTROLLER METHOD:
 
 
-        }//SubmitSkillRow()
+
+
+
+
+    }//SubmitRow()
+
+        function SubmitAllRows(){
+
+            window.alert('Submitting ALL Skill Rows...');
+
+            //window.alert(count+" rows to sumbit");
+
+            //while you haven't reach end of document, scan for class names
+
+            var i;
+
+            for (i = 0; i < rowtracker; i++) {
+
+                window.alert(i);
                 
+                var rowid = "row_" + i;
+                window.alert(rowid);
+                var rowCategoryID = rowid + "_skillcategory";
+                window.alert(rowCategoryID);
+
+                //if not null do this:
+                const x = document.getElementById(rowCategoryID).value;
+
+                if (x != null) window.alert(x);
+
+            }
+            
+
+            
+            
+            
+
+
+
+        }//SubmitAllRows()
+
 
     </script>
 
 
+    <form>
 
-    <div id="main">
+        <div id="main">
             <!-- THIS IS WHERE A NEWLY CREATED ROWS WILL APPEAR-->
             <div id="container">
                 <div id="totalremoval"></div>
                 @*<button id="deleteallrows" type="button" onclick="RemoveAllRows(this)">[DELETE ALL ROWS]</button>*@
             </div>
-    </div>
-    
+        </div>
 
+    </form>
 
 
 </body>
