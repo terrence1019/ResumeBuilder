@@ -88,7 +88,6 @@
             <tr>
                 <td><button id="addrow" type="button">[ADD A SKILL ROW]</button></td>
                 <td><button id="submitallrows" type="button" onclick="SubmitAllRows()">[SUBMIT ALL ROWS]</button></td>
-                <td><input id="submitallrows" type="button" onclick="SubmitAllRows()" />[SUBMIT ALL ROWS]</td>
                 <td><button id="deleteallrows" type="button" onclick="RemoveAllRows()">[DELETE ALL ROWS]</button></td>
             </tr>
 
@@ -143,7 +142,7 @@
             sub_btn.class = "submitall";
             sub_btn.id = clickid;
             sub_btn.onclick = function () {
-                                
+
                 CheckName(clickid);
 
             };
@@ -183,7 +182,7 @@
             rowtracker++;
 
             //window.alert("Counter is now at " + count);
-            
+
         });
 
     </script>
@@ -201,7 +200,7 @@
 
         function AlertName(x) {
 
-            window.alert("TEST: "+x);
+            window.alert("TEST: " + x);
 
         }
 
@@ -226,7 +225,7 @@
 
             //https://bobbyhadz.com/blog/javascript-remove-parent-element
             const child = document.getElementById('totalremoval');
-            
+
             child.parentElement.remove();
 
         }//RemoveDiv()
@@ -237,7 +236,7 @@
 
             //Call RemoveRow() for div with id "totalremoval"
             RemoveDiv();
-            
+
 
             //Re-add a parent container so that new rows can be added afterwards
             var container = $(`<div id="container"></div></br>`);
@@ -289,10 +288,10 @@
             var inputFieldCategory = $(`<input name="SkillCategory" type="text" class="skillcategory" id="${rowCategoryID}" placeholder="Skill Category" />`);
             var inputFieldPoint = $(`<input name="SkillPoint" type="text" class="skillpoint" id="${rowPointID}" placeholder="Skill Point" />`);
 
-            
 
 
-            
+
+
             //SUBMIT ROW BUTTON
             //https://sebhastian.com/javascript-create-button/
             var sub_btn = document.createElement("button");
@@ -359,14 +358,14 @@
     <script>
 
 
-     function SubmitRow(rowid){
+        function SubmitRow(rowid) {
 
-         window.alert(`Submitting Skill Row ${rowid}...`);
+            window.alert(`Submitting Skill Row ${rowid}...`);
 
-         var rowCategoryID = rowid + "_skillcategory";
-         var rowPointID = rowid + "_skillpoint";
+            var rowCategoryID = rowid + "_skillcategory";
+            var rowPointID = rowid + "_skillpoint";
 
-         window.alert(`Looking for ${rowCategoryID} and ${rowPointID}`);
+            window.alert(`Looking for ${rowCategoryID} and ${rowPointID}`);
 
             //The aim is to submit a record using rowid as the target parent
             var parent = document.getElementById(rowid);
@@ -374,71 +373,105 @@
             window.alert(parentVal);
 
 
-         //https://stackoverflow.com/questions/15268854/getelementbyid-for-children-of-an-element
+            //https://stackoverflow.com/questions/15268854/getelementbyid-for-children-of-an-element
 
-         const category = document.getElementById(rowCategoryID).value;
-         const skill = document.getElementById(rowPointID).value;
+            const category = document.getElementById(rowCategoryID).value;
+            var skill = document.getElementById(rowPointID).value;
+            var appid = @id;
 
-         window.alert(`${category} - ${skill}`);
-
-
-         window.alert("Standby...");
-
-         //NOW ADD AJAX FUNCTION TO POST TO CONTROLLER METHOD:
+            window.alert(`${category} - ${skill}`);
 
 
+            window.alert("Standby...");
 
+            //NOW ADD AJAX FUNCTION TO POST TO CONTROLLER METHOD:
 
 
 
-    }//SubmitRow()
 
-        function SubmitAllRows(){
+
+
+        }//SubmitRow()
+
+        function SubmitAllRows() {
 
             window.alert('Submitting ALL Skill Rows...');
 
             //window.alert(count+" rows to sumbit");
 
-            //while you haven't reach end of document, scan for class names
 
-            var i;
+            //var category = document.querySelector(`[id*="${i}_skillcategory"]`);
 
-            for (i = 0; i < rowtracker; i++) {
+            //https://www.formget.com/javascript-submit-form/
+            //document.getElementById("skillform").submit();
 
-                window.alert(i);
+            //PULL ALL ROWS WITH REQUIRED ID DATA ON PAGE
+            //https://bobbyhadz.com/blog/javascript-get-element-by-id-contains
+            var categoryNodeList = document.querySelectorAll(`[id*="_skillcategory"]`);   
+            
+
+            var pointNodeList = document.querySelectorAll(`[id*="_skillpoint"]`);
+
+
+            //Length of NodeList
+            var lengthCategory = categoryNodeList.length;
+            var lengthPoint = pointNodeList.length;
+
+            window.alert(lengthCategory);
+
+            window.alert(`Category - ${lengthCategory} Point - ${lengthPoint}`);
+
+            //https://stackoverflow.com/questions/7459704/in-javascript-what-is-the-best-way-to-convert-a-nodelist-to-an-array
+            Array.from(categoryNodeList).forEach(function (skillcategory) {
+                window.alert(skillcategory.value);
+
+                if (skillcategory.value == "") window.alert("No value entered");
+
+            });
+
+            Array.from(pointNodeList).forEach(function (skillpoint) {
+                window.alert(skillpoint.value);
+
+                if (skillpoint.value == "") window.alert("No value entered");
+            });
+
                 
-                var rowid = "row_" + i;
-                window.alert(rowid);
-                var rowCategoryID = rowid + "_skillcategory";
-                window.alert(rowCategoryID);
-
-                //if not null do this:
-                const x = document.getElementById(rowCategoryID).value;
-
-                if (x != null) window.alert(x);
-
-            }
-            
 
             
-            
-            
+
 
 
 
         }//SubmitAllRows()
 
 
+
     </script>
 
 
-    <form>
 
-        <div id="main">
+    <script type="text/javascript">
+
+        //https://www.formget.com/javascript-submit-form/
+
+        $("#bulksubmit").click( function(){
+
+            window.alert("BULK SUBMIT...");
+
+        });
+
+
+
+    </script>
+
+    <form id="skillform">
+
+        <!-- <input id="bulksubmit" type="submit" class="btn btn-primary" value="SUBMIT ALL ROWS"> -->
+
+        <div id="main" class="form-group">
             <!-- THIS IS WHERE A NEWLY CREATED ROWS WILL APPEAR-->
             <div id="container">
                 <div id="totalremoval"></div>
-                @*<button id="deleteallrows" type="button" onclick="RemoveAllRows(this)">[DELETE ALL ROWS]</button>*@
             </div>
         </div>
 
