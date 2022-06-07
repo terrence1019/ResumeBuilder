@@ -234,6 +234,9 @@
         //CALL FUNCTION TO REMOVE ALL SKILL ROWS
         function RemoveAllRows(elem) {
 
+
+            if (count > 0) { 
+
             //Call RemoveRow() for div with id "totalremoval"
             RemoveDiv();
 
@@ -250,6 +253,9 @@
             //Reset row counter
             count = 0;
             rowtracker = 0;
+
+            }
+
 
         }//RemoveAllRows()
 
@@ -334,10 +340,10 @@
                     .append(skillrowClose)
                     .append(divClose);
 
-            var SkillRow =
+            var SkillRowTest =
                 divOpen.append(inputFieldCategory).append(divClose);
 
-            var test2 = divOpen.append(
+            var skillrow = divOpen.append(
                 skillrowOpen.append(
                     inputFieldCategory.append(
                         skillrowClose.append(divClose))));
@@ -345,7 +351,7 @@
             //$("#container").append(inputFieldCategory);
             //$("#container").append(SkillRow);
             //$("#container").append(testString);
-            $("#container").append(test2);
+            $("#container").append(skillrow);
 
 
 
@@ -405,40 +411,65 @@
             //https://www.formget.com/javascript-submit-form/
             //document.getElementById("skillform").submit();
 
-            //PULL ALL ROWS WITH REQUIRED ID DATA ON PAGE
+            //PULL ALL ROWS WITH REQUIRED ID DATA ON PAGE USING PARTIAL DATA SEARCH:
             //https://bobbyhadz.com/blog/javascript-get-element-by-id-contains
             var categoryNodeList = document.querySelectorAll(`[id*="_skillcategory"]`);   
             
-
+            //PULL ALL ROWS WITH REQUIRED ID DATA ON PAGE USING PARTIAL DATA SEARCH:
             var pointNodeList = document.querySelectorAll(`[id*="_skillpoint"]`);
 
 
             //Length of NodeList
             var lengthCategory = categoryNodeList.length;
             var lengthPoint = pointNodeList.length;
+            var len = pointNodeList.length - 1;
+            var i;
 
-            window.alert(lengthCategory);
+            //window.alert(lengthCategory);
+            //window.alert(len);
 
-            window.alert(`Category - ${lengthCategory} Point - ${lengthPoint}`);
+            //window.alert(`Category - ${lengthCategory} Point - ${lengthPoint}`);
 
             //https://stackoverflow.com/questions/7459704/in-javascript-what-is-the-best-way-to-convert-a-nodelist-to-an-array
             Array.from(categoryNodeList).forEach(function (skillcategory) {
-                window.alert(skillcategory.value);
+                //window.alert(skillcategory.value);
 
-                if (skillcategory.value == "") window.alert("No value entered");
+                //if (skillcategory.value == "") window.alert("No value entered");
 
             });
-
-            Array.from(pointNodeList).forEach(function (skillpoint) {
-                window.alert(skillpoint.value);
-
-                if (skillpoint.value == "") window.alert("No value entered");
-            });
-
-                
 
             
 
+            Array.from(pointNodeList).forEach(function (skillpoint) {
+                //window.alert(skillpoint.value);
+
+                //if (skillpoint.value == "") window.alert("No value entered");
+                
+            });
+
+                
+            //window.alert(categoryNodeList[0].value);
+            //window.alert(pointNodeList[0].value);
+
+
+            for (i = 0; i <= len; i++) {
+
+
+                if (categoryNodeList[i].value == "" && pointNodeList[i].value != "") {
+
+                    categoryNodeList[i].value = "General";
+
+                }
+
+                window.alert(`${categoryNodeList[i].value} - ${pointNodeList[i].value}`);
+
+                //Once skillpoint is NOT EMPTY, proceed to add to database via Ajax and Controller Action:
+
+            }
+
+
+            //Delete all used fields
+            RemoveAllRows();
 
 
 
