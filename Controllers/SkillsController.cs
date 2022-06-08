@@ -198,8 +198,8 @@ namespace RésuméBuilder.Controllers
             var skillsTable = dbContext.skillDB;
 
 
-            //skillsTable.Add(skillItem);
-            //dbContext.SaveChanges();
+            skillsTable.Add(skillItem);
+            dbContext.SaveChanges();
 
 
             Console.WriteLine();

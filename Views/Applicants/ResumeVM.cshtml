@@ -220,11 +220,11 @@
 
 
 
-        
-                    
+        /*
+
                         foreach (var category in SkillCategoryList)
                         {
-                            <h3>@category</h3>
+                            <h3>@category OLD WAY</h3>
 
 
                             <table>
@@ -251,8 +251,118 @@
                             </table>
 
 
-                        }
-                    
+        }
+
+        */
+
+
+        foreach (var category in SkillCategoryList)
+        {
+
+
+
+            <h3>@category</h3>
+
+            //3 x Y ROW GENERATION
+            int size = ApplicantSkills.Count;
+
+            int i; //row counter
+            int j; //column counter
+
+            int k = 0; //list item index counter
+
+            int rowSize = 3; //3-row
+            double colSize = (size / 3) + 1;
+
+            string[,] arr = new string[3, size];
+
+
+            <table>
+
+                <!-- STORING ITEMS IN 2D ARRAY -->
+                @for (i = 0; i < rowSize; i++)
+                {
+
+
+                for (j = 0; j < colSize; j++)
+                {
+
+                if (k < size)
+                {
+
+                arr[i, j] = ApplicantSkills[k].SkillPoint;
+                string test = arr[i, j];
+
+                if (ApplicantSkills[k].SkillCategory == category)
+                {
+                <tr>
+                    <td>
+                        <ul class="skill"><li>@ApplicantSkills[k].SkillPoint</li></ul>
+                    </td>
+                </tr>
+                }
+
+
+                k++;
+
+
+                }
+
+
+                }
+
+
+
+                }
+
+            </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }//end foreach
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //ORIGINAL APPROACH
