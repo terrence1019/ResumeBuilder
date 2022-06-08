@@ -223,7 +223,6 @@
     <Content Include="Views\Skills\_SkillRowCount.cshtml" />
     <Content Include="Views\Skills\_SkillRowCreate.cshtml" />
     <Content Include="Views\Skills\_SkillEntry.cshtml" />
-    <Content Include="Views\Skills\AddSkillsPageView - Copy.cshtml" />
     <Content Include="Views\Skills\_SkillRowCreator.cshtml" />
     <Content Include="Views\Skills\SkillAddedSuccessfully.cshtml" />
     <Content Include="Views\Skills\_SkillRowCreator2.cshtml" />

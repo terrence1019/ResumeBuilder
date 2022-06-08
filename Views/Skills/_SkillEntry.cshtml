@@ -1,4 +1,4 @@
-﻿<h1>TEST PARTIAL</h1>
+﻿<h1>SUBMISSION PAGE</h1>
 
 
 @{ 
@@ -148,7 +148,7 @@
 
             //https://www.codegrepper.com/code-examples/java/create+a+button+using+javascript
             var skillrowOpen = $(`<div id="${rowid}" class="${classid} name="skill" >`);
-            var skillrowClose = $(`</div></br>`);
+            var skillrowClose = $(`</div></br></br>`);
 
             var clickid = "submit" + rowid;
             //window.alert(clickid);
@@ -168,9 +168,8 @@
             var sub_btn = document.createElement("button");
             sub_btn.innerHTML = "SUBMIT ROW";
             sub_btn.type = "button";
-            sub_btn.name = "formBtn";
-            sub_btn.class = "submitall";
-            sub_btn.id = clickid;
+            sub_btn.name = "formBtn_Submit";
+            sub_btn.class = "submitone";
             sub_btn.onclick = function () {
 
                 //CheckName(rowid);
@@ -185,16 +184,15 @@
             var del_btn = document.createElement("button");
             del_btn.innerHTML = "DELETE ROW";
             del_btn.type = "button";
-            del_btn.name = "formBtn";
-            del_btn.class = "deleteall";
-            del_btn.id = clickid;
+            del_btn.name = "formBtn_Delete";
+            del_btn.class = "deleteone";
             del_btn.onclick = function () {
 
                 RemoveRow(this);
 
             };
 
-
+            /*
             var testString =
                 divOpen
                     .append(skillrowOpen)
@@ -212,12 +210,30 @@
                 skillrowOpen.append(
                     inputFieldCategory.append(
                         skillrowClose.append(divClose))));
+            */
+
+            var record = divOpen.append(
+
+                skillrowOpen.append(
+
+                    inputFieldCategory,
+                    inputFieldPoint,
+                    sub_btn,
+                    del_btn
+                    
+                ).append(
+                    skillrowClose.append(
+                        divClose
+                    )
+                )
+            );
+
 
             //$("#container").append(inputFieldCategory);
             //$("#container").append(SkillRow);
             //$("#container").append(testString);
-            $("#container").append(skillrow);
-
+            //$("#container").append(skillrow);
+            $("#container").append(record);
 
 
         }//CreateRow()
@@ -250,13 +266,15 @@
             var point = document.getElementById(rowPointID).value;
             var appid = @id;
 
+            if (category == "") category = "General";
+
             window.alert(`${category} - ${point}`);
 
 
             window.alert("Standby...");
 
             //NOW ADD AJAX FUNCTION TO POST TO CONTROLLER METHOD:
-            PostRows(category, point, appid);
+            if(point != "") PostRows(category, point, appid);
 
 
 
