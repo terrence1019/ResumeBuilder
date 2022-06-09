@@ -226,6 +226,7 @@
     <Content Include="Views\Skills\_SkillRowCreator.cshtml" />
     <Content Include="Views\Skills\SkillAddedSuccessfully.cshtml" />
     <Content Include="Views\Skills\_SkillRowCreator2.cshtml" />
+    <Content Include="Views\Applicants\PersonalDetailsError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -108,9 +108,10 @@ namespace RésuméBuilder.Controllers
 
             var applicantRecord = dbContext.applicantDB.SingleOrDefault(a => a.ApplicantID == applicantID);
 
-            if (applicantRecord == null) return HttpNotFound();
+            //if (applicantRecord == null) return HttpNotFound();
+            if (applicantRecord == null) return RedirectToAction("PersonalDetailsError", "Personals");
 
-            return View(applicantRecord);
+            else return View(applicantRecord);
         }
 
         //RESUME CREATION
@@ -131,7 +132,7 @@ namespace RésuméBuilder.Controllers
 
             //Find the FK in the Personal Table matching required ApplicantID
             var personalRecord = dbContext.personalDB.SingleOrDefault(a => a.ApplicantID == applicantID);
-            if (personalRecord == null) return RedirectToAction("PersonalDetailsError","Personals");
+            if (personalRecord == null) return RedirectToAction("PersonalDetailsError","Applicants");
 
 
             //Create ViewModel instance to store values from the DB Tables
@@ -151,6 +152,11 @@ namespace RésuméBuilder.Controllers
 
             return View(applicantResumeViewModel);
 
+        }
+
+        public ViewResult PersonalDetailsError()
+        {
+            return View();
         }
 
 
