@@ -133,7 +133,38 @@
 
 </div>
 
+<!-- EXPERIENCE -->
+<div>
 
+    <hr />
+
+    <h2>Experience</h2>
+
+    <!-- PULLING RECORDS FROM JOB DB AND JOB DETAILS DB, AND PRESENTING THEM TO RÉSUMÉ VIEW -->
+    <!-- In terms of presentation, the data must be presented in the View just as in the prototype
+
+        ALSO, we need to SORT JOBS BY TIMELINE [FROM DATE, DESCENDING LIST]
+        1) Store Applicant Records in list (using ApplicantID)
+        2) Sort Applicant Records by FromDate in Descending Order
+
+        EXAMPLE:
+        <COMPANY>
+        <TIMELINE - [FROM DATE, TO DATE]> <POSITION> <DUTIES - [BULLETED LIST]>
+
+        STRATEGY:
+        1) STORE AND SORT APPLICANT RECORDS BY FROM DATE
+        2) STORE AND SORT COMPANY NAME HEADERS IN RELATION TO SORTED APPLICANT RECORDS
+        2) DISPLAY APPLICANT RECORDS USING VIEW STRUCTURE AND FORMAT
+
+
+        1) STORE AND SORT APPLICANT RECORDS BY FROM DATE
+        C# order list by property
+
+
+    -->
+
+
+</div>
 
 <!-- SKILLS -->
 
@@ -144,7 +175,7 @@
     <h2>Skills</h2>
 
 
-    <!-- PULLING RECORDS FROM DB -->
+    <!-- PULLING RECORDS FROM SKILL DB AND PRESENTING THEM TO RÉSUMÉ VIEW -->
     @{
 
         //Target ApplicantID
@@ -169,7 +200,9 @@
 
 
 
-
+        //01: TRAVERSE SKILL TABLE
+        //02: LOOK FOR RECORDS RELATED TO APPLICANT ID
+        //03: STORE THESE RECORDS IN A LIST
         foreach (var skill in skillsTable)
         {
             if (skill.ApplicantID == appid)
@@ -198,10 +231,10 @@
                 */
 
 
-                //Store Skill Categories in a list
+                //Store Skill Categories in the list created
                 SkillCategoryListWithDuplicates.Add(skill.SkillCategory);
 
-                //Store Applicant's Skills in a list
+                //Store Applicant's Skill records in the list created
                 ApplicantSkills.Add(skill);
 
             }
@@ -279,41 +312,44 @@
 
             <table>
 
-                <!-- STORING ITEMS IN 2D ARRAY -->
+                <!-- PART 01: STORING ITEMS IN 2D ARRAY -->
                 @for (i = 0; i < rowSize; i++)
                 {
 
 
-                for (j = 0; j < colSize; j++)
-                {
+                    for (j = 0; j < colSize; j++)
+                    {
 
-                if (k < size)
-                {
+                        if (k < size)
+                        {
 
-                arr[i, j] = ApplicantSkills[k].SkillPoint;
-                string test = arr[i, j];
+                            arr[i, j] = ApplicantSkills[k].SkillPoint;
+                            string test = arr[i, j];
 
-                if (ApplicantSkills[k].SkillCategory == category)
-                {
-                <tr>
-                    <td>
-                        <ul class="skill"><li>@ApplicantSkills[k].SkillPoint</li></ul>
-                    </td>
-                </tr>
+                            if (ApplicantSkills[k].SkillCategory == category)
+                            {
+                                <tr>
+                                    <td>
+                                        <!-- TESTING VALUES FOR CORRECT STORAGE -->
+                                        <ul class="skill"><li>@ApplicantSkills[k].SkillPoint</li></ul>
+                                    </td>
+                                </tr>
+                            }//if
+
+
+                            k++;
+
+
+                        }//if(k < size)
+
+
+                    }//for(j = 0; j < colSize; j++)
+
+
+
                 }
 
-
-                k++;
-
-
-                }
-
-
-                }
-
-
-
-                }
+                <!-- PART 02: PRINTING ITEMS FROM 2D ARRAY -->
 
             </table>
 
