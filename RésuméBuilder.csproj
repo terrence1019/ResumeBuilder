@@ -128,6 +128,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ApplicantsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\PersonalsController.cs" />
     <Compile Include="Controllers\SkillsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -237,6 +238,8 @@
     <Content Include="Views\Skills\SkillAddedSuccessfully.cshtml" />
     <Content Include="Views\Skills\_SkillRowCreator2.cshtml" />
     <Content Include="Views\Applicants\PersonalDetailsError.cshtml" />
+    <Content Include="Views\Jobs\AddJobsPageView.cshtml" />
+    <Content Include="Views\Jobs\_JobEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

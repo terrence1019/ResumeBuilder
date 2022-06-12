@@ -1,0 +1,324 @@
+﻿<h1>SUBMISSION PAGE</h1>
+
+
+@{
+    var id = Convert.ToInt32(Session["id"]);
+}
+
+<h3>ENTER DATA</h3>
+
+<table>
+
+    <tbody>
+
+        <tr>
+            <td><button id="addrow" type="button">[ADD A JOB ROW]</button></td>
+            <td><button id="submitallrows" type="button" onclick="SubmitAllRows()">[SUBMIT ALL ROWS]</button></td>
+            <td><button id="deleteallrows" type="button" onclick="RemoveAllRows()">[DELETE ALL ROWS]</button></td>
+        </tr>
+
+    </tbody>
+
+</table>
+
+<br />
+
+<script>
+
+    count = 0;
+
+    $("#addrow").click(function () {
+
+            window.alert(`Add a Job row for Applicant #${@id}`);
+
+            CreateJobRow(count);
+            
+            count++;
+
+
+    });
+
+    function CreateJobRow(count) {
+
+        window.alert("CREATING ROW: " + count);
+
+        var jobid = `applicant_${@id}_job_${count}`;
+        window.alert("JOB ID: "+jobid);
+
+        var jobrowid = "jobrow_" + count;
+        window.alert("ROW ID: " + jobrowid);
+
+        var classid = "submit";
+
+
+        //DIV CONTAINERS
+        var divOpen = $(`<div class="jobexperience">`);
+        var divClose = $(`</div><br />`);
+
+        var jobrowOpen = $(`<div id="${jobrowid}" class="${classid} name="skill" >`);
+        var jobrowClose = $(`</div><br /><br />`);
+
+
+        //INPUT FIELD ROW IDS
+        var companyNameID = jobrowid + "_jobcompanyname";
+        var positionID = jobrowid + "_jobposition";
+        var fromDateID = jobrowid + "_jobfromdate";
+        var toDateID = jobrowid + "_jobtodate";
+
+
+        //BUTTONS
+        var sub_job_btn = document.createElement("button");
+        sub_job_btn.innerHTML = "SUBMIT ROW";
+        sub_job_btn.type = "button";
+        sub_job_btn.name = "formBtn_Submit";
+        sub_job_btn.class = "submitone";
+        sub_job_btn.onclick = function () {
+
+            //SubmitJobRow(jobrowid);
+            window.alert("Submission Complete!");
+            //RemoveRow(this);
+
+        };
+        sub_job_btn.style.background = "mediumblue";
+        sub_job_btn.style.color = "white";
+        sub_job_btn.style.borderRadius = "3px";
+
+        var del_job_btn = document.createElement("button");
+        del_job_btn.innerHTML = "DELETE ROW";
+        del_job_btn.type = "button";
+        del_job_btn.name = "formBtn_Delete";
+        del_job_btn.class = "deleteone";
+        del_job_btn.onclick = function () {
+
+            RemoveJobRow(this);
+
+        }
+        del_job_btn.style.background = "darkred";
+        del_job_btn.style.color = "white";
+        del_job_btn.style.borderRadius = "3px";
+
+
+        var add_detail_btn = document.createElement("button");
+        add_detail_btn.innerHTML = "ADD DETAIL";
+        add_detail_btn.type = "button";
+        add_detail_btn.name = "formBtn_Submit";
+        add_detail_btn.class = "submitone";
+        add_detail_btn.onclick = function () {
+
+            CreateJobDetailField(jobrowid);
+            window.alert("Detail Added!");
+            //RemoveRow(this);
+
+        };
+        add_detail_btn.style.background = "lightblue";
+        add_detail_btn.style.color = "white";
+        add_detail_btn.style.borderRadius = "3px";
+
+        
+
+
+        //INPUT SUB-FIELDS
+        //In JS, deleting a child requires deleting the parent. So we use a div container as a parent
+        var jobDetailDivID = jobrowid + "_jobdetaildiv";
+        var jobDetailDivOpen = $(`<div id="${jobDetailDivID}">`);
+        var jobDetailDivClose = $(`</div><br /><br />`);
+
+
+        var companyNameField = $(`<input name="JobCompanyName" type="text" class="jobcompanyname" id="${companyNameID}" placeholder="Company Name" />`);
+        var positionField = $(`<input name="JobPosition" type="text" class="jobposition" id="${positionID}" placeholder="Company Position" />`);
+        var fromDateField = $(`<input name="JobFromDate" type="text" class="jobfromdate" id="${fromDateID}" placeholder="YYYY-MM" />`);
+        var toDateField = $(`<input name="JobFromDate" type="text" class="jobfromdate" id="${toDateID}" placeholder="YYYY-MM" />`);
+
+
+        var record = divOpen.append(
+
+            jobrowOpen.append(
+
+                sub_job_btn,
+                del_job_btn,
+                $(`<br />`),
+                $(`<br />`),
+                companyNameField,
+                positionField,
+                fromDateField,
+                toDateField,
+                $(`<br />`),
+                $(`<br />`),
+                add_detail_btn,
+                $(`<br />`),
+                jobDetailDivOpen.append(jobDetailDivClose)
+
+
+
+            ).append(
+
+                jobrowClose.append(
+
+                    divClose
+                )
+
+            )
+
+
+        );
+
+
+
+        $("#container").append(record);
+
+        window.alert("Row Creation COMPLETE");
+
+
+
+    }//CreateRow()
+
+
+    function CreateJobDetailField(jobrowid) {
+
+        var jobDetailDivID = jobrowid + "_jobdetaildiv";
+        var jobDetailDivTargetID = "#" + jobDetailDivID;
+
+        var jobDetailID = jobrowid + "_detail";
+
+        window.alert(`Creating Input field to append to ${jobDetailDivTargetID}`);
+
+        var jobFunctionID;
+        var jobFunctionDetailID;
+
+        //DIV CONTAINERS
+        //Parent div to store input field AND to contain child when deleted
+        var divDetailOpen = $(`<div>`);
+        var divDetailClose = $(`</div><br />`);
+
+        //INPUT FIELD
+        var detailField = $(`<input name="JobDetail" type="text" class="jobdetail" id="${jobDetailID}" size="50" placeholder="Specify job details" />`);
+
+        //BUTTON
+        var del_detail_btn = document.createElement("button");
+        del_detail_btn.innerHTML = "DELETE ROW";
+        del_detail_btn.type = "button";
+        del_detail_btn.name = "formBtn_Delete";
+        del_detail_btn.class = "deleteone";
+        del_detail_btn.onclick = function () {
+
+            RemoveRow(this);
+
+        }
+        del_detail_btn.style.background = "red";
+        del_detail_btn.style.color = "white";
+        del_detail_btn.style.borderRadius = "3px";
+
+        
+        var detail = divDetailOpen.append(
+
+            detailField,
+            del_detail_btn
+
+        ).append(divDetailClose)
+        
+
+        $(jobDetailDivTargetID).append(detail);
+
+
+
+    }//CreateJobDetailField()
+
+
+</script>
+
+<script>
+
+    //DELETIONS
+
+    //REMOVE A SINGLE ITEM
+    function RemoveRow(elem) {
+
+        //To Delete an item using remove(), it requires the parent to be deleted.
+        //Therefore, to work effectively, the child item should be stored in a parent,
+        //such as a <div>
+        elem.parentElement.remove();
+
+    }//RemoveRow()
+
+
+    //REMOVE A SINGLE JOB ROW
+    function RemoveJobRow(elem) {
+
+        //To Delete an item using remove(), it requires the parent to be deleted.
+        //Therefore, to work effectively, the child item should be stored in a parent,
+        //such as a <div>
+        elem.parentElement.remove();
+
+        //Adjust counter (decrement)
+        count--;
+
+    }//RemoveRow()
+
+
+    //REMOVE ALL ELEMENTS STORED IN A PARENT DIV (BY REMOVING PARENT DIV ITSELF)
+    function RemoveDiv() {
+
+        //https://bobbyhadz.com/blog/javascript-remove-parent-element
+        const child = document.getElementById('totalremoval');
+
+        child.parentElement.remove();
+
+    }//RemoveDiv()
+
+
+    //CALL FUNCTION TO REMOVE ALL JOB ROWS
+    function RemoveAllRows() {
+
+
+        if (count > 0) {
+
+            //Call RemoveRow() for div with id "totalremoval"
+            RemoveDiv();
+
+
+            //Re-add a parent container so that new rows can be added afterwards
+            var container = $(`<div id="container"></div></br>`);
+            $("#main").append(container);
+
+
+            //Re-add delete-all div also
+            var deletealldiv = $(`<div id="totalremoval"></div>`);
+            $("#container").append(deletealldiv);
+
+            //Reset row counter
+            count = 0;
+
+
+        }
+
+
+    }//RemoveAllRows()
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<form id="skillform">
+
+    <!-- <input id="bulksubmit" type="submit" class="btn btn-primary" value="SUBMIT ALL ROWS"> -->
+
+    <div id="main" class="form-group">
+        <!-- THIS IS WHERE A NEWLY CREATED ROWS WILL APPEAR-->
+        <div id="container">
+            <div id="totalremoval"></div>
+        </div>
+    </div>
+
+</form>
+
+
+
