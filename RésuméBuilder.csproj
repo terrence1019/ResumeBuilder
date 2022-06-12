@@ -158,8 +158,18 @@
     <Compile Include="Migrations\202205081416161_AddSkillDB.designer.cs">
       <DependentUpon>202205081416161_AddSkillDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202206120008231_AddJobData.cs" />
+    <Compile Include="Migrations\202206120008231_AddJobData.designer.cs">
+      <DependentUpon>202206120008231_AddJobData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202206120016175_AddJobData2.cs" />
+    <Compile Include="Migrations\202206120016175_AddJobData2.designer.cs">
+      <DependentUpon>202206120016175_AddJobData2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Applicant.cs" />
+    <Compile Include="Models\JobDetail.cs" />
+    <Compile Include="Models\Job.cs" />
     <Compile Include="Models\MyDbContext.cs" />
     <Compile Include="Models\Personal.cs" />
     <Compile Include="Models\Skill.cs" />
@@ -262,6 +272,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202205081416161_AddSkillDB.resx">
       <DependentUpon>202205081416161_AddSkillDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206120008231_AddJobData.resx">
+      <DependentUpon>202206120008231_AddJobData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206120016175_AddJobData2.resx">
+      <DependentUpon>202206120016175_AddJobData2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

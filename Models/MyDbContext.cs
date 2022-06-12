@@ -48,5 +48,11 @@ namespace RésuméBuilder.Models
         //For Skill Model:
         public DbSet <Skill> skillDB { get; set; }
 
+        //For Job Model:
+        public DbSet <Job> jobDB { get; set; }
+
+        //For JobDetail Model:
+        public DbSet <JobDetail> jobdetailDB { get; set; }
+
     }
 }
