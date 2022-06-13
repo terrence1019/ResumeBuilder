@@ -25,7 +25,11 @@
 
 <script>
 
-    count = 0;
+    //CREATE HTML ELEMENTS
+
+    var count = 0;
+    var detailcount = 0;
+
 
     $("#addrow").click(function () {
 
@@ -74,9 +78,9 @@
         sub_job_btn.class = "submitone";
         sub_job_btn.onclick = function () {
 
-            //SubmitJobRow(jobrowid);
-            window.alert("Submission Complete!");
-            //RemoveRow(this);
+            SubmitJobRow(jobrowid);
+            window.alert("Single Job Row Submission Complete!");
+            //RemoveJobRow(this);
 
         };
         sub_job_btn.style.background = "mediumblue";
@@ -101,14 +105,13 @@
         var add_detail_btn = document.createElement("button");
         add_detail_btn.innerHTML = "ADD DETAIL";
         add_detail_btn.type = "button";
-        add_detail_btn.name = "formBtn_Submit";
-        add_detail_btn.class = "submitone";
+        add_detail_btn.name = "formBtn_AddDetail";
+        add_detail_btn.class = "adddetailone";
         add_detail_btn.onclick = function () {
 
             CreateJobDetailField(jobrowid);
             window.alert("Detail Added!");
-            //RemoveRow(this);
-
+            
         };
         add_detail_btn.style.background = "lightblue";
         add_detail_btn.style.color = "white";
@@ -117,17 +120,17 @@
         
 
 
-        //INPUT SUB-FIELDS
+        //INPUT SUB-FIELDS IN A DIV CONTAINER
         //In JS, deleting a child requires deleting the parent. So we use a div container as a parent
         var jobDetailDivID = jobrowid + "_jobdetaildiv";
         var jobDetailDivOpen = $(`<div id="${jobDetailDivID}">`);
         var jobDetailDivClose = $(`</div><br /><br />`);
 
 
-        var companyNameField = $(`<input name="JobCompanyName" type="text" class="jobcompanyname" id="${companyNameID}" placeholder="Company Name" />`);
-        var positionField = $(`<input name="JobPosition" type="text" class="jobposition" id="${positionID}" placeholder="Company Position" />`);
-        var fromDateField = $(`<input name="JobFromDate" type="text" class="jobfromdate" id="${fromDateID}" placeholder="YYYY-MM" />`);
-        var toDateField = $(`<input name="JobFromDate" type="text" class="jobfromdate" id="${toDateID}" placeholder="YYYY-MM" />`);
+        var companyNameField = $(`<input name="JobCompanyName" type="text" class="jobcompanyname" id="${companyNameID}" size="70" placeholder="Company Name" />`);
+        var positionField = $(`<input name="JobPosition" type="text" class="jobposition" id="${positionID}" size="70" placeholder="Company Position" />`);
+        var fromDateField = $(`<input name="JobFromDate" type="text" class="jobfromdate" id="${fromDateID}" size="50" placeholder="YYYY-MM" />`);
+        var toDateField = $(`<input name="JobFromDate" type="text" class="jobfromdate" id="${toDateID}" size="50" placeholder="YYYY-MM OR Present" />`);
 
 
         var record = divOpen.append(
@@ -178,13 +181,11 @@
         var jobDetailDivID = jobrowid + "_jobdetaildiv";
         var jobDetailDivTargetID = "#" + jobDetailDivID;
 
-        var jobDetailID = jobrowid + "_detail";
+        var jobDetailID = jobrowid + "_detail_" + detailcount;
 
-        window.alert(`Creating Input field to append to ${jobDetailDivTargetID}`);
+        //window.alert(`Creating Input field to append to ${jobDetailDivTargetID}`);
 
-        var jobFunctionID;
-        var jobFunctionDetailID;
-
+        
         //DIV CONTAINERS
         //Parent div to store input field AND to contain child when deleted
         var divDetailOpen = $(`<div>`);
@@ -201,7 +202,7 @@
         del_detail_btn.class = "deleteone";
         del_detail_btn.onclick = function () {
 
-            RemoveRow(this);
+            RemoveJobFunctionRow(this);
 
         }
         del_detail_btn.style.background = "red";
@@ -215,11 +216,12 @@
             del_detail_btn
 
         ).append(divDetailClose)
-        
+
+        window.alert(`Adding Job Function with ID: ${jobDetailID}`);
 
         $(jobDetailDivTargetID).append(detail);
 
-
+        detailcount++;
 
     }//CreateJobDetailField()
 
@@ -240,6 +242,18 @@
 
     }//RemoveRow()
 
+
+    //REMOVE A SINGLE ITEM
+    function RemoveJobFunctionRow(elem) {
+
+        //To Delete an item using remove(), it requires the parent to be deleted.
+        //Therefore, to work effectively, the child item should be stored in a parent,
+        //such as a <div>
+        elem.parentElement.remove();
+
+        detailcount--;
+
+    }//RemoveRow()
 
     //REMOVE A SINGLE JOB ROW
     function RemoveJobRow(elem) {
@@ -299,6 +313,114 @@
 </script>
 
 
+<script>
+
+    //SUBMISSIONS
+    function SubmitJobRow(jobrowid) {
+
+        window.alert("Standby for submission of all data for Job Row ID " + jobrowid);
+
+        var applicantid = @id;
+        var jobno = jobrowid;
+
+        //PART 01:
+        //PULL DATA FOR JOB ROW PRIMARY FIELDS ==
+        var companyNameID = jobrowid + "_jobcompanyname";
+        var positionID = jobrowid + "_jobposition";
+        var fromDateID = jobrowid + "_jobfromdate";
+        var toDateID = jobrowid + "_jobtodate";
+
+        var company = document.getElementById(companyNameID).value;
+        var position = document.getElementById(positionID).value;
+        var fromDate = document.getElementById(fromDateID).value;
+        var toDate = document.getElementById(toDateID).value;
+
+
+        window.alert(`PRIMARY FIELD DATA: ${company} - ${position} - ${fromDate} - ${toDate}`);
+
+
+        //PART 02:
+        //PULL DATA FOR JOB ROW SUB FIELDS ==
+        //STORE IN AN ARRAY
+        //var jobDetailID = jobrowid + "_detail_" + detailcount;
+        var queryPartial = jobrowid + "_detail_";
+        window.alert(`Query Partial: ${queryPartial}`);
+
+
+        //PULL ALL ROWS WITH REQUIRED ID DATA ON PAGE USING PARTIAL DATA SEARCH AND ADD THEM TO NODELIST:
+        //https://bobbyhadz.com/blog/javascript-get-element-by-id-contains
+        //Find all job functions related to the job row and store them in a node list:
+        var jobfunctionNodeList = document.querySelectorAll(`[id*="${queryPartial}"]`);
+
+        //var len1 = jobfunctionNodeList.length;
+        //window.alert(`${len1} job function(s) found`);
+
+        //Convert NodeList to Array
+        //https://www.geeksforgeeks.org/how-to-convert-a-dom-nodelist-to-an-array-using-javascript/
+        const jobfunctionArr = Array.from(jobfunctionNodeList);
+
+
+        //Declare empty array to store valid Job Functions
+        //https://www.quora.com/How-do-you-declare-an-empty-array-in-JavaScript
+        var JobFunctions = [];
+
+        //Traverse array
+        //https://stackoverflow.com/questions/9329446/for-each-over-an-array-in-javascript
+        for(var jobfunction of jobfunctionArr)
+        {
+            //window.alert(jobfunction.value);
+
+            //if job function is not an empty string value, add to array called JobFunctions
+            //https://stackoverflow.com/questions/351409/how-to-append-something-to-an-array
+            if (jobfunction.value != "") JobFunctions.push(jobfunction.value);
+
+        }
+
+        var arr_len = JobFunctions.length;
+        window.alert(arr_len+" job function(s) to be submitted!");
+
+        //Traverse finalized array of Job Functions
+        for (var jobfunctionValid of JobFunctions) {
+
+            window.alert(jobfunctionValid);
+
+        }
+
+        //PART 03:
+        //SUBMISSION OF ALL DATA
+
+        //WITH ALL DATA COLLECTED, POST DATA TO RESPECTIVE CONTROLLER ACTIONS USING AJAX QUERY ====
+
+        //POST PRIMARY FIELDS TO CONTROLLER ACTION THAT IS HANDLING JOB TABLE:
+        //What's being posted: applicantid, jobno, company, position, fromdate, todate
+
+        //POST SECONDARY FIELDS TO CONTROLLER ACTION THAT IS HANDLING JOB DETAILS TABLE:
+        //What's being posted: applicantid, jobno, JobFunctions
+
+        //Posting an array to Controller Action using Ajax Query:
+        //https://www.youtube.com/watch?v=sQjkEBD68RQ&ab_channel=NETDevelopment
+
+        //AJAX START
+            $.ajax({
+
+                type: 'POST',
+                url: '@Url.Action("AddJobDetailsFormActionQuery")',
+                //The traditional parameter is required for dealing with non-primitive datatypes like arrays
+                traditional: true,
+                data: {
+                    applicantID: applicantid,
+                    jobNumberID: jobno,
+                    jobFunctionsList: JobFunctions
+                }
+
+            })//end ajax
+            //AJAX STOP
+
+        window.alert("Completed.");
+
+    }
+
+</script>
 
 
 
