@@ -394,6 +394,25 @@
         //POST PRIMARY FIELDS TO CONTROLLER ACTION THAT IS HANDLING JOB TABLE:
         //What's being posted: applicantid, jobno, company, position, fromdate, todate
 
+        //AJAX START
+            $.ajax({
+
+                type: 'POST',
+                url: '@Url.Action("AddJobFormActionQuery")',
+                //The traditional parameter is required for dealing with non-primitive datatypes like arrays
+                traditional: true,
+                data: {
+                    applicantID: applicantid,
+                    jobNumberID: jobno,
+                    companyName: company,
+                    position: position,
+                    fromDate: fromDate,
+                    toDate: toDate
+                }
+
+            })//end ajax
+            //AJAX STOP
+
         //POST SECONDARY FIELDS TO CONTROLLER ACTION THAT IS HANDLING JOB DETAILS TABLE:
         //What's being posted: applicantid, jobno, JobFunctions
 
@@ -416,7 +435,7 @@
             })//end ajax
             //AJAX STOP
 
-        window.alert("Completed.");
+        window.alert("DB Updates Completed.");
 
     }
 
