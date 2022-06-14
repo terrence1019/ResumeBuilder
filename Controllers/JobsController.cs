@@ -59,8 +59,35 @@ namespace RésuméBuilder.Controllers
         {
 
 
+            //PULL UP JOB TABLE
+            var jobTable = dbContext.jobDB;
 
 
+            Job jobItem = new Job();
+
+            //Deal with Conversion of Strings to Time
+            //http://net-informations.com/q/faq/stringdate.html
+            DateTime fDate = DateTime.ParseExact(fromDate, "yyyy-MM", null);
+
+            if ( !toDate.Equals("") || !toDate.ToLower().Equals("present") )
+            { 
+                DateTime tDate = DateTime.ParseExact(toDate, "yyyy-MM", null);
+                jobItem.ToDate = tDate;
+            
+            }
+
+            jobItem.ApplicantID = applicantID;
+            jobItem.JobID = jobNumberID;
+            jobItem.CompanyName = companyName;
+            jobItem.Position = position;
+            jobItem.FromDate = fDate;
+
+
+            //Add record to Job Database
+            jobTable.Add(jobItem);
+
+            //Save Changes to DB:
+            //dbContext.SaveChanges();
 
             return View();
 
@@ -74,7 +101,7 @@ namespace RésuméBuilder.Controllers
 
 
             //PULL UP JOB DETAILS TABLE
-
+            var jobdetailTable = dbContext.jobdetailDB;
 
 
 
@@ -86,12 +113,14 @@ namespace RésuméBuilder.Controllers
             Console.WriteLine(test1);
 
 
-            int i = 0;
+            int i;
 
             int len = jobFunctionsList.Length;
 
+            int limit = len - 1;
+
             //ADD EACH JOB FUNCTION TO JOB DETAIL TABLE
-            for (i = 0; i < len; i++)
+            for (i = 0; i < limit; i++)
             {
                 //Console.WriteLine( jobFunctionsList[i] );
                                 
@@ -116,17 +145,18 @@ namespace RésuméBuilder.Controllers
                 jobdetailItem.JobFunction = jobFunctionsList[i];
 
                 //Pull Up JobDetail DB Table:
-                var jobdetailsTable = dbContext.jobdetailDB;
+                //var jobdetailsTable = dbContext.jobdetailDB;
 
                 //Add Each Job Detail Item to JobDetail DB Table:
-                jobdetailsTable.Add(jobdetailItem);
+                jobdetailTable.Add(jobdetailItem);
 
-                //Save Changes to DB Table:
-                //dbContext.SaveChanges();
+                //Save Changes to DB:
+                dbContext.SaveChanges();
 
             }
 
 
+            
 
 
             Console.WriteLine();

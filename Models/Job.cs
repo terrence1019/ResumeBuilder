@@ -29,6 +29,11 @@ namespace RésuméBuilder.Models
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
 
+        [Required]
+        [StringLength(60)]
+        [Display(Name = "Position")]
+        public string Position { get; set; }
+
         //https://www.c-sharpcorner.com/UploadFile/4b0136/perform-data-annotation-in-Asp-Net-mvc-5/
         [Required]
         [DataType(DataType.Date)]

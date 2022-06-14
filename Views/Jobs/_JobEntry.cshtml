@@ -23,6 +23,21 @@
 
 <br />
 
+
+<script>
+
+    var current = new Date();
+    //window.alert(current);
+
+    var date = current.getFullYear() + '-' + ('0' + (current.getMonth() + 1)).slice(-2) + '-' + ('0' + current.getDate()).slice(-2);
+    var time = ('0' + current.getHours()).slice(-2) + "-" + ('0' + current.getMinutes()).slice(-2) + "-" + ('0' + current.getSeconds()).slice(-2);
+
+    var currentDateTime = date + "_" + time + "_";
+    //window.alert(currentDateTime+"Test");
+
+</script>
+
+
 <script>
 
     //CREATE HTML ELEMENTS
@@ -321,7 +336,27 @@
         window.alert("Standby for submission of all data for Job Row ID " + jobrowid);
 
         var applicantid = @id;
-        var jobno = jobrowid;
+
+        //Create a unique jobid number using timestamp and job row number
+        //Convert current time to string with a format of YYYY-MM-DD_HH-MM-SS_
+        //https://tecadmin.net/get-current-date-time-javascript/
+
+        //GET CURRENT DATE-TIME
+        var current = new Date();
+        //window.alert(current);
+
+        //FORMAT CURRENT DATE-TIME TO YYYY-MM-DD_HH-MM-SS_
+        //http://jsfiddle.net/j6qJp/1/
+        var date = current.getFullYear() + '-' + ('0' + (current.getMonth() + 1)).slice(-2) + '-' + ('0' + current.getDate()).slice(-2);
+        var time = ('0' + current.getHours()).slice(-2) + "-" + ('0' + current.getMinutes()).slice(-2) + "-" + ('0' + current.getSeconds()).slice(-2);
+
+        var currentDateTime = date + "_" + time + "_";
+        //window.alert(currentDateTime);
+
+
+        var jobno = currentDateTime+jobrowid;
+
+        window.alert(`Unique Job Row ID = ${jobno} of lenght ${jobno.length}`);
 
         //PART 01:
         //PULL DATA FOR JOB ROW PRIMARY FIELDS ==

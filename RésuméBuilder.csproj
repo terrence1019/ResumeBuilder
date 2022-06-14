@@ -171,6 +171,10 @@
     <Compile Include="Migrations\202206121249143_dbCheck.designer.cs">
       <DependentUpon>202206121249143_dbCheck.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202206140112396_addPosition.cs" />
+    <Compile Include="Migrations\202206140112396_addPosition.designer.cs">
+      <DependentUpon>202206140112396_addPosition.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Applicant.cs" />
     <Compile Include="Models\JobDetail.cs" />
@@ -288,6 +292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202206121249143_dbCheck.resx">
       <DependentUpon>202206121249143_dbCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206140112396_addPosition.resx">
+      <DependentUpon>202206140112396_addPosition.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
