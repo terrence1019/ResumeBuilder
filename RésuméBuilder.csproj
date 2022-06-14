@@ -175,6 +175,10 @@
     <Compile Include="Migrations\202206140112396_addPosition.designer.cs">
       <DependentUpon>202206140112396_addPosition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202206141214412_UpdateFieldLimits.cs" />
+    <Compile Include="Migrations\202206141214412_UpdateFieldLimits.designer.cs">
+      <DependentUpon>202206141214412_UpdateFieldLimits.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Applicant.cs" />
     <Compile Include="Models\JobDetail.cs" />
@@ -295,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202206140112396_addPosition.resx">
       <DependentUpon>202206140112396_addPosition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206141214412_UpdateFieldLimits.resx">
+      <DependentUpon>202206141214412_UpdateFieldLimits.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

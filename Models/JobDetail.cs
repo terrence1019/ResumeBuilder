@@ -21,15 +21,15 @@ namespace RésuméBuilder.Models
         [Required]
         public virtual int ApplicantID { get; set; }
 
-        [StringLength(35)]
+        [StringLength(40)]
         [Display(Name = "Job ID")]
         public string JobID { get; set; }
 
-        [StringLength(35)]
+        [StringLength(40)]
         [Display(Name = "Job Function ID")]
         public string JobFunctionID { get; set; }
 
-        [StringLength(150)]
+        [StringLength(200)]
         [Display(Name = "Job Function")]
         public string JobFunction { get; set; }
 

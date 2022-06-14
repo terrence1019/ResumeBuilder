@@ -59,6 +59,8 @@ namespace RésuméBuilder.Controllers
         {
 
 
+
+
             //PULL UP JOB TABLE
             var jobTable = dbContext.jobDB;
 
@@ -87,7 +89,7 @@ namespace RésuméBuilder.Controllers
             jobTable.Add(jobItem);
 
             //Save Changes to DB:
-            //dbContext.SaveChanges();
+            dbContext.SaveChanges();
 
             return View();
 
@@ -99,64 +101,98 @@ namespace RésuméBuilder.Controllers
             (int applicantID, string jobNumberID, string [] jobFunctionsList)
         {
 
-
-            //PULL UP JOB DETAILS TABLE
-            var jobdetailTable = dbContext.jobdetailDB;
-
-
-
-            //GET ARRAY ELEMENTS
-            var test0 = jobFunctionsList[0];
-            Console.WriteLine(test0);
-
-            var test1 = jobFunctionsList[1];
-            Console.WriteLine(test1);
-
-
-            int i;
-
-            int len = jobFunctionsList.Length;
-
-            int limit = len - 1;
-
-            //ADD EACH JOB FUNCTION TO JOB DETAIL TABLE
-            for (i = 0; i < limit; i++)
+            if (jobFunctionsList != null && jobFunctionsList.Length > 0)
             {
-                //Console.WriteLine( jobFunctionsList[i] );
-                                
 
-                string JobID = jobNumberID;
-                string JobFunctionID = jobNumberID + "_detail_" + i;
+                
 
 
-                //Create instance of JobDetail Model/Class/Table
-                //NOTE: Instance of JobDetail Model/Class/Table = Table Record in JobDetail
+
+                //GET ARRAY ELEMENTS
+                //var test0 = jobFunctionsList[0];
+                //Console.WriteLine(test0);
+
+                //var test1 = jobFunctionsList[1];
+                //Console.WriteLine(test1);
+
+
+
+
+                int len = jobFunctionsList.Length;
+
+                int limit = len - 1;
+
+
+
+
+                //ADD EACH JOB FUNCTION TO JOB DETAIL TABLE
+
+                int i;
+                //for (i = 0; i < limit; i++)
+
+                for (i = 0; i <= limit; i++)
+                {
+                    //Console.WriteLine( jobFunctionsList[i] );
+
+                    //PULL UP JOB DETAILS TABLE
+                    var jobdetailTable = dbContext.jobdetailDB;
+
+                    string JobID = jobNumberID;
+                    string JobFunctionIDStr = jobNumberID + "_detail_" + i;
+                    string JobFunctionID = JobFunctionIDStr.ToString();
+
+
+                    //Create instance of JobDetail Model/Class/Table
+                    //NOTE: Instance of JobDetail Model/Class/Table = Table Record in JobDetail
+                    JobDetail jobdetailItem = new JobDetail();
+
+                    /* What's going to be required to be saved to the database?
+                     * ApplicantID
+                     * JobID
+                     * JobFunctionID
+                     * JobFunction
+                    */
+                    jobdetailItem.ApplicantID = applicantID;
+                    jobdetailItem.JobID = JobID;
+                    jobdetailItem.JobFunctionID = JobFunctionID;
+                    jobdetailItem.JobFunction = jobFunctionsList[i];
+
+                    //Pull Up JobDetail DB Table:
+                    //var jobdetailsTable = dbContext.jobdetailDB;
+
+                    //Add Each Job Detail Item to JobDetail DB Table:
+                    jobdetailTable.Add(jobdetailItem);
+
+                    //Save Changes to DB:
+                    dbContext.SaveChanges();
+
+                }
+
+
+
+
+
+
+                /*
                 JobDetail jobdetailItem = new JobDetail();
 
-                /* What's going to be required to be saved to the database?
-                 * ApplicantID
-                 * JobID
-                 * JobFunctionID
-                 * JobFunction
-                */
-                jobdetailItem.ApplicantID = applicantID;
+                string JobID = jobNumberID;
+                string JobFunctionIDStr = jobNumberID + "_detail_" + 0;
+                string JobFunctionID = JobFunctionIDStr.ToString();
+
+                jobdetailItem.ApplicantID = 1;
                 jobdetailItem.JobID = JobID;
                 jobdetailItem.JobFunctionID = JobFunctionID;
-                jobdetailItem.JobFunction = jobFunctionsList[i];
+                jobdetailItem.JobFunction = jobFunctionsList[0];
 
-                //Pull Up JobDetail DB Table:
-                //var jobdetailsTable = dbContext.jobdetailDB;
-
-                //Add Each Job Detail Item to JobDetail DB Table:
                 jobdetailTable.Add(jobdetailItem);
 
-                //Save Changes to DB:
+
                 dbContext.SaveChanges();
+                */
 
-            }
 
-
-            
+            }//Check if array is empty
 
 
             Console.WriteLine();
