@@ -7,7 +7,15 @@
     ViewBag.Title = "Résumé";
 
 
-    
+
+    //Target ApplicantID
+    int appid = Model.ApplicantRecordVM.ApplicantID;
+
+
+    //Set up instance of Database Context
+    MyDbContext dbContext = new MyDbContext();
+
+
 
 }
 
@@ -162,7 +170,95 @@
 
 
     -->
+    @{ 
 
+        var jobsTable = dbContext.jobDB;
+        var jobdetailsTable = dbContext.jobdetailDB;
+
+
+
+
+        //Get all Company Names and store it
+        List<string> CompanyNamesWithDuplicates = new List<string>();
+
+        //Stores a list of the Applicant Job
+        List<Job> ApplicantJobs = new List<Job>();
+        List<JobDetail> ApplicantJobDetails = new List<JobDetail>();
+
+
+
+        //01: TRAVERSE JOB TABLE
+        //02: GET COMPANY NAMES
+        //03: STORE THESE NAMES IN A LIST
+        //03: LOOK FOR RECORDS RELATED TO APPLICANT ID
+        //04: STORE THESE RECORDS IN A LIST
+        foreach(var job in jobsTable)
+        {
+            if (job.ApplicantID == appid)
+            {
+
+                //Position of Company Name in list must be sorted based on most recent From Date.
+                //The most recent From Date relates to the most recent Job.
+                //Also, the most recent Job must be at the head of the list.
+
+
+                //Store Company Names found for specific Applicant ID
+                CompanyNamesWithDuplicates.Add(job.CompanyName);
+
+                //Store Job records for specific Applicant ID
+                ApplicantJobs.Add(job);
+            }
+        }
+
+
+        //01: TRAVERSE JOB DETAIL TABLE
+        //02: LOOK FOR RECORDS RELATED TO APPLICANT ID
+        //03: STORE THESE RECORDS IN A LIST
+        foreach (var jobdetail in jobdetailsTable)
+        {
+            if (jobdetail.ApplicantID == appid)
+            {
+
+                //Store Job records for specific Applicant ID
+                ApplicantJobDetails.Add(jobdetail);
+            }
+        }
+
+
+
+        //USE COMPANY NAMES AS HEADERS UNDER EXPERIENCE SECTION
+        //Create a list of headers using the Company Name list
+        List<string> CompanyNames = CompanyNamesWithDuplicates.Distinct().ToList();
+
+
+        //Questions to ask:
+        //How do we sort Company Name by From Date?
+        //How do we sort Position by From Date?
+
+
+        //Traverse Company Name List
+        foreach (var company in CompanyNames)
+            {
+                <h3>@company</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }//foreach (var company in CompanyNames)
+
+
+
+
+    }
 
 </div>
 
@@ -179,11 +275,11 @@
     @{
 
         //Target ApplicantID
-        int appid = Model.ApplicantRecordVM.ApplicantID;
+        //int appid = Model.ApplicantRecordVM.ApplicantID;
 
 
         //Set up instance of Database Context
-        MyDbContext dbContext = new MyDbContext();
+        //MyDbContext dbContext = new MyDbContext();
 
         //Pull up the Skill Table
         var skillsTable = dbContext.skillDB;
