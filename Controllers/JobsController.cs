@@ -67,15 +67,24 @@ namespace RésuméBuilder.Controllers
 
             Job jobItem = new Job();
 
-            //Deal with Conversion of Strings to Time
+            //DEALING WITH CONVERTING STRINGS TO DATE-TIME:
             //http://net-informations.com/q/faq/stringdate.html
+
+            //FROM DATE:
             DateTime fDate = DateTime.ParseExact(fromDate, "yyyy-MM", null);
 
-            if ( !toDate.Equals("") || !toDate.ToLower().Equals("present") )
-            { 
+            //TO DATE:
+            if ( toDate.Equals("") || toDate.ToLower().Equals("present") )
+            {
+                toDate = "9999-12";
+                DateTime tDate = DateTime.ParseExact(toDate, "yyyy-MM", null);
+                jobItem.ToDate = tDate;         
+            }
+
+            else
+            {
                 DateTime tDate = DateTime.ParseExact(toDate, "yyyy-MM", null);
                 jobItem.ToDate = tDate;
-            
             }
 
             jobItem.ApplicantID = applicantID;

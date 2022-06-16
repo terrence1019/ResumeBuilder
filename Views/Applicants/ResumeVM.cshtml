@@ -21,6 +21,7 @@
 
 @Html.Partial("_ResumeStyle")
 
+
 <h2 id="mainTitle">Résumé</h2>
 
 <div hidden>
@@ -170,7 +171,7 @@
 
 
     -->
-    @{ 
+    @{
 
         var jobsTable = dbContext.jobDB;
         var jobdetailsTable = dbContext.jobdetailDB;
@@ -187,28 +188,47 @@
 
 
 
+
+
+
         //01: TRAVERSE JOB TABLE
-        //02: GET COMPANY NAMES
-        //03: STORE THESE NAMES IN A LIST
-        //03: LOOK FOR RECORDS RELATED TO APPLICANT ID
-        //04: STORE THESE RECORDS IN A LIST
-        foreach(var job in jobsTable)
+        //02: LOOK FOR RECORDS RELATED TO APPLICANT ID
+        //03: STORE THESE RECORDS IN A LIST
+
+
+        foreach (var job in jobsTable)
         {
             if (job.ApplicantID == appid)
             {
-
-                //Position of Company Name in list must be sorted based on most recent From Date.
-                //The most recent From Date relates to the most recent Job.
-                //Also, the most recent Job must be at the head of the list.
-
-
-                //Store Company Names found for specific Applicant ID
-                CompanyNamesWithDuplicates.Add(job.CompanyName);
 
                 //Store Job records for specific Applicant ID
                 ApplicantJobs.Add(job);
             }
         }
+
+
+        //04: SORT STORED RECORDS BY FROM DATE
+        //Position of Company Name in list must be sorted based on most recent From Date.
+        //The most recent From Date relates to the most recent Job.
+        //Also, the most recent Job must be at the head of the list.
+        //https://stackoverflow.com/questions/3309188/how-to-sort-a-listt-by-a-property-in-the-object
+        List<Job> SortedApplicantJobs = ApplicantJobs.OrderByDescending(j => j.FromDate).ToList();
+
+
+        //01: TRAVERSE SORTED (BY FROM DATE) JOB LIST
+        //02: GET COMPANY NAMES
+        //03: STORE THESE RECORDS IN A LIST
+        foreach (var job in SortedApplicantJobs)
+        {
+            if (job.ApplicantID == appid)
+            {
+                //Store Company Names found for specific Applicant ID
+                CompanyNamesWithDuplicates.Add(job.CompanyName);
+            }
+        }
+
+
+
 
 
         //01: TRAVERSE JOB DETAIL TABLE
@@ -227,7 +247,7 @@
 
 
         //USE COMPANY NAMES AS HEADERS UNDER EXPERIENCE SECTION
-        //Create a list of headers using the Company Name list
+        //Create a list of headers using the Company Name list and stripping away Duplicates
         List<string> CompanyNames = CompanyNamesWithDuplicates.Distinct().ToList();
 
 
@@ -236,10 +256,73 @@
         //How do we sort Position by From Date?
 
 
+
+
+
+        //NOW THE CRUCIAL PART OF THE JOB EXPERIENCE OUTPUT:
+
+
+
+
         //Traverse Company Name List
         foreach (var company in CompanyNames)
-            {
-                <h3>@company</h3>
+        {
+            <h3>@company</h3>
+
+
+            //NOW THE CRUCIAL PART OF THE JOB EXPERIENCE OUTPUT:
+            <table id="job_table" cellspacing="10">
+
+                @foreach (var job in SortedApplicantJobs)
+                {
+
+
+
+
+                    if (job.CompanyName == company)
+                    {
+
+                        //Format Date-Time variables from Database to String for cleaner look:
+                        //https://stackoverflow.com/questions/38823758/format-datetime-now-to-yyyy-mm-dd
+                        string fDateStr, tDateStr;
+                        
+                        //FROM DATE:
+                        fDateStr = job.FromDate.ToString("yyyy-MM");
+
+                        //TO DATE:
+                        //if Year in Database Record is 9999, identify To Date as Present Job
+                        //https://stackoverflow.com/questions/1965087/extract-year-from-datetime-format
+                        int year = job.FromDate.Year;
+                        if (year == 9999) { tDateStr = "PRESENT"; }
+                        else { tDateStr = job.ToDate.ToString("yyyy-MM"); }
+
+
+                        <tr>
+                            <td class="job_timeline">@fDateStr</td>
+                            <td class="job_timeline">@tDateStr</td>
+
+                            <td class="job_position">@job.Position</td>
+
+                            <td>
+                                @foreach (var jobdetail in ApplicantJobDetails)
+                                {
+                                    <ul>
+                                        @if (jobdetail.JobID == job.JobID)
+                                        {
+                                            <li>@jobdetail.JobFunction</li>
+                                        }
+                                    </ul>
+                                }
+                            </td>
+
+
+
+                        </tr>
+                    }
+
+
+                }
+            </table>
 
 
 
@@ -253,7 +336,15 @@
 
 
 
-            }//foreach (var company in CompanyNames)
+
+
+
+
+
+
+
+
+    }//foreach (var company in CompanyNames)
 
 
 
