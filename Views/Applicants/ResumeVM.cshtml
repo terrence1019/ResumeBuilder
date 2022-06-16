@@ -181,6 +181,7 @@
 
         //Get all Company Names and store it
         List<string> CompanyNamesWithDuplicates = new List<string>();
+        List<string> PositionsWithDuplicates = new List<string>();
 
         //Stores a list of the Applicant Job
         List<Job> ApplicantJobs = new List<Job>();
@@ -224,6 +225,7 @@
             {
                 //Store Company Names found for specific Applicant ID
                 CompanyNamesWithDuplicates.Add(job.CompanyName);
+                PositionsWithDuplicates.Add(job.Position);
             }
         }
 
@@ -249,6 +251,7 @@
         //USE COMPANY NAMES AS HEADERS UNDER EXPERIENCE SECTION
         //Create a list of headers using the Company Name list and stripping away Duplicates
         List<string> CompanyNames = CompanyNamesWithDuplicates.Distinct().ToList();
+        List<string> Positions = PositionsWithDuplicates.Distinct().ToList();
 
 
         //Questions to ask:
