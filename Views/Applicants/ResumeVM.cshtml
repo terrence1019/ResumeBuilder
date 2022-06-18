@@ -418,6 +418,19 @@
 
 
 
+                                @foreach (var job in SortedApplicantJobs)
+                                {
+                                    foreach (var jobdetail in ApplicantJobDetails)
+                                    {
+                                        <ul>
+                                            @if (jobdetail.JobID == job.JobID && job.Position == grouped.Key.Position)
+                                            {
+                                                <li>@jobdetail.JobFunction</li>
+                                            }
+                                        </ul>
+                                    }
+                                }
+
 
 
 
@@ -618,13 +631,14 @@
 
         */
 
+        <!-- ORIGINAL TEST VERSION -->
 
         foreach (var category in SkillCategoryList)
         {
 
 
 
-            <h3>@category</h3>
+            //<h3>@category</h3>
 
             //3 x Y ROW GENERATION
             int size = ApplicantSkills.Count;
@@ -654,14 +668,14 @@
                         {
 
                             arr[i, j] = ApplicantSkills[k].SkillPoint;
-                            string test = arr[i, j];
+                            string skill = arr[i, j];
 
                             if (ApplicantSkills[k].SkillCategory == category)
                             {
                                 <tr>
                                     <td>
                                         <!-- TESTING VALUES FOR CORRECT STORAGE -->
-                                        <ul class="skill"><li>@ApplicantSkills[k].SkillPoint</li></ul>
+                                        <!-- <ul class="skill"><li>@ApplicantSkills[k].SkillPoint</li></ul> -->
                                     </td>
                                 </tr>
                             }//if
@@ -679,41 +693,94 @@
 
                 }
 
-                <!-- PART 02: PRINTING ITEMS FROM 2D ARRAY -->
+                
 
             </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
 
         }//end foreach
 
 
 
+        <!-- SUPERIOR VERSION -->
+
+        foreach(var category in SkillCategoryList)
+        {
+
+
+                        <h3>@category</h3>
+
+                        //3 x Y ROW GENERATION
+                        int size = ApplicantSkills.Count;
+
+            
+
+                        int rowSize = 3; //3-row
+                        double colSize = (size / 3) + 1;
+
+                        string[,] arr = new string[3, size];
+
+
+                        <table>
+
+                            <!-- PART 02: PRINTING ITEMS FROM 2D ARRAY -->
+                            @{
+
+                                int x, y, z = 0;
+
+                                for (x = 0; x < colSize; x++)
+                                {
+                                    <tr>
+                                        @for (y = 0; y < rowSize; y++)
+                                        {
+
+                                            if (z < size)
+                                            {
+
+                                                arr[x, y] = ApplicantSkills[z].SkillPoint;
+                                                string skill = arr[x, y];
+
+
+                                                if (ApplicantSkills[z].SkillCategory == category && arr[x, y] != "")
+                                                {
+
+                                                    <td>
+
+                                                        <ul class="skill">
+                                                            <li>@skill</li>
+                                                        </ul>
+
+                                                    </td>
+
+                                                }
+
+                                                z++;
+
+                                            }
+
+
+
+
+                                        }
+                                    </tr>
+                                }
+
+
+
+
+
+
+
+                            }
+
+
+
+                        </table>
+
+
+        }
 
 
 
