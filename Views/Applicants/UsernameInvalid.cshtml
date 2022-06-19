@@ -7,12 +7,12 @@
 <!-- Navigation Bar with Partial View -->
 @Html.Partial("_NavBar")
 
-<h2>Username Taken</h2>
+<h2>Username Invalid</h2>
 
-<p>The Username entered has already been taken!</p>
+<p>The Username entered is either taken or... you entered no username at all!</p>
 
 <p>
-    Return to Registration Page and use a different Username.
+    Return to Registration Page and use a valid Username.
 
     @Html.ActionLink("[REGISTER HERE!]", "RegisterUserPageView")
 

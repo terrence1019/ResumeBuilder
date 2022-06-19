@@ -89,28 +89,28 @@ namespace RésuméBuilder.Controllers
             var username = applicant.ApplicantUsername;
 
 
-            //Check Applicant DB for to verify if name is not in use
-            foreach(var record in applicantTable.ToList())
+
+            //Check Applicant DB for to verify if name is not pre-existing in database.
+            //Match string for string:
+            var existingUsername =
+                applicantTable.FirstOrDefault(u => u.ApplicantUsername.Equals(username));
+
+            //If username exists or name entered is empty, redirect to appropriate page:
+            if (existingUsername != null || username == null )
             {
-                //If name is taken, notify user immediately by redirecting to proper page.
-                //Match string for string:
-                if (record.ApplicantUsername.Equals(username))
-                { 
-                    return RedirectToAction("UsernameTaken", "Applicants"); 
-                }
-
-                //Else...
-                else
-                {
-                    //Add Applicant Record to Applicant Table of DB
-                    applicantTable.Add(applicant);
-
-                    //Save Changes to Database / Database Context
-                    dbContext.SaveChanges();
-                    
-                }
-
+                return RedirectToAction("UsernameInvalid", "Applicants");
             }
+
+
+            else
+            {
+                //Add Applicant Record to Applicant Table of DB
+                applicantTable.Add(applicant);
+
+                //Save Changes to Database / Database Context
+                dbContext.SaveChanges();
+            }
+                        
 
             return View("SuccessfullyRegistered");
 
@@ -178,7 +178,7 @@ namespace RésuméBuilder.Controllers
             return View();
         }
 
-        public ViewResult UsernameTaken()
+        public ViewResult UsernameInvalid()
         {
             return View();
         }
