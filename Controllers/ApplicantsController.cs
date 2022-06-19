@@ -86,15 +86,34 @@ namespace RésuméBuilder.Controllers
             applicant.ApplicantID = AutoIncrementID;
 
             //Test Correctness of Data Entry:
-            //var name = applicant.ApplicantUsername;
+            var username = applicant.ApplicantUsername;
 
-            //Add Applicant Record to Applicant Table of DB
-            applicantTable.Add(applicant);
 
-            //Save Changes to Database / Database Context
-            dbContext.SaveChanges();
+            //Check Applicant DB for to verify if name is not in use
+            foreach(var record in applicantTable.ToList())
+            {
+                //If name is taken, notify user immediately by redirecting to proper page.
+                //Match string for string:
+                if (record.ApplicantUsername.Equals(username))
+                { 
+                    return RedirectToAction("UsernameTaken", "Applicants"); 
+                }
+
+                //Else...
+                else
+                {
+                    //Add Applicant Record to Applicant Table of DB
+                    applicantTable.Add(applicant);
+
+                    //Save Changes to Database / Database Context
+                    dbContext.SaveChanges();
+                    
+                }
+
+            }
 
             return View("SuccessfullyRegistered");
+
         }
 
         //ATTRIBUTE ROUTING
@@ -155,6 +174,11 @@ namespace RésuméBuilder.Controllers
         }
 
         public ViewResult PersonalDetailsError()
+        {
+            return View();
+        }
+
+        public ViewResult UsernameTaken()
         {
             return View();
         }

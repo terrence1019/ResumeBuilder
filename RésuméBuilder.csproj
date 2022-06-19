@@ -252,6 +252,7 @@
     <Content Include="Views\Applicants\PersonalDetailsError.cshtml" />
     <Content Include="Views\Jobs\AddJobsPageView.cshtml" />
     <Content Include="Views\Jobs\_JobEntry.cshtml" />
+    <Content Include="Views\Applicants\UsernameTaken.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

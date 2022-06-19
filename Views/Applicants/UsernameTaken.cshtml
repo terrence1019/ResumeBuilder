@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "UsernameTaken";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Navigation Bar with Partial View -->
+@Html.Partial("_NavBar")
+
+<h2>Username Taken</h2>
+
+<p>The Username entered has already been taken!</p>
+
+<p>
+    Return to Registration Page and use a different Username.
+
+    @Html.ActionLink("[REGISTER HERE!]", "RegisterUserPageView")
+
+
+</p>
+
+
+<!-- COMPLETED -->
