@@ -39,13 +39,30 @@ namespace RésuméBuilder.Controllers
         //The Page on which the Personals Form will be housed
         [Route("Personals/AddPersonalsPageView/{applicantID}")]
         public ActionResult AddPersonalsPageView(int applicantID)
-        {  
+        {
+
 
             //This allows us to pass the same value of the ApplicantID
             //from the Applicant Model in the ApplicantDetailsPage [View A]
             //to the Personal Model in AddPersonalsPageView [View B]
             ViewBag.TargetID = applicantID;
-            
+
+
+            //Check to see if any pre-existing record exists for applicant with given applicantID
+            var personalTable = dbContext.personalDB;
+
+
+
+            //var preexistingrecord = personalTable.Find(applicantID);
+            var existingRecord =
+                personalTable.FirstOrDefault(u => u.ApplicantID == applicantID);
+
+
+            if(existingRecord != null) return RedirectToAction("PersonalDetailsExist", "Personals");
+
+
+
+
             return View();
         }
 
@@ -65,8 +82,8 @@ namespace RésuméBuilder.Controllers
             //ApplicantID for record is set here as the desired value:
             personalRecord.ApplicantID = applicantID;
 
-
             
+                       
 
             //Data Entry Checks Before DB Saves ===
             var appid = personalRecord.ApplicantID;
@@ -100,6 +117,11 @@ namespace RésuméBuilder.Controllers
         public ActionResult PersonalDetailsSuccess(int id)
         {
             ViewBag.ApplicantID = id;
+            return View();
+        }
+
+        public ViewResult PersonalDetailsExist()
+        {
             return View();
         }
 
