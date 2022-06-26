@@ -58,7 +58,7 @@ namespace RésuméBuilder.Controllers
                 personalTable.FirstOrDefault(u => u.ApplicantID == applicantID);
 
 
-            if(existingRecord != null) return RedirectToAction("PersonalDetailsExist", "Personals");
+            if(existingRecord != null) return RedirectToAction("PersonalDetailsExist", "Personals", new { id = applicantID });
 
 
 
@@ -120,8 +120,9 @@ namespace RésuméBuilder.Controllers
             return View();
         }
 
-        public ViewResult PersonalDetailsExist()
+        public ViewResult PersonalDetailsExist(int id)
         {
+            ViewBag.ApplicantID = id;
             return View();
         }
 
@@ -130,6 +131,108 @@ namespace RésuméBuilder.Controllers
             ViewBag.ApplicantID = id;
             return View();
         }
+
+
+
+        //EDIT PERSONAL DETAILS
+
+        //The Page on which the Personals Form will be housed
+        [Route("Personals/EditPersonalsPageView/{applicantID}")]
+        public ActionResult EditPersonalsPageView(int applicantID)
+        {
+
+
+            //This allows us to pass the same value of the ApplicantID
+            //from the Applicant Model in the ApplicantDetailsPage [View A]
+            //to the Personal Model in AddPersonalsPageView [View B]
+            ViewBag.TargetID = applicantID;
+
+
+            //THE AIM IS SIMPLE:
+            //01: Pull up the Personal DB
+            //02: Check to see if any pre-existing record exists for applicant with given applicantID
+            //03: Once existing record retrieved, return to record with PageView
+
+
+            //STEP 01: Pull up the Personal DB
+            var personalTable = dbContext.personalDB;
+
+
+
+            //STEP 02: Check to see if any pre-existing record exists for applicant with given applicantID
+            //Look for Personal Record using ApplicantID
+            var existingRecord =
+                personalTable.FirstOrDefault(u => u.ApplicantID == applicantID);
+
+            //If Personal Record not found, redirect to appropriate View
+            if (existingRecord == null) return RedirectToAction("PersonalDetailsError", "Personals");
+
+
+
+            //STEP 03: Once existing record retrieved, return to record with PageView
+            return View("EditPersonalsPageView", existingRecord);
+        }
+
+
+
+        //ACTION FOUND IN VIEW FOR FORM.
+        //USED FOR FORM OPERATIONS IN CONJUNCTION WITH DATABASE (MODEL BINDING)
+        [HttpPost]
+        public ActionResult EditPersonalsFormAction(Personal personalRecord, int applicantID)
+        {
+
+            //WHAT WE HAVE TO DO HERE IS UPDATE THE EXISTING RECORD
+
+            //01: Pull up Personal DB
+            //02: Get existing record
+            //03: Modify existing record data with new values
+            //04: Save changes to database
+
+
+            //STEP 01: Pull up Personal DB
+            var personalTable = dbContext.personalDB;
+
+
+            //STEP 02: Get existing record
+            var existingRecord = personalTable.Single(x => x.ApplicantID == applicantID);
+
+
+            //STEP 03: Modify existing record data with new values
+            existingRecord.FirstName = personalRecord.FirstName;
+            existingRecord.MiddleName = personalRecord.MiddleName;
+            existingRecord.LastName = personalRecord.LastName;
+            
+            existingRecord.StreetLocation = personalRecord.StreetLocation;
+            existingRecord.AreaLocation = personalRecord.AreaLocation;
+            existingRecord.RegionLocation = personalRecord.RegionLocation;
+
+            existingRecord.PhoneMobile = personalRecord.PhoneMobile;
+            existingRecord.PhoneHome = personalRecord.PhoneHome;
+            existingRecord.PhoneWork = personalRecord.PhoneWork;
+
+            existingRecord.EmailHome = personalRecord.EmailHome;
+            existingRecord.EmailWork = personalRecord.EmailWork;
+
+
+
+
+            //Save changes to database
+            dbContext.SaveChanges();
+
+
+            return RedirectToAction("PersonalDetailsSuccess", new { id = applicantID });
+
+        }
+
+
+
+
+
+
+
+
+        //End
+
 
 
     }

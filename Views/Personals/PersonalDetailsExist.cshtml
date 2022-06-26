@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "PersonalDetailsExist";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int id = ViewBag.ApplicantID;
 }
 
 <!-- Navigation Bar with Partial View -->
@@ -12,6 +13,7 @@
 <p>
     Personal details were already provided and stored in the database.
     Perhaps consider updating your Personal information in the database?
+    @Html.ActionLink("[EDIT]", "EditPersonalsPageView", "Personals", new { applicantID = id }, null)
 </p>
 
 <!-- COMPLETED -->

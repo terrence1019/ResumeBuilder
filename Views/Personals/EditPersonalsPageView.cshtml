@@ -1,0 +1,143 @@
+﻿<!--
+
+    Adding and using multiple Models in a View
+    http://www.dotnet-stuff.com/tutorials/aspnet-mvc/way-to-use-multiple-models-in-a-view-in-asp-net-mvc
+
+    Passing a value from Controller to View
+    https://www.c-sharpcorner.com/article/asp-net-mvc-passing-data-from-controller-to-view/
+
+-->
+
+@model RésuméBuilder.Models.Personal
+
+
+@{
+    ViewBag.Title = "Edit Personal Details";
+
+    //This value correlates to the ApplicantID between the Applicant and Personal Models
+    var id = ViewBag.TargetID;
+}
+
+
+
+<h2>Edit Personals Record</h2>
+
+<h3>Edit Personal Details for Registration ID @id</h3>
+
+<p>Use the Form Below: </p>
+
+
+
+
+
+<!--
+
+    Assign value to a Model in Razor View:
+    https://stackoverflow.com/questions/37531271/asp-net-mvc-directly-assign-value-to-model-inside-razor-view
+
+
+-->
+
+
+
+@using (Html.BeginForm("EditPersonalsFormAction", "Personals", FormMethod.Post))
+{
+
+    <!-- APPLICANT ID: AUTOMATICALLY SET TO SPECIFIC VALUE -->
+    <!-- This input field will be passed with the rest of the form data
+         it ensures consistency of ApplicantID between Applicant and Personal.
+         Hidden in a <div> to prevent accidental changes or tampering
+    -->
+    <div hidden>
+        <input name="applicantID" type="number" value="@id" />
+    </div>
+
+
+    <!-- First Name -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.FirstName)
+        @Html.TextBoxFor(p => p.FirstName, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Middle Name -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.MiddleName)
+        @Html.TextBoxFor(p => p.MiddleName, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Last Name -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.LastName)
+        @Html.TextBoxFor(p => p.LastName, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Street Name -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.StreetLocation)
+        @Html.TextBoxFor(p => p.StreetLocation, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Area Name -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.AreaLocation)
+        @Html.TextBoxFor(p => p.AreaLocation, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Region Name -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.RegionLocation)
+        @Html.TextBoxFor(p => p.RegionLocation, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Mobile Number -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.PhoneMobile)
+        @Html.TextBoxFor(p => p.PhoneMobile, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Home Number -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.PhoneHome)
+        @Html.TextBoxFor(p => p.PhoneHome, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Work Number -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.PhoneWork)
+        @Html.TextBoxFor(p => p.PhoneWork, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Home Email -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.EmailHome)
+        @Html.TextBoxFor(p => p.EmailHome, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <!-- Work Email -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.EmailWork)
+        @Html.TextBoxFor(p => p.EmailWork, new { @class = "form-control" })
+    </div>
+    <br />
+
+
+
+
+
+
+
+    <!-- FORM DATA SUBMISSION -->
+
+    <input type="submit" class="btn btn-primary" value="Update Personal Record">
+
+}
