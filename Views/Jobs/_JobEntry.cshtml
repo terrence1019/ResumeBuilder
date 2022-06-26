@@ -142,27 +142,33 @@
         var jobDetailDivClose = $(`</div><br /><br />`);
 
 
-        var companyNameField = $(`<input name="JobCompanyName" type="text" class="jobcompanyname" id="${companyNameID}" size="70" placeholder="Company Name" />`);
-        var positionField = $(`<input name="JobPosition" type="text" class="jobposition" id="${positionID}" size="70" placeholder="Company Position" />`);
-        var fromDateField = $(`<input name="JobFromDate" type="text" class="jobfromdate" id="${fromDateID}" size="50" placeholder="YYYY-MM" />`);
-        var toDateField = $(`<input name="JobFromDate" type="text" class="jobfromdate" id="${toDateID}" size="50" placeholder="YYYY-MM OR Present" />`);
+        var companyNameField = $(`<input name="JobCompanyName" type="text" class="jobcompanyname" id="${companyNameID}" size="2000" placeholder="Company Name" />`);
+        var positionField = $(`<input name="JobPosition" type="text" class="jobposition" id="${positionID}" size="2000" placeholder="Company Position" />`);
+        var fromDateField = $(`<input name="JobFromDate" type="text" class="jobfromdate" id="${fromDateID}" size="2000" placeholder="Start Date: YYYY-MM" />`);
+        var toDateField = $(`<input name="JobFromDate" type="text" class="jobtodate" id="${toDateID}" size="2000" placeholder="End Date: YYYY-MM OR Present" />`);
 
+        //UNIQUELY IDENTIFY EACH JOB ROW CREATED
+        //This field will remain hidden, so the type is set as such (hidden):
+        var jobrowIDField = $(`<input name="JobRowID" type="hidden" class="jobrowidfield" id="${jobrowid}" size="2000" value="${jobrowid}" />`);
 
         var record = divOpen.append(
 
             jobrowOpen.append(
 
+                jobrowIDField,
+                $(`<br />`),
                 sub_job_btn,
                 del_job_btn,
                 $(`<br />`),
                 $(`<br />`),
                 companyNameField,
                 positionField,
+                $(`<br />`),
                 fromDateField,
                 toDateField,
                 $(`<br />`),
-                $(`<br />`),
-                add_detail_btn,
+                $(`<br />`),                
+                add_detail_btn,                
                 $(`<br />`),
                 jobDetailDivOpen.append(jobDetailDivClose)
 
@@ -207,7 +213,7 @@
         var divDetailClose = $(`</div><br />`);
 
         //INPUT FIELD
-        var detailField = $(`<input name="JobDetail" type="text" class="jobdetail" id="${jobDetailID}" size="50" placeholder="Specify job details" />`);
+        var detailField = $(`<input name="JobDetail" type="text" class="jobdetail" id="${jobDetailID}" size="2000" placeholder="Specify job details" />`);
 
         //BUTTON
         var del_detail_btn = document.createElement("button");
@@ -472,7 +478,202 @@
 
         window.alert("DB Updates Completed.");
 
-    }
+    }//SubmitJobRow(jobrowid)
+
+
+    //Submit ALL Job Rows on page
+    function SubmitAllRows() {
+
+        if (count > 0) {
+
+            window.alert("Submitting all Job rows...");
+
+
+            //SEQUENTIALLY PULL DATA FROM EACH JOB ROW ON PAGE
+            //START OFF BY GETTING ALL JOBROWIDFIELDS AVAILABLE
+
+            //Get All Fields By Class Name, and then get all Available Values on page
+            //Class Name for Input Field: jobrowIDField
+            var className = "jobrowidfield";
+            window.alert("Getting all fields with Class Name " + className);
+
+
+            //Store them in a list
+            //https://bobbyhadz.com/blog/javascript-queryselector-class-contains
+            const jobrowids = document.querySelectorAll('[class*="jobrowidfield"]');
+
+
+            var numberofjobrows = jobrowids.length;
+            var len = numberofjobrows - 1;
+
+            window.alert(`We have ${numberofjobrows} row(s) to submit.`);
+
+
+
+
+            //Traverse this jobrowsid list
+            //Foreach field with className jobrowIDField, get their id and value
+            //Using that id and value, do a partial query to get all related input fields
+            //Then, store these in a list
+
+            //Example: for jowbrowIDField with id jobrow_0,
+            //run a partial query to get all input fields containing "jobrow_0"
+            //window.alert(jobrowids[0].value);
+            //window.alert(jobrowids[0].id);
+
+
+            var i;
+
+            for (i = 0; i <= len; i++) {
+
+                var jobrowid = jobrowids[i].value;
+                window.alert(jobrowid);
+
+
+                //Now, for each jobrowidValue, get all related records.
+                //Basically use the same functionality as the SubmitJobRow() used
+                //for a single Job row Submission:
+
+                //PART 01: GET PRIMARY FIELDS
+                var companyNameID = jobrowid + "_jobcompanyname";
+                var positionID = jobrowid + "_jobposition";
+                var fromDateID = jobrowid + "_jobfromdate";
+                var toDateID = jobrowid + "_jobtodate";
+
+                var company = document.getElementById(companyNameID).value;
+                var position = document.getElementById(positionID).value;
+                var fromDate = document.getElementById(fromDateID).value;
+                var toDate = document.getElementById(toDateID).value;
+
+                //Validation Test:
+                //window.alert(`Row ${i} CompanyName: ${company}`);
+
+
+                //PART 02: GET JOB DETAILS FIELDS
+                var queryPartial = jobrowid + "_detail_";
+                //window.alert(`Query Partial: ${queryPartial}`);
+
+                var jobfunctionNodeList = document.querySelectorAll(`[id*="${queryPartial}"]`);
+
+
+
+                //PART 03: POST ALL DATA TO CONTROLLER ACTION
+                //Use Ajax Query to post data to Controller Action,
+                //which will then handle saving data to proper database table
+
+                //Preliminary Data Preparation Start ============
+
+
+                var applicantid = @id;
+
+                //Create a unique jobid number using timestamp and job row number
+                //Convert current time to string with a format of YYYY-MM-DD_HH-MM-SS_
+                //https://tecadmin.net/get-current-date-time-javascript/
+
+                //GET CURRENT DATE-TIME
+                var current = new Date();
+                //window.alert(current);
+
+                //FORMAT CURRENT DATE-TIME TO YYYY-MM-DD_HH-MM-SS_
+                //http://jsfiddle.net/j6qJp/1/
+                var date = current.getFullYear() + '-' + ('0' + (current.getMonth() + 1)).slice(-2) + '-' + ('0' + current.getDate()).slice(-2);
+                var time = ('0' + current.getHours()).slice(-2) + "-" + ('0' + current.getMinutes()).slice(-2) + "-" + ('0' + current.getSeconds()).slice(-2);
+
+                var currentDateTime = date + "_" + time + "_";
+                //window.alert(currentDateTime);
+
+
+                var jobno = currentDateTime+jobrowid;
+
+                window.alert(`Unique Job Row ID = ${jobno} of lenght ${jobno.length}`);
+
+                //Convert NodeList to Array
+                //https://www.geeksforgeeks.org/how-to-convert-a-dom-nodelist-to-an-array-using-javascript/
+                const jobfunctionArr = Array.from(jobfunctionNodeList);
+
+
+                //Declare empty array to store valid Job Functions
+                //https://www.quora.com/How-do-you-declare-an-empty-array-in-JavaScript
+                var JobFunctions = [];
+
+                //Traverse array
+                //https://stackoverflow.com/questions/9329446/for-each-over-an-array-in-javascript
+                for (var jobfunction of jobfunctionArr) {
+                    //window.alert(jobfunction.value);
+
+                    //if job function is not an empty string value, add to array called JobFunctions
+                    //https://stackoverflow.com/questions/351409/how-to-append-something-to-an-array
+                    if (jobfunction.value != "") JobFunctions.push(jobfunction.value);
+
+                }
+
+
+                //Preliminary Data Preparation Stop ============
+
+                //PRIMARY FIELDS
+                //AJAX START
+                $.ajax({
+
+                    type: 'POST',
+                    url: '@Url.Action("AddJobFormActionQuery")',
+                    //The traditional parameter is required for dealing with non-primitive datatypes like arrays
+                    traditional: true,
+                    data: {
+                        applicantID: applicantid,
+                        jobNumberID: jobno,
+                        companyName: company,
+                        position: position,
+                        fromDate: fromDate,
+                        toDate: toDate
+                    }
+
+                })//end ajax
+                //AJAX STOP
+
+
+                //DETAILS FIELDS
+                //AJAX START
+                $.ajax({
+
+                    type: 'POST',
+                    url: '@Url.Action("AddJobDetailsFormActionQuery")',
+                    //The traditional parameter is required for dealing with non-primitive datatypes like arrays
+                    traditional: true,
+                    data: {
+                        applicantID: applicantid,
+                        jobNumberID: jobno,
+                        jobFunctionsList: JobFunctions
+                    }
+
+                })//end ajax
+                //AJAX STOP
+
+
+
+
+
+
+
+
+            }//for loop
+
+
+
+
+
+
+
+
+
+            window.alert("All Job Rows successfully submitted and saved to DB!");
+
+            RemoveAllRows();
+
+            count = 0;
+
+        }//if (count > 0)
+
+    }//function SubmitAllRows()
 
 </script>
 
