@@ -1,0 +1,180 @@
+﻿
+
+<!--
+    Required for:
+    1) Skill Model
+    2) MyDBContext Model
+
+-->
+@using RésuméBuilder.Models
+
+
+
+@{
+    ViewBag.Title = "EditSkillsPageView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //This value correlates to the ApplicantID between the Applicant and Skills Models
+    //var id = ViewBag.TargetID;
+    //Due to the nature of a Session variable, we have to convert it to an integer
+    var id = Convert.ToInt32(Session["id"]);
+
+    //Set up instance of Database Context
+    MyDbContext dbContext = new MyDbContext();
+
+
+
+}
+
+
+@Html.Partial("_InternalStyle")
+
+<body>
+
+
+    <h2>Edit Your Skills</h2>
+
+    <h3>Edit Skill Details for Registration ID @id</h3>
+
+
+
+    @{ 
+        //STEP 01: GET APPLICANT'S SKILL RECORDS FROM THE DATABASE
+
+        //Pull Up Skills Database Table
+        var skillsTable = dbContext.skillDB;
+
+
+        //Create a list to store all records correlating to ApplicantID
+        List<Skill> ApplicantSkills = new List<Skill>();
+
+
+        //Get records from Skill Table correlating to ApplicantID
+        foreach(var skillrecord in skillsTable)
+        {
+            if(skillrecord.ApplicantID == id)
+            {
+                //Store Skill records related to ApplicantID in List:
+                ApplicantSkills.Add(skillrecord);
+            }
+        }
+
+    }
+
+<table>
+    <thead>
+        <tr><th></th><th>SKILL CATEGORY</th><th>SKILL POINT</th></tr>
+    </thead>
+    @{
+        //STEP 02: LOAD APPLICANT'S SKILL RECORDS
+        foreach (var skill in ApplicantSkills)
+        {
+            //WORKING!!
+            //<p>@skill.SkillEntryID - @skill.SkillCategory - @skill.SkillPoint</p>
+
+
+
+            //For each Skill Record for the Applicant, I want to:
+            //Create Row, with each row containing the following fields:
+            //1: RowID based on SkillEntryID (rowid+SkillEntryID) (Hidden Field)
+            //2: SkillID (Hidden Field) with an id based on RowID
+            //3: SkillCategory with an id based on RowID (Validate)
+            //4: SkillPoint with an id based on RowID (Validate)
+            //5: Update Button with an id based on RowID (Caution Check! Compare Old and New)
+            //6: Delete Button with an id based on RowID (Caution Check! Okay to Delete?) (PLACE IN DIV)
+
+
+            var skillentryid = skill.SkillEntryID;
+
+            var rowid = "row_id" + skillentryid;
+
+            var rowskillcategoryid = rowid + "skillcategory";
+            var rowskillpointid = rowid + "skillpoint";
+
+            
+
+        <tr>
+
+            <td>
+                <p>@skill.SkillEntryID</p>
+            </td>
+            <td>
+                <input type="text" name="name" id="@rowskillcategoryid" value="@skill.SkillCategory" />
+            </td>
+            <td>
+                <input type="text" name="name" id="@rowskillpointid" value="@skill.SkillPoint" />
+            </td>
+            <!-- Passing a string variable to onclick function: -->
+            <!-- https://www.geeksforgeeks.org/javascript-pass-string-parameter-in-onclick-function/ -->
+            <td><button onclick="Test('@rowid')">CLICK ME</button></td>
+
+        </tr>
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+        }//End foreach
+    }
+    </table>
+
+    <!-- JAVASCRIPT CODE FOR UPDATE AND DELETE -->
+
+    <script>
+        function Test(rowid) {
+
+            window.alert("Testing 123 for ROWID " + rowid);
+
+            var rowskillcategoryid = rowid + "skillcategory";
+            var rowskillpointid = rowid + "skillpoint";
+
+            //window.alert(`${rowid}: ${rowskillcategoryid} - ${rowskillpointid}`);
+
+            var category = document.getElementById(rowskillcategoryid).value;
+            var point = document.getElementById(rowskillpointid).value;
+
+            window.alert(`${category} - ${point}`);
+
+
+            //ACTION PROMPTS
+            //https://sebhastian.com/javascript-confirmation-yes-no/
+
+            let ConfirmDelete = confirm("Are you sure you want to DELETE from Database?");
+
+            if (ConfirmDelete) {
+
+                window.alert("Deleting Skill Record...");
+                //DeleteDBRecord()
+                //DeleteSkillRow()
+            }
+            else {
+
+                window.alert("No action was taken to DELETE record from Database.");
+            }
+
+
+        }
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>

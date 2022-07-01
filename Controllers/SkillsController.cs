@@ -209,6 +209,20 @@ namespace RésuméBuilder.Controllers
         }
 
 
+        //[Route("Skills/EditSkillsPageView/{applicantID}")]
+        public ActionResult EditSkillsPageView(int applicantID)
+        {
+            ViewBag.TargetID = applicantID;
+
+            Session["id"] = applicantID;
+
+            return View();
+        }
+
+
+
+
+
 
 
 

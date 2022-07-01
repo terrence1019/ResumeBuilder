@@ -255,6 +255,7 @@
     <Content Include="Views\Applicants\UsernameInvalid.cshtml" />
     <Content Include="Views\Personals\PersonalDetailsExist.cshtml" />
     <Content Include="Views\Personals\EditPersonalsPageView.cshtml" />
+    <Content Include="Views\Skills\EditSkillsPageView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
