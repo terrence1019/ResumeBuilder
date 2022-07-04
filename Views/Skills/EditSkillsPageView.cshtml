@@ -93,10 +93,10 @@
 
             
 
-        <tr>
+        <tr id="@rowid">
 
             <td>
-                <p>@skill.SkillEntryID</p>
+                <p id="@skillentryid">@skill.SkillEntryID</p>
             </td>
             <td>
                 <input type="text" name="name" id="@rowskillcategoryid" value="@skill.SkillCategory" />
@@ -104,9 +104,14 @@
             <td>
                 <input type="text" name="name" id="@rowskillpointid" value="@skill.SkillPoint" />
             </td>
+
             <!-- Passing a string variable to onclick function: -->
             <!-- https://www.geeksforgeeks.org/javascript-pass-string-parameter-in-onclick-function/ -->
-            <td><button onclick="Test('@rowid')">CLICK ME</button></td>
+            <td><button onclick="UpdateRecord('@skillentryid')">[UPDATE]</button></td>
+
+            <!-- Passing a string variable to onclick function: -->
+            <!-- https://www.geeksforgeeks.org/javascript-pass-string-parameter-in-onclick-function/ -->
+            <td><button onclick="DeleteRecord('@skillentryid')">[DELETE]</button></td>
 
         </tr>
 
@@ -126,17 +131,75 @@
     }
     </table>
 
-    <!-- JAVASCRIPT CODE FOR UPDATE AND DELETE -->
 
     <script>
-        function Test(rowid) {
+        function ReloadPage() {
 
+            //https://www.w3schools.com/jsref/met_loc_reload.asp
+            location.reload();
+        }
+    </script>
+
+
+    <!-- JAVASCRIPT CODE TO UPDATE AND DELETE SKILL RECORDS -->
+    
+    <script>
+
+        //HANDLES UPDATES
+        function UpdateRecord(skillentryid) {
+
+            var rowid = "row_id" + skillentryid;
             window.alert("Testing 123 for ROWID " + rowid);
 
             var rowskillcategoryid = rowid + "skillcategory";
             var rowskillpointid = rowid + "skillpoint";
+            window.alert(`${rowid}: ${rowskillcategoryid} - ${rowskillpointid}`);
 
-            //window.alert(`${rowid}: ${rowskillcategoryid} - ${rowskillpointid}`);
+            var category = document.getElementById(rowskillcategoryid).value;
+            var point = document.getElementById(rowskillpointid).value;
+
+            window.alert(`${category} - ${point}`);
+
+
+
+            //VALIDATION FUNCTIONALITY
+            //Check for:
+            //1) Empty SkillCategory should be classified as General
+            //2) Empty SkillPoint is NOT ALLOWED. Prompt user on this Error.
+
+
+
+            //ACTION PROMPTS
+            //https://sebhastian.com/javascript-confirmation-yes-no/
+
+            let ConfirmUpdate = confirm("Are you sure you want to UPDATE record in Database?");
+
+            if (ConfirmUpdate) {
+
+                window.alert("Update Skill Record...");
+                UpdateDBRecord(skillentryid);
+                //RemoveSkillRow(rowid);
+                window.alert("Record was successfully updated. Refreshing page...");
+                ReloadPage();
+            }
+            else {
+
+                window.alert("No action was taken to Update record from Database.");
+            }
+
+
+
+        }
+
+        //HANDLES DELETES
+        function DeleteRecord(skillentryid) {
+
+            var rowid = "row_id" + skillentryid;
+            window.alert("Testing 123 for ROWID " + rowid);
+
+            var rowskillcategoryid = rowid + "skillcategory";
+            var rowskillpointid = rowid + "skillpoint";
+            window.alert(`${rowid}: ${rowskillcategoryid} - ${rowskillpointid}`);
 
             var category = document.getElementById(rowskillcategoryid).value;
             var point = document.getElementById(rowskillpointid).value;
@@ -152,26 +215,62 @@
             if (ConfirmDelete) {
 
                 window.alert("Deleting Skill Record...");
-                //DeleteDBRecord()
-                //DeleteSkillRow()
+                DeleteDBRecord(skillentryid);
+                RemoveSkillRow(rowid);
+                window.alert("Record was successfully deleted.");
             }
             else {
 
                 window.alert("No action was taken to DELETE record from Database.");
             }
 
+        }
+
+    </script>
+
+
+    <script>
+
+        //HERE IS FOR DELETING A ROW POST-ACTION (EITHER UPDATE OR DELETE)
+        function RemoveSkillRow(rowid) {
+
+            //window.alert(rowid);
+
+            //https://bobbyhadz.com/blog/javascript-remove-dom-element-by-id
+            const element = document.getElementById(rowid);     
+            element.remove();
 
         }
 
     </script>
 
 
+    <script>
+        //HERE IS FOR UPDATING A SKILL DATABASE RECORD
+        function UpdateDBRecord(skillentryid) {
 
+            var targetSkillRecordID = skillentryid;
+            window.alert("Skill Record to update has Skill Row Entry #" + targetSkillRecordID + " in the Skill DB");
 
+            //Using the SkillEntryID found in the Skill DB, we pass this number to the SkillsController Action
+            //that will take care of the updating action. This is achieved using AJAX Query.
 
+        }
 
+    </script>
 
+    <script>
+        //HERE IS FOR DELETING A SKILL DATABASE RECORD
+        function DeleteDBRecord(skillentryid) {
 
+            var targetSkillRecordID = skillentryid;
+            window.alert("Skill Record to delete has Skill Row Entry #" + targetSkillRecordID + " in the Skill DB");
+
+            //Using the SkillEntryID found in the Skill DB, we pass this number to the SkillsController Action
+            //that will take care of the deleting action. This is achieved using AJAX Query.
+
+        }
+    </script>
 
 
 
