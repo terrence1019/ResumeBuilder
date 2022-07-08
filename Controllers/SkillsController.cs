@@ -220,6 +220,60 @@ namespace RésuméBuilder.Controllers
         }
 
 
+        public ActionResult SkillRecordUpdate(int skillrecordid, string skillcategory, string skillpoint)
+        {
+
+            //The aim is simple:
+            //1) Pull up the SkillDB
+            //2) Look for the associated record using the right SkillEntryID (skillrecordid)
+            //3) Modify the Skill Category and Skill Point
+
+            //STEP 01: Pull up the SkillDB
+            var skillTable = dbContext.skillDB;
+
+            //STEP 02: Pull up pre-existing record
+            var existingRecord = skillTable.Single(s => s.SkillEntryID == skillrecordid);
+
+            //STEP 03: Modify pre-existing record with new data
+            existingRecord.SkillCategory = skillcategory;
+            existingRecord.SkillPoint = skillpoint;
+            
+
+            //Save changes to database
+            dbContext.SaveChanges();
+
+            return View();
+            
+        }
+
+
+        public ActionResult SkillRecordDelete(int skillrecordid)
+        {
+
+            //The aim is simple:
+            //1) Pull up the SkillDB
+            //2) Look for the associated record using the right SkillEntryID (skillrecordid)
+            //3) Delete the record
+
+            //STEP 01: Pull up the SkillDB
+            var skillTable = dbContext.skillDB;
+
+            //STEP 02: Pull up pre-existing record
+            var existingRecord = skillTable.Single(s => s.SkillEntryID == skillrecordid);
+
+            //STEP 03: Delete record from Skill Database
+            //https://www.learnentityframeworkcore.com/dbcontext/deleting-data
+            //https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext.remove?view=efcore-6.0
+            skillTable.Remove(existingRecord);
+
+            //Save changes to database
+            dbContext.SaveChanges();
+
+
+            return View();
+
+        }
+
 
 
 

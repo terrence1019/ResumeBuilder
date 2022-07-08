@@ -165,8 +165,20 @@
             //VALIDATION FUNCTIONALITY
             //Check for:
             //1) Empty SkillCategory should be classified as General
-            //2) Empty SkillPoint is NOT ALLOWED. Prompt user on this Error.
+            //2) Empty SkillPoint is NOT ALLOWED. Prompt user on this Error
 
+            //1) Empty SkillCategory should be classified as General
+            if (category == "") category = "General";
+
+            //2) Empty SkillPoint is NOT ALLOWED. Prompt user on this Error
+            if (point == "") {
+
+                window.alert("INVALID. User must input a valid Skill Point.");
+
+            }
+
+            //If a valid SkillPoint was entered, proceed to Update process
+            else { 
 
 
             //ACTION PROMPTS
@@ -177,8 +189,8 @@
             if (ConfirmUpdate) {
 
                 window.alert("Update Skill Record...");
-                UpdateDBRecord(skillentryid);
-                //RemoveSkillRow(rowid);
+                window.alert(`${category} - ${point}`);
+                UpdateDBRecord(skillentryid, category, point);
                 window.alert("Record was successfully updated. Refreshing page...");
                 ReloadPage();
             }
@@ -187,6 +199,8 @@
                 window.alert("No action was taken to Update record from Database.");
             }
 
+
+            }
 
 
         }
@@ -247,15 +261,26 @@
 
     <script>
         //HERE IS FOR UPDATING A SKILL DATABASE RECORD
-        function UpdateDBRecord(skillentryid) {
+        function UpdateDBRecord(skillentryid, category, point) {
 
             var targetSkillRecordID = skillentryid;
             window.alert("Skill Record to update has Skill Row Entry #" + targetSkillRecordID + " in the Skill DB");
 
             //Using the SkillEntryID found in the Skill DB, we pass this number to the SkillsController Action
             //that will take care of the updating action. This is achieved using AJAX Query.
+            $.ajax({
 
-        }
+                type: 'POST',
+                url: '@Url.Action("SkillRecordUpdate")',
+                data: {
+
+                    skillrecordid: skillentryid,
+                    skillcategory: category,
+                    skillpoint: point
+                }
+            })
+
+        }//UpdateDBRecord
 
     </script>
 
@@ -268,8 +293,19 @@
 
             //Using the SkillEntryID found in the Skill DB, we pass this number to the SkillsController Action
             //that will take care of the deleting action. This is achieved using AJAX Query.
+            $.ajax({
 
-        }
+                type: 'POST',
+                url: '@Url.Action("SkillRecordDelete")',
+                data: {
+
+                    skillrecordid: skillentryid
+
+                }
+            })
+
+        }//DeleteDBRecord
+
     </script>
 
 
