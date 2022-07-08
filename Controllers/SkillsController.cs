@@ -270,7 +270,6 @@ namespace RésuméBuilder.Controllers
             dbContext.SaveChanges();
 
 
-
             return View();
 
         }
