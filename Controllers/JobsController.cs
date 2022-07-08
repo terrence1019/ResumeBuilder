@@ -175,7 +175,7 @@ namespace RésuméBuilder.Controllers
                     //Save Changes to DB:
                     dbContext.SaveChanges();
 
-                }
+                }//for
 
 
 
@@ -213,7 +213,16 @@ namespace RésuméBuilder.Controllers
 
 
 
+        //EDITING JOBS
+        public ActionResult EditJobsPageView(int applicantID)
+        {
 
+            ViewBag.TargetID = applicantID;
+
+            Session["id"] = applicantID;
+
+            return View();
+        }
 
 
 

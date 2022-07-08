@@ -103,6 +103,17 @@
 
 
             <tr>
+                <td>JOBS</td>
+                <td>
+                    @Html.ActionLink("[ADD]", "AddJobsPageView", "Jobs", new { applicantID = id }, null)
+                </td>
+                <td>
+                    @Html.ActionLink("[EDIT]", "EditJobsPageView", "Jobs", new { applicantID = id }, null)
+                </td>
+            </tr>
+
+
+            <tr>
                 <td>SKILLS</td>
                 <td>
                     @Html.ActionLink("[ADD]", "AddSkillsPageView", "Skills", new { applicantID = id }, null)
@@ -111,6 +122,9 @@
                     @Html.ActionLink("[EDIT]", "EditSkillsPageView", "Skills", new { applicantID = id }, null)
                 </td>
             </tr>
+
+
+
 
 
         </tbody>
