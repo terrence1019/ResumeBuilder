@@ -69,21 +69,78 @@
         {
             var jobid1 = jobrecord.JobID;
 
+            <!--
+            
+                Updates and Deletes are going to be easy:
+                the record is already there, so all you need to do is use it to send data to the Controller
+                and then back to the Database.
+                To do this, we use the JobID and the JobFunctionID
+                
+            -->
+
+
+
                 <table>
+
+
+                    <tr>
+                        <td>
+                            <!-- This is easy: use JobID and unique row ID tags created from it -->
+                            <button onclick="UpdateJobRecord('@jobid1')">[UPDATE]</button>
+                            <button onclick="DeleteJobRecord('@jobid1')">[DELETE]</button>
+                        </td>
+                    </tr>
+
+
+                    @{ 
+                        var companyid = jobid1 + "_company";
+                        var positionid = jobid1 + "_position";
+                        var fromdateid = jobid1 + "_fromdate";
+                        var todateid = jobid1 + "_todate";
+                    }
+
+
+
                     <tr>
                     <td>@jobid1</td>
                     </tr>
                     <tr>
-                        <td>@jobrecord.CompanyName</td>
+                        <td>                      
+                        <input id="@companyid" value="@jobrecord.CompanyName" size="300" />
+                        </td>
                     </tr>
                     <tr>
-                        <td>@jobrecord.Position</td>
+                        <td>
+                            <input id="@positionid" value="@jobrecord.Position" size="300" />
+                        </td>
                     </tr>
                     <tr>
-                        <td>@jobrecord.FromDate</td>
+                        <td>
+                        <!-- Convert from DateTime to String, and send to Controller -->
+                        @{ 
+                            var strFromDate = jobrecord.FromDate.ToString("yyyy-MM-dd");
+                        } 
+                        <input id="@fromdateid" value="@strFromDate" size="300" />
+                        </td>
                     </tr>
                     <tr>
-                        <td>@jobrecord.ToDate</td>
+                        <td>
+                            <!-- Convert from DateTime to String, and send to Controller -->
+                            <!-- If Year == 9999 Then Put Present -->
+                            @{
+                                var strToDate = "";
+
+                                if (jobrecord.ToDate.Year == 9999) {
+                                    strToDate = "PRESENT";
+                                }
+
+                                else { 
+                                    strToDate = jobrecord.ToDate.ToString("yyyy-MM-dd"); 
+                                }
+
+                            }
+                            <input id="@todateid" value="@strToDate" size="300" />
+                        </td>
                     </tr>
                     <tr>
                         <td>
@@ -93,7 +150,16 @@
 
                                 if(jobid2.Equals(jobid1))
                     {
-                                    <p>@jobdetail.JobFunction</p>
+                                    var jobfunctionid = jobdetail.JobID;
+                                    var jobfunctiondetailid = jobdetail.JobFunctionID;
+                                    var jobfunction = jobdetail.JobFunction;
+
+                                    <p>[@jobfunctiondetailid] - @jobfunction  </p>
+                                    <input type="text" name="name" id="@jobfunctiondetailid" value="@jobfunction" size="300" />
+                                    <button onclick="UpdateJobDetail('@jobfunctiondetailid')">[UPDATE]</button>
+                                    <button onclick="DeleteJobDetail('@jobfunctiondetailid')">[DELETE]</button>
+                                    <br />
+
                     }
                             }
                         </td>
@@ -107,6 +173,212 @@
 
     }
 
+
+
+
+
+
+
+    <!-- SCRIPTS TO PEFORM FUNCTIONS -->
+
+
+    <script>
+
+        function ReloadPage() {
+
+            //https://www.w3schools.com/jsref/met_loc_reload.asp
+            location.reload();
+            window.alert("Page has been refreshed with updated information.")
+        }
+
+    </script>
+
+
+
+    <script>
+
+        //UPDATE ENTIRE RECORD
+
+        function UpdateJobRecord(jobid1) {
+
+            window.alert("We are going to update Job and JobDetail DB Records for JobID # " + jobid1);
+
+            //Get all data from the row related to the Job ID:
+            //Using jobid1, we created ids for each input field
+
+            //BASIC COMPANY INFO:
+            var companyid = jobid1 + "_company";
+            var positionid = jobid1 + "_position";
+            var fromdateid = jobid1 + "_fromdate";
+            var todateid = jobid1 + "_todate";
+
+            var company = document.getElementById(companyid).value;
+            var position = document.getElementById(positionid).value;
+            var fromdate = document.getElementById(fromdateid).value;
+            var todate = document.getElementById(todateid).value;
+
+
+            window.alert(`${company} - ${position} - ${fromdate} - ${todate}`);
+
+            //FOR BASIC COMPANY INFO, SEND TO JOB DB =
+            //We will use jobid1, company, position, fromdate, and todate
+            //and send data to relevant Controller:
+
+
+
+
+
+            //FOR JOB DETAILS INFO, SEND TO JOBDETAIL DB =
+            //the Job ID and JobFunctionID are closely related
+            //Example:
+            //For a single record, JobID = 2022-06-14_10-22-02_jobrow_0
+            //For job details associated with that record, JobFunctionID = 2022-06-14_10-22-02_jobrow_0_detail_0
+            var WildCardQueryParameter = jobid1 + "_detail_";
+
+            //We are going to look for all Job Details with the matching wildcard parameter.
+            //It's going to be the same functionality as Adding Jobs:
+            //Store query results in node list
+            var jobfunctionNodeList = document.querySelectorAll(`[id*="${WildCardQueryParameter}"]`);
+
+            //Convert nodelist to an array:
+            const jobfunctionArr = Array.from(jobfunctionNodeList);
+
+            //Declare empty arrays to store valid Job Functions ID and Job Functions
+            var JobFunctionsID = [];
+            var JobFunctions = [];
+
+
+            //Traverse array
+            //https://stackoverflow.com/questions/9329446/for-each-over-an-array-in-javascript
+            for (var jobfunction of jobfunctionArr) {
+
+                //window.alert("ID: "+jobfunction.id);
+                //window.alert("FUNCTION: " + jobfunction.value);
+
+                window.alert(`${jobfunction.id} - ${jobfunction.value}`);
+
+                //if job function is not an empty string value, add to array called JobFunctions
+                //https://stackoverflow.com/questions/351409/how-to-append-something-to-an-array
+                if (jobfunction.value != "") {
+
+                    JobFunctionsID.push(jobfunction.id);
+                    JobFunctions.push(jobfunction.value);
+
+                }
+
+            }
+
+
+
+            var arr_len = JobFunctions.length;
+            window.alert(arr_len + " job function(s) to be submitted!");
+
+            //Traverse finalized array of Job Functions
+            for (var jobfunctionValid of JobFunctions) {
+
+                window.alert(jobfunctionValid);
+                
+
+            }
+
+
+            for (var i = 0; i < arr_len; i++)
+            {
+                window.alert(`${JobFunctionsID[i]} - ${JobFunctions[i]}`);
+            }
+
+
+
+            //SEND DATA TO RESPECTIVE DATABASES
+
+            //DB 01: JOB
+            //Sending jobid1, company, position, fromdate, todate
+
+
+
+            //DB 02: JOBDETAIL
+            //Sending two arrays: JobFunctionsID and JobFunctions
+
+
+
+
+            //REFRESH PAGE
+            ReloadPage();
+
+        }//UpdateRecord()
+
+
+
+
+        //DELETE ENTIRE RECORD
+
+        function DeleteJobRecord(jobid1) {
+
+            window.alert("We are going to delete Job and JobDetail DB Records for JobID # " + jobid1);
+
+
+
+            //We have to delete the records with the JobID in the Job DB AND JobDetail DB
+            //RemoveJobDBRecord(jobid1)
+            //RemoveJobDetailDBRecord(jobid1)
+
+
+            //Once a Job Record is deleted, delete the Edit row also:
+            //RemoveJobRow(rownumber);
+
+
+
+
+        }//DeleteJobRecord()
+
+
+
+    </script>
+
+
+
+
+    <script>
+
+        //Handle individual Updates and Deletes for Job Function Details
+        function UpdateJobDetail(jobfunctiondetailid) {
+
+            //This is easy: using the jobfunctiondetailid,
+            //1) Get the new value associated with the input field's jobfunctiondetailid
+            //2) Send both jobfunctiondetailid and function detail to Controller
+            window.alert("Job Function to update has an ID of: " + jobfunctiondetailid);
+
+            var jobdescription = document.getElementById(jobfunctiondetailid).value;
+
+            window.alert("Job Function to update has a Value of: " + jobdescription);
+
+
+            //SEND THESE DETAILS TO CONTROLLER VIA AJAX QUERY
+
+
+
+            //REFRESH PAGE
+            ReloadPage();
+
+
+        }
+
+
+        function DeleteJobDetail(jobfunctiondetailid) {
+
+
+
+
+        }
+
+
+    </script>
+
+
+
+
+
+    
 
 
 </body>
