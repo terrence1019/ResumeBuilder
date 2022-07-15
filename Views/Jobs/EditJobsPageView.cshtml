@@ -63,8 +63,7 @@
             }
         }
 
-
-
+        
         foreach(var jobrecord in jobList)
         {
             var jobid1 = jobrecord.JobID;
@@ -78,9 +77,9 @@
                 
             -->
 
+            var rowcount = "rowcount_" + jobid1;
 
-
-                <table>
+                <table id="@rowcount">
 
 
                     <tr>
@@ -105,13 +104,16 @@
                     <td>@jobid1</td>
                     </tr>
                     <tr>
+                        <td>JOB INFORMATION</td>
+                    </tr>
+                    <tr>
                         <td>                      
-                        <input id="@companyid" value="@jobrecord.CompanyName" size="300" />
+                        <input id="@companyid" value="@jobrecord.CompanyName" size="500" />
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <input id="@positionid" value="@jobrecord.Position" size="300" />
+                            <input id="@positionid" value="@jobrecord.Position" size="500" />
                         </td>
                     </tr>
                     <tr>
@@ -120,7 +122,7 @@
                         @{ 
                             var strFromDate = jobrecord.FromDate.ToString("yyyy-MM-dd");
                         } 
-                        <input id="@fromdateid" value="@strFromDate" size="300" />
+                        <input id="@fromdateid" value="@strFromDate" size="500" />
                         </td>
                     </tr>
                     <tr>
@@ -142,31 +144,49 @@
                             <input id="@todateid" value="@strToDate" size="300" />
                         </td>
                     </tr>
+                    <tr><td>JOB POSITION DETAILS</td></tr>
                     <tr>
                         <td>
-                            @foreach(var jobdetail in jobdetailList)
+                            @foreach (var jobdetail in jobdetailList)
                             {
                                 var jobid2 = jobdetail.JobID;
 
-                                if(jobid2.Equals(jobid1))
-                    {
+                                if (jobid2.Equals(jobid1))
+                                {
+
                                     var jobfunctionid = jobdetail.JobID;
                                     var jobfunctiondetailid = jobdetail.JobFunctionID;
                                     var jobfunction = jobdetail.JobFunction;
 
-                                    <p>[@jobfunctiondetailid] - @jobfunction  </p>
-                                    <input type="text" name="name" id="@jobfunctiondetailid" value="@jobfunction" size="300" />
-                                    <button onclick="UpdateJobDetail('@jobfunctiondetailid')">[UPDATE]</button>
-                                    <button onclick="DeleteJobDetail('@jobfunctiondetailid')">[DELETE]</button>
+                                    var detailcount = "rowcount_" + jobfunctiondetailid;
+
+                                    <ul id="@detailcount">
+                                        <li>
+                                            @{
+                                                                                          
+
+                                                //<p>[@jobfunctiondetailid] - @jobfunction  </p>
+                                                <input type="text" name="name" id="@jobfunctiondetailid" value="@jobfunction" size="400" />
+                                                <button onclick="UpdateJobDetail('@jobfunctiondetailid')">[UPDATE]</button>
+                                                <button onclick="DeleteJobDetail('@jobfunctiondetailid')">[DELETE]</button>
+
+                                            }
+                                        </li>
+
+
+                                    </ul>
+
                                     <br />
 
-                    }
+                                }//(jobid2.Equals(jobid1))
                             }
                         </td>
                     </tr>
                 </table>
                 <br />
-            }
+                                
+
+        }//foreach
 
 
 
@@ -179,7 +199,7 @@
 
 
 
-    <!-- SCRIPTS TO PEFORM FUNCTIONS -->
+    <!-- SCRIPTS TO PERFORM FUNCTIONS -->
 
 
     <script>
@@ -189,6 +209,28 @@
             //https://www.w3schools.com/jsref/met_loc_reload.asp
             location.reload();
             window.alert("Page has been refreshed with updated information.")
+        }
+
+        function RemoveJobRow(jobid1) {
+
+            var rowcount = "rowcount_" + jobid1;
+
+            //Delete row with the given rowcount
+            window.alert(rowcount + " to be deleted...");
+            const element = document.getElementById(rowcount);
+            element.remove();
+
+        }
+
+        function RemoveJobDetailRow(jobfunctiondetailid) {
+
+            //Delete row with the given jobfunctiondetailid
+            var detailcount = "rowcount_" + jobfunctiondetailid;
+
+            window.alert(detailcount + " to be deleted...");
+            const element = document.getElementById(detailcount);
+            element.remove();
+
         }
 
     </script>
@@ -202,6 +244,13 @@
         function UpdateJobRecord(jobid1) {
 
             window.alert("We are going to update Job and JobDetail DB Records for JobID # " + jobid1);
+
+            let ConfirmUpdate = confirm("Are you sure you want to UPDATE to Database?");
+
+            if (ConfirmUpdate) {
+
+
+
 
             //Get all data from the row related to the Job ID:
             //Using jobid1, we created ids for each input field
@@ -277,7 +326,7 @@
             for (var jobfunctionValid of JobFunctions) {
 
                 window.alert(jobfunctionValid);
-                
+
 
             }
 
@@ -305,6 +354,17 @@
             //REFRESH PAGE
             ReloadPage();
 
+
+
+            }//end if (ConfirmUpdate)
+
+            else {
+
+                window.alert("No action was taken to UPDATE record from Database.");
+            }
+
+
+
         }//UpdateRecord()
 
 
@@ -317,14 +377,49 @@
             window.alert("We are going to delete Job and JobDetail DB Records for JobID # " + jobid1);
 
 
+            let ConfirmDelete = confirm("Are you sure you want to DELETE from Database?");
 
-            //We have to delete the records with the JobID in the Job DB AND JobDetail DB
-            //RemoveJobDBRecord(jobid1)
-            //RemoveJobDetailDBRecord(jobid1)
+            if (ConfirmDelete) {
 
 
-            //Once a Job Record is deleted, delete the Edit row also:
-            //RemoveJobRow(rownumber);
+                //We have to delete the records with the JobID in the Job DB AND JobDetail DB
+                //We use jobid1 to achieve this
+                //We send jobid1 to Controller Action called RemoveJobRecordFormActionQuery()
+                //Pull up JobDetail DB and Job DB
+                //Look for all instances of jobid1 in JobDetail DB and erase
+                //Look for instance of jobid1 in Job DB and erase
+                //Save Changes
+                //SEND THESE DETAILS TO CONTROLLER VIA AJAX QUERY
+                $.ajax({
+
+
+                    type: 'POST',
+                    url: '@Url.Action("RemoveJobRecordFormActionQuery")',
+                    data: {
+
+                        JobID: jobid1
+
+                    }
+
+
+
+
+                })
+
+
+                //Once a Job Record is deleted, delete the Edit row also:
+                RemoveJobRow(jobid1);
+
+
+
+            }
+
+            else {
+
+                window.alert("No action was taken to DELETE record from Database.");
+            }
+
+
 
 
 
@@ -354,6 +449,22 @@
 
 
             //SEND THESE DETAILS TO CONTROLLER VIA AJAX QUERY
+            $.ajax({
+
+
+                type: 'POST',
+                url: '@Url.Action("UpdateSingleJobDetail")',
+                data: {
+
+                    JobFunctionID: jobfunctiondetailid,
+                    JobDescription: jobdescription
+
+                }
+
+
+
+
+            })
 
 
 
@@ -361,15 +472,40 @@
             ReloadPage();
 
 
-        }
+        }//UpdateJobDetail()
 
 
         function DeleteJobDetail(jobfunctiondetailid) {
 
+            window.alert("Deleting...");
+
+            window.alert("Job Function to delete has an ID of: " + jobfunctiondetailid);
+
+
+            //Use jobfunctiondetailid to remove job description in DB
+            //SEND THESE DETAILS TO CONTROLLER VIA AJAX QUERY
+            $.ajax({
+
+
+                type: 'POST',
+                url: '@Url.Action("RemoveSingleJobDetail")',
+                data: {
+
+                    JobFunctionID: jobfunctiondetailid
+
+                }
 
 
 
-        }
+
+            })
+
+
+
+            RemoveJobDetailRow(jobfunctiondetailid);
+
+
+        }//DeleteJobDetail()
 
 
     </script>

@@ -224,15 +224,105 @@ namespace RésuméBuilder.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult UpdateJobsFormActionQuery
+            (string JobID, string company, string position, string fromDate, string toDate)
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UpdateJobDetailsFormActionQuery
+            (string[] jobFunctionIDList, string[] jobFunctionList )
+        {
+            
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RemoveJobRecordFormActionQuery
+            (string JobID)
+        {
+
+
+            //We have to delete the records with the JobID in the Job DB AND JobDetail DB
+            //We use jobid1 to achieve this
+            //We send jobid1 to Controller Action called RemoveJobRecordFormActionQuery()
+            //Pull up JobDetail DB and Job DB
+            //Look for all instances of jobid1 in JobDetail DB and erase
+            //Look for instance of jobid1 in Job DB and erase
+            //Save Changes
+
+
+            //DELETE RECORDS FROM JOBDETAIL TABLE
+            var jobdetailTable = dbContext.jobdetailDB;
+
+            //https://stackoverflow.com/questions/3177113/lambda-expression-for-exists-within-list
+            //https://www.tutorialsteacher.com/linq/linq-filtering-operators-where
+            //https://stackoverflow.com/questions/853526/using-linq-to-remove-elements-from-a-listt
+            var existingJobDetailsRecords = jobdetailTable.Where(jd => jd.JobID == JobID);
+
+            //jobdetailTable.Remove((JobDetail)existingJobDetailsRecords);
+
+
+
+            //DELETE RECORD FROM JOB TABLE
+            var jobTable = dbContext.jobDB;
+
+            var existingJobRecord = jobTable.Single(j => j.JobID == JobID);
+
+            jobTable.Remove(existingJobRecord);
 
 
 
 
 
 
+            //Save Changes
+            //dbContext.SaveChanges();
+
+            return View();
+        }
 
 
+        [HttpPost]
+        public ActionResult UpdateSingleJobDetail(string JobFunctionID, string JobDescription)
+        {
+            //Pull up JobDetail DB
+            var jobdetailTable = dbContext.jobdetailDB;
 
+            //Look for record using JobFunctionID
+            var existingRecord = jobdetailTable.Single(j => j.JobFunctionID == JobFunctionID);
+
+            //Modify current Job Description using new Job Description
+            existingRecord.JobFunction = JobDescription;
+
+            //Save Changes to DB
+            dbContext.SaveChanges();
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult RemoveSingleJobDetail(string JobFunctionID)
+        {
+
+            //Pull up JobDetail DB
+            var jobdetailTable = dbContext.jobdetailDB;
+
+            //Look for record using JobFunctionID
+            var existingRecord = jobdetailTable.Single(j => j.JobFunctionID == JobFunctionID);
+
+            //Remove record
+            jobdetailTable.Remove(existingRecord);
+
+            //Save Changes to DB
+            dbContext.SaveChanges();
+
+            return View();
+        }
 
 
 
