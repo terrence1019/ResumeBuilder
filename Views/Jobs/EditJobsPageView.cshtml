@@ -13,6 +13,8 @@
     //Set up instance of Database Context
     MyDbContext dbContext = new MyDbContext();
 
+    var counter = 0;
+
 }
 
 <h2>EditJobsPageView</h2>
@@ -120,7 +122,7 @@
                         <td>
                         <!-- Convert from DateTime to String, and send to Controller -->
                         @{ 
-                            var strFromDate = jobrecord.FromDate.ToString("yyyy-MM-dd");
+                            var strFromDate = jobrecord.FromDate.ToString("yyyy-MM");
                         } 
                         <input id="@fromdateid" value="@strFromDate" size="500" />
                         </td>
@@ -137,7 +139,7 @@
                                 }
 
                                 else { 
-                                    strToDate = jobrecord.ToDate.ToString("yyyy-MM-dd"); 
+                                    strToDate = jobrecord.ToDate.ToString("yyyy-MM"); 
                                 }
 
                             }
@@ -151,34 +153,54 @@
                             {
                                 var jobid2 = jobdetail.JobID;
 
+
+
                                 if (jobid2.Equals(jobid1))
                                 {
+
+
 
                                     var jobfunctionid = jobdetail.JobID;
                                     var jobfunctiondetailid = jobdetail.JobFunctionID;
                                     var jobfunction = jobdetail.JobFunction;
 
-                                    var detailcount = "rowcount_" + jobfunctiondetailid;
+
+
+                                    var now = DateTime.Now;
+
+                                    var detailcount = "rowcount_" + counter + "_" + now;
+
+
+
+                                    //<p>@detailcount</p>
 
                                     <ul id="@detailcount">
                                         <li>
                                             @{
-                                                                                          
+
 
                                                 //<p>[@jobfunctiondetailid] - @jobfunction  </p>
                                                 <input type="text" name="name" id="@jobfunctiondetailid" value="@jobfunction" size="400" />
                                                 <button onclick="UpdateJobDetail('@jobfunctiondetailid')">[UPDATE]</button>
-                                                <button onclick="DeleteJobDetail('@jobfunctiondetailid')">[DELETE]</button>
+                                                <button onclick="DeleteJobDetail('@jobfunctiondetailid', '@detailcount')">[DELETE]</button>
+
+                                                counter++;
 
                                             }
                                         </li>
 
+                                        
 
                                     </ul>
 
                                     <br />
 
-                                }//(jobid2.Equals(jobid1))
+                                    
+
+                                }//if (jobid2.Equals(jobid1))
+
+                                
+
                             }
                         </td>
                     </tr>
@@ -222,12 +244,12 @@
 
         }
 
-        function RemoveJobDetailRow(jobfunctiondetailid) {
+        function RemoveJobDetailRow(detailcount) {
 
             //Delete row with the given jobfunctiondetailid
-            var detailcount = "rowcount_" + jobfunctiondetailid;
+            //var detailcount = "rowcount_" + jobfunctiondetailid;
 
-            window.alert(detailcount + " to be deleted...");
+            window.alert(detailcount + " to be deleted permanently...");
             const element = document.getElementById(detailcount);
             element.remove();
 
@@ -284,13 +306,19 @@
             //For job details associated with that record, JobFunctionID = 2022-06-14_10-22-02_jobrow_0_detail_0
             var WildCardQueryParameter = jobid1 + "_detail_";
 
+            window.alert("Find all jobs with " + WildCardQueryParameter);
+
             //We are going to look for all Job Details with the matching wildcard parameter.
             //It's going to be the same functionality as Adding Jobs:
             //Store query results in node list
             var jobfunctionNodeList = document.querySelectorAll(`[id*="${WildCardQueryParameter}"]`);
 
+
+
             //Convert nodelist to an array:
             const jobfunctionArr = Array.from(jobfunctionNodeList);
+
+            window.alert("Jobs found: " + jobfunctionArr.length);
 
             //Declare empty arrays to store valid Job Functions ID and Job Functions
             var JobFunctionsID = [];
@@ -304,11 +332,11 @@
                 //window.alert("ID: "+jobfunction.id);
                 //window.alert("FUNCTION: " + jobfunction.value);
 
-                window.alert(`${jobfunction.id} - ${jobfunction.value}`);
+                //window.alert(`${jobfunction.id} - ${jobfunction.value}`);
 
                 //if job function is not an empty string value, add to array called JobFunctions
                 //https://stackoverflow.com/questions/351409/how-to-append-something-to-an-array
-                if (jobfunction.value != "") {
+                if (jobfunction.value != "" || jobfunction.value != null) {
 
                     JobFunctionsID.push(jobfunction.id);
                     JobFunctions.push(jobfunction.value);
@@ -319,21 +347,15 @@
 
 
 
+
             var arr_len = JobFunctions.length;
             window.alert(arr_len + " job function(s) to be submitted!");
 
-            //Traverse finalized array of Job Functions
-            for (var jobfunctionValid of JobFunctions) {
-
-                window.alert(jobfunctionValid);
-
-
-            }
 
 
             for (var i = 0; i < arr_len; i++)
             {
-                window.alert(`${JobFunctionsID[i]} - ${JobFunctions[i]}`);
+                window.alert(`UPDATE - ${JobFunctionsID[i]} - ${JobFunctions[i]}`);
             }
 
 
@@ -343,11 +365,46 @@
             //DB 01: JOB
             //Sending jobid1, company, position, fromdate, todate
 
+                $.ajax({
+
+                    type: 'POST',
+                    url: '@Url.Action("UpdateJobsFormActionQuery")',
+                    data: {
+
+                        //PAIRING VALUES FROM AJAX QUERY TO CONTROLLER
+                        //(string JobID, string company, string position, string fromDate, string toDate)
+                        JobID: jobid1,
+                        company: company,
+                        position: position,
+                        fromDate: fromdate,
+                        toDate: todate
+                    }
+                })
+
 
 
             //DB 02: JOBDETAIL
             //Sending two arrays: JobFunctionsID and JobFunctions
 
+                $.ajax({
+
+
+                    type: 'POST',
+                    url: '@Url.Action("UpdateJobDetailsFormActionQuery")',
+                    traditional: true,
+                    data: {
+
+                        jobFunctionIDList: JobFunctionsID,
+                        jobFunctionList: JobFunctions
+
+                    }
+
+
+
+
+
+
+                })
 
 
 
@@ -475,7 +532,7 @@
         }//UpdateJobDetail()
 
 
-        function DeleteJobDetail(jobfunctiondetailid) {
+        function DeleteJobDetail(jobfunctiondetailid, detailcount) {
 
             window.alert("Deleting...");
 
@@ -500,9 +557,9 @@
 
             })
 
+            window.alert("Delete edit row with row counter id as " + detailcount);
 
-
-            RemoveJobDetailRow(jobfunctiondetailid);
+            RemoveJobDetailRow(detailcount);
 
 
         }//DeleteJobDetail()

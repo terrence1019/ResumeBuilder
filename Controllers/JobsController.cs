@@ -229,6 +229,50 @@ namespace RésuméBuilder.Controllers
             (string JobID, string company, string position, string fromDate, string toDate)
         {
 
+            //Pull up Job DB
+            var jobTable = dbContext.jobDB;
+
+
+            //Find existing record
+            var existingRecord = jobTable.Single(j => j.JobID.Equals(JobID));
+
+            //Modify record data fields for Company and Position
+            existingRecord.CompanyName = company;
+            existingRecord.Position = position;
+
+            //Convert fromDate and toDate strings to DateTime for database:
+            DateTime fDate;
+            DateTime tDate;
+
+
+            //FROM DATE:
+            fDate = DateTime.ParseExact(fromDate, "yyyy-MM", null);
+
+
+            //TO DATE:
+            if (toDate.Equals("") || toDate.ToLower().Equals("present"))
+            {
+                toDate = "9999-12";
+                tDate = DateTime.ParseExact(toDate, "yyyy-MM", null);
+
+            }
+
+            else
+            {
+                tDate = DateTime.ParseExact(toDate, "yyyy-MM", null);
+                
+            }
+
+
+            //Modify record data fields for FromDate and ToDate
+            existingRecord.FromDate = fDate;
+            existingRecord.ToDate = tDate;
+
+
+
+            //Save Changes to DB
+            dbContext.SaveChanges();
+
             return View();
         }
 
@@ -236,7 +280,44 @@ namespace RésuméBuilder.Controllers
         public ActionResult UpdateJobDetailsFormActionQuery
             (string[] jobFunctionIDList, string[] jobFunctionList )
         {
-            
+
+            //jobFunctionIDList - jobFunctionList is a matching pair relating to
+            //JobFunctionID - Job matching pair in database
+
+            //Pull up JobDetail DB
+            var jobdetailTable = dbContext.jobdetailDB;
+
+
+
+            int count = jobFunctionIDList.Length;
+            int i;
+
+            var a = jobFunctionIDList[0];
+            var b = jobFunctionList[0];
+
+
+            for (i=0; i<count; i++)
+            {
+
+                //Check for JobFunctionID in array against JobFunctionID in database
+                string targetRecordID = jobFunctionIDList[i];
+                string targetRecordDescription = jobFunctionList[i];
+
+                
+                //We need to match JobFunctionID strings using Equals()
+                var existingRecord = jobdetailTable.Single(jd => jd.JobFunctionID.Equals(targetRecordID));
+
+                //When record is found, modify description
+                existingRecord.JobFunction = jobFunctionList[i];
+
+
+            }
+
+
+            //Save Changes to database
+            dbContext.SaveChanges();
+
+
             return View();
         }
 
@@ -255,19 +336,23 @@ namespace RésuméBuilder.Controllers
             //Save Changes
 
 
-            //DELETE RECORDS FROM JOBDETAIL TABLE
+            //DELETE MULTIPLE RECORDS FROM JOBDETAIL TABLE WITH JOBID ==
             var jobdetailTable = dbContext.jobdetailDB;
 
+            //Get all the records with the JobID
             //https://stackoverflow.com/questions/3177113/lambda-expression-for-exists-within-list
             //https://www.tutorialsteacher.com/linq/linq-filtering-operators-where
             //https://stackoverflow.com/questions/853526/using-linq-to-remove-elements-from-a-listt
             var existingJobDetailsRecords = jobdetailTable.Where(jd => jd.JobID == JobID);
 
-            //jobdetailTable.Remove((JobDetail)existingJobDetailsRecords);
+            
+
+            //Remove all the records with the JobID
+            //https://stackoverflow.com/questions/2519866/how-do-i-delete-multiple-rows-in-entity-framework-without-foreach
+            jobdetailTable.RemoveRange(existingJobDetailsRecords);
 
 
-
-            //DELETE RECORD FROM JOB TABLE
+            //DELETE SINGLE RECORD FROM JOB TABLE WITH JOBID ==
             var jobTable = dbContext.jobDB;
 
             var existingJobRecord = jobTable.Single(j => j.JobID == JobID);
@@ -280,7 +365,7 @@ namespace RésuméBuilder.Controllers
 
 
             //Save Changes
-            //dbContext.SaveChanges();
+            dbContext.SaveChanges();
 
             return View();
         }
