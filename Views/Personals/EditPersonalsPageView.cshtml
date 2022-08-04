@@ -8,6 +8,9 @@
 
 -->
 
+@using RésuméBuilder.Models
+
+
 @model RésuméBuilder.Models.Personal
 
 
@@ -16,6 +19,11 @@
 
     //This value correlates to the ApplicantID between the Applicant and Personal Models
     var id = ViewBag.TargetID;
+
+
+    //Set up instance of Database Context
+    MyDbContext dbContext = new MyDbContext();
+
 }
 
 
@@ -43,6 +51,29 @@
 @using (Html.BeginForm("EditPersonalsFormAction", "Personals", FormMethod.Post))
 {
 
+
+    //String List to hold country names
+    List<string> Country = new List<string>();
+
+    //Get list of countries from Country DB
+    var CountryTable = dbContext.countryDB;
+
+    //Convert Country DB Table to list
+    List<Country> CountryList = CountryTable.ToList();
+
+
+    //Add each country name to Country list
+    for (int i = 0; i <= CountryList.Count - 1; i++)
+    {
+        var country = CountryList[i].CountryName;
+
+        Country.Add(country);
+
+    }
+
+
+
+
     <!-- APPLICANT ID: AUTOMATICALLY SET TO SPECIFIC VALUE -->
     <!-- This input field will be passed with the rest of the form data
          it ensures consistency of ApplicantID between Applicant and Personal.
@@ -51,6 +82,10 @@
     <div hidden>
         <input name="applicantID" type="number" value="@id" />
     </div>
+
+
+
+
 
 
     <!-- First Name -->
@@ -94,6 +129,15 @@
         @Html.TextBoxFor(p => p.RegionLocation, new { @class = "form-control" })
     </div>
     <br />
+
+
+    <!-- Country -->
+    <div class="form-group">
+        @Html.LabelFor(p => p.CountryName)
+        @Html.DropDownListFor(p => p.CountryName, new SelectList(Country, "Country Name"), "Select Country", new { @class = "form-control" })
+    </div>
+    <br />
+
 
     <!-- Mobile Number -->
     <div class="form-group">

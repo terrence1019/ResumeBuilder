@@ -61,10 +61,15 @@ namespace RésuméBuilder.Controllers
             if(existingRecord != null) return RedirectToAction("PersonalDetailsExist", "Personals", new { id = applicantID });
 
 
+            
 
+            
 
             return View();
         }
+
+
+
 
 
 
@@ -126,7 +131,7 @@ namespace RésuméBuilder.Controllers
             return View();
         }
 
-        public ActionResult PersonalError(int id)
+        public ActionResult PersonalDetailsError(int id)
         {
             ViewBag.ApplicantID = id;
             return View();
@@ -205,6 +210,7 @@ namespace RésuméBuilder.Controllers
             existingRecord.StreetLocation = personalRecord.StreetLocation;
             existingRecord.AreaLocation = personalRecord.AreaLocation;
             existingRecord.RegionLocation = personalRecord.RegionLocation;
+            existingRecord.CountryName = personalRecord.CountryName;
 
             existingRecord.PhoneMobile = personalRecord.PhoneMobile;
             existingRecord.PhoneHome = personalRecord.PhoneHome;

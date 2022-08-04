@@ -45,6 +45,9 @@ namespace RésuméBuilder.Models
         //For Personal Model:
         public DbSet <Personal> personalDB { get; set; }
 
+        //For Country Model:
+        public DbSet <Country> countryDB { get; set; }
+
         //For Skill Model:
         public DbSet <Skill> skillDB { get; set; }
 

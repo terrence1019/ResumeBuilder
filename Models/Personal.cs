@@ -6,6 +6,8 @@ using System.Web;
 //Required for Data Annotations
 using System.ComponentModel.DataAnnotations;
 
+using RésuméBuilder.Models;
+
 namespace RésuméBuilder.Models
 {
     public class Personal
@@ -52,6 +54,11 @@ namespace RésuméBuilder.Models
         [StringLength(40)]
         [Display(Name = "Region")]
         public string RegionLocation { get; set; }
+
+        [Required]
+        [StringLength(70)]
+        [Display(Name = "Country")]
+        public virtual string CountryName { get; set; }
 
 
         //CONTACT

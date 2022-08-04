@@ -127,6 +127,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ApplicantsController.cs" />
+    <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\PersonalsController.cs" />
@@ -179,8 +180,17 @@
     <Compile Include="Migrations\202206141214412_UpdateFieldLimits.designer.cs">
       <DependentUpon>202206141214412_UpdateFieldLimits.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208031658035_CountryProperty.cs" />
+    <Compile Include="Migrations\202208031658035_CountryProperty.designer.cs">
+      <DependentUpon>202208031658035_CountryProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208031826443_IncreaseCountryStringLength.cs" />
+    <Compile Include="Migrations\202208031826443_IncreaseCountryStringLength.designer.cs">
+      <DependentUpon>202208031826443_IncreaseCountryStringLength.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Applicant.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Models\JobDetail.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\MyDbContext.cs" />
@@ -257,6 +267,7 @@
     <Content Include="Views\Personals\EditPersonalsPageView.cshtml" />
     <Content Include="Views\Skills\EditSkillsPageView.cshtml" />
     <Content Include="Views\Jobs\EditJobsPageView.cshtml" />
+    <Content Include="Views\Countries\CountryPageView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -307,6 +318,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202206141214412_UpdateFieldLimits.resx">
       <DependentUpon>202206141214412_UpdateFieldLimits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208031658035_CountryProperty.resx">
+      <DependentUpon>202208031658035_CountryProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208031826443_IncreaseCountryStringLength.resx">
+      <DependentUpon>202208031826443_IncreaseCountryStringLength.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
